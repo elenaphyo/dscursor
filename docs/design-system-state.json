@@ -1,0 +1,44 @@
+{
+  "runId": "ds-brand-002c76",
+  "phase": "phase0-blocked-on-figma-auth",
+  "brand": {
+    "primary": "#002C76",
+    "secondary": "#B51F26",
+    "typeface": "Poppins"
+  },
+  "figma": {
+    "fileKey": null,
+    "blockedReason": "Figma MCP requires authentication in Cursor Desktop; interactive mcp_auth unavailable in cloud agent"
+  },
+  "entities": {
+    "collections": {},
+    "variables": {},
+    "pages": {},
+    "components": {}
+  },
+  "completedSteps": [
+    "phase0-scope-lock",
+    "code-primitives",
+    "code-semantic-light-dark",
+    "code-css-tokens",
+    "code-foundations-preview"
+  ],
+  "pendingSteps": [
+    "figma-auth",
+    "phase0-figma-inspect",
+    "phase0-library-search",
+    "phase1-variables",
+    "phase2-pages",
+    "phase3-components",
+    "phase4-qa"
+  ],
+  "v1Components": [
+    "Button",
+    "Input",
+    "Checkbox",
+    "Toggle",
+    "Badge",
+    "Avatar",
+    "Card"
+  ]
+}
