@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design System Foundations</title>
+    <link rel="stylesheet" href="../styles/tokens.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font-family-sans);
+        background: var(--color-bg-canvas);
+        color: var(--color-text-primary);
+      }
+      .page {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: var(--spacing-2xl) var(--spacing-lg);
+      }
+      .cover {
+        background: linear-gradient(
+          135deg,
+          var(--color-primary-600) 0%,
+          var(--color-primary-800) 55%,
+          var(--color-secondary-700) 100%
+        );
+        color: var(--color-text-on-brand);
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-3xl) var(--spacing-2xl);
+        margin-bottom: var(--spacing-2xl);
+        position: relative;
+        overflow: hidden;
+      }
+      .cover::after {
+        content: "";
+        position: absolute;
+        inset: auto -10% -40% 40%;
+        height: 120%;
+        background: radial-gradient(
+          circle,
+          rgba(181, 31, 38, 0.35),
+          transparent 60%
+        );
+        pointer-events: none;
+      }
+      .cover h1 {
+        margin: 0 0 var(--spacing-sm);
+        font-size: var(--font-size-5xl);
+        font-weight: var(--font-weight-bold);
+        line-height: var(--line-height-tight);
+        position: relative;
+      }
+      .cover p {
+        margin: 0;
+        max-width: 36rem;
+        opacity: 0.9;
+        font-size: var(--font-size-lg);
+        position: relative;
+      }
+      .toolbar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: var(--spacing-lg);
+      }
+      .theme-toggle {
+        font: inherit;
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border-default);
+        background: var(--color-bg-elevated);
+        color: var(--color-text-primary);
+        cursor: pointer;
+      }
+      .theme-toggle:hover {
+        background: var(--color-action-ghost-hover);
+      }
+      section {
+        margin-bottom: var(--spacing-3xl);
+      }
+      .section-title {
+        margin: 0 0 var(--spacing-xs);
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-semibold);
+      }
+      .section-desc {
+        margin: 0 0 var(--spacing-lg);
+        color: var(--color-text-secondary);
+        max-width: 40rem;
+      }
+      .swatch-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+        gap: var(--spacing-sm);
+      }
+      .swatch {
+        border: 1px solid var(--color-border-default);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        background: var(--color-bg-elevated);
+      }
+      .swatch-color {
+        height: 64px;
+      }
+      .swatch-meta {
+        padding: var(--spacing-sm);
+        font-size: var(--font-size-xs);
+      }
+      .swatch-meta strong {
+        display: block;
+        font-weight: var(--font-weight-medium);
+      }
+      .swatch-meta span {
+        color: var(--color-text-muted);
+      }
+      .ramp-block {
+        margin-bottom: var(--spacing-xl);
+      }
+      .ramp-block h3 {
+        margin: 0 0 var(--spacing-sm);
+        font-size: var(--font-size-md);
+        font-weight: var(--font-weight-semibold);
+      }
+      .type-stack {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+        border: 1px solid var(--color-border-default);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-lg);
+        background: var(--color-bg-elevated);
+      }
+      .type-row {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        gap: var(--spacing-md);
+        align-items: baseline;
+        padding-bottom: var(--spacing-md);
+        border-bottom: 1px solid var(--color-border-default);
+      }
+      .type-row:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+      .type-meta {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-muted);
+      }
+      .spacing-bars,
+      .radius-row {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+      }
+      .space-item,
+      .radius-item {
+        display: grid;
+        grid-template-columns: 72px 1fr 64px;
+        gap: var(--spacing-md);
+        align-items: center;
+      }
+      .bar {
+        height: 16px;
+        background: var(--color-bg-brand);
+        border-radius: var(--radius-sm);
+      }
+      .radius-demo {
+        width: 48px;
+        height: 48px;
+        background: var(--color-bg-brand-subtle);
+        border: 2px solid var(--color-border-brand);
+      }
+      .component-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
+        align-items: center;
+      }
+      .btn {
+        font-family: var(--font-family-sans);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        padding: 10px 16px;
+        border-radius: var(--radius-md);
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: background 160ms ease, border-color 160ms ease;
+      }
+      .btn-primary {
+        background: var(--color-action-primary);
+        color: var(--color-text-on-brand);
+      }
+      .btn-primary:hover {
+        background: var(--color-action-primary-hover);
+      }
+      .btn-secondary {
+        background: var(--color-action-secondary);
+        color: var(--color-text-on-danger);
+      }
+      .btn-secondary:hover {
+        background: var(--color-action-secondary-hover);
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--color-text-brand);
+        border-color: var(--color-border-brand);
+      }
+      .btn-outline:hover {
+        background: var(--color-action-ghost-hover);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--color-text-primary);
+      }
+      .btn-ghost:hover {
+        background: var(--color-action-ghost-hover);
+      }
+      .input {
+        font-family: var(--font-family-sans);
+        font-size: var(--font-size-sm);
+        padding: 10px 12px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border-default);
+        background: var(--color-bg-elevated);
+        color: var(--color-text-primary);
+        min-width: 220px;
+      }
+      .input:focus {
+        outline: 2px solid var(--color-border-focus);
+        outline-offset: 1px;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-medium);
+        padding: 4px 10px;
+        border-radius: var(--radius-full);
+      }
+      .badge-brand {
+        background: var(--color-bg-brand-subtle);
+        color: var(--color-text-brand);
+      }
+      .badge-danger {
+        background: var(--color-bg-danger-subtle);
+        color: var(--color-text-danger);
+      }
+      .card {
+        border: 1px solid var(--color-border-default);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-lg);
+        background: var(--color-bg-elevated);
+        box-shadow: var(--shadow-sm);
+        max-width: 320px;
+      }
+      .card h4 {
+        margin: 0 0 var(--spacing-xs);
+      }
+      .card p {
+        margin: 0 0 var(--spacing-md);
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+      }
+      @media (max-width: 640px) {
+        .type-row {
+          grid-template-columns: 1fr;
+        }
+        .cover {
+          padding: var(--spacing-xl) var(--spacing-lg);
+        }
+        .cover h1 {
+          font-size: var(--font-size-3xl);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="toolbar">
+        <button class="theme-toggle" type="button" id="themeToggle">
+          Toggle dark mode
+        </button>
+      </div>
+
+      <header class="cover">
+        <h1>Design System</h1>
+        <p>
+          Primary <strong>#002C76</strong> · Secondary
+          <strong>#B51F26</strong> · Typeface <strong>Poppins</strong>
+        </p>
+      </header>
+
+      <section>
+        <h2 class="section-title">Color</h2>
+        <p class="section-desc">
+          Primitive ramps derived from brand primary and secondary, plus neutral
+          gray. Semantic tokens alias these for light and dark themes.
+        </p>
+
+        <div class="ramp-block">
+          <h3>Primary</h3>
+          <div class="swatch-grid" id="primaryRamp"></div>
+        </div>
+        <div class="ramp-block">
+          <h3>Secondary</h3>
+          <div class="swatch-grid" id="secondaryRamp"></div>
+        </div>
+        <div class="ramp-block">
+          <h3>Gray</h3>
+          <div class="swatch-grid" id="grayRamp"></div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Typography</h2>
+        <p class="section-desc">
+          All text styles use Poppins. Weights: Regular 400, Medium 500,
+          Semibold 600, Bold 700.
+        </p>
+        <div class="type-stack">
+          <div class="type-row">
+            <div class="type-meta">Display · 48/Bold</div>
+            <div class="text-display">The quick brown fox</div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">H1 · 36/Bold</div>
+            <div class="text-h1">The quick brown fox</div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">H2 · 30/Semibold</div>
+            <div class="text-h2">The quick brown fox</div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">H3 · 24/Semibold</div>
+            <div class="text-h3">The quick brown fox</div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">H4 · 20/Semibold</div>
+            <div class="text-h4">The quick brown fox</div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">Body LG · 18/Regular</div>
+            <div class="text-body-lg">
+              Body large for lead paragraphs and supporting copy.
+            </div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">Body · 16/Regular</div>
+            <div class="text-body">
+              Default body text for product UI and long-form content.
+            </div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">Body SM · 14/Regular</div>
+            <div class="text-body-sm">
+              Compact body for dense layouts and helper text.
+            </div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">Label · 14/Medium</div>
+            <div class="text-label">Form labels and UI chrome</div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">Caption · 12/Regular</div>
+            <div class="text-caption">Captions, metadata, and footnotes</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Spacing</h2>
+        <p class="section-desc">4px base scale from xs through 3xl.</p>
+        <div class="spacing-bars" id="spacingBars"></div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Radius</h2>
+        <p class="section-desc">Corner radii for controls, cards, and pills.</p>
+        <div class="radius-row" id="radiusRow"></div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Components (preview)</h2>
+        <p class="section-desc">
+          Lightweight previews of the v1 component set. Full Figma variants land
+          once canvas sync is available.
+        </p>
+        <div class="component-row" style="margin-bottom: 24px">
+          <button class="btn btn-primary" type="button">Primary</button>
+          <button class="btn btn-secondary" type="button">Secondary</button>
+          <button class="btn btn-outline" type="button">Outline</button>
+          <button class="btn btn-ghost" type="button">Ghost</button>
+          <span class="badge badge-brand">Brand</span>
+          <span class="badge badge-danger">Danger</span>
+        </div>
+        <div class="component-row">
+          <input class="input" type="text" placeholder="Input placeholder" />
+          <div class="card">
+            <h4 class="text-h4">Card title</h4>
+            <p>
+              Surface container for grouped content with elevation and border
+              tokens.
+            </p>
+            <button class="btn btn-primary" type="button">Action</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+      const primaryHex = {
+        50: "#EBEEF4",
+        100: "#CCD5E4",
+        200: "#99ABC8",
+        300: "#6680AD",
+        400: "#335691",
+        500: "#0D377D",
+        600: "#002C76",
+        700: "#002564",
+        800: "#001F53",
+        900: "#001841",
+        950: "#00122F",
+      };
+      const secondaryHex = {
+        50: "#F9EDEE",
+        100: "#F0D2D4",
+        200: "#E1A5A8",
+        300: "#D3797D",
+        400: "#C44C51",
+        500: "#B92A31",
+        600: "#B51F26",
+        700: "#9A1A20",
+        800: "#7F161B",
+        900: "#641115",
+        950: "#480C0F",
+      };
+      const grayHex = {
+        50: "#F7F8F9",
+        100: "#F0F1F3",
+        200: "#D8DCE2",
+        300: "#B9C0CB",
+        400: "#929EAE",
+        500: "#64748B",
+        600: "#505D6F",
+        700: "#3C4653",
+        800: "#2D343F",
+        900: "#1E232A",
+        950: "#121519",
+      };
+
+      function renderRamp(targetId, prefix, map) {
+        const el = document.getElementById(targetId);
+        el.innerHTML = steps
+          .map(
+            (step) => `
+          <div class="swatch">
+            <div class="swatch-color" style="background:${map[step]}"></div>
+            <div class="swatch-meta">
+              <strong>${prefix}/${step}</strong>
+              <span>${map[step]}</span>
+            </div>
+          </div>`
+          )
+          .join("");
+      }
+
+      renderRamp("primaryRamp", "primary", primaryHex);
+      renderRamp("secondaryRamp", "secondary", secondaryHex);
+      renderRamp("grayRamp", "gray", grayHex);
+
+      const spacing = [
+        ["xs", 4],
+        ["sm", 8],
+        ["md", 16],
+        ["lg", 24],
+        ["xl", 32],
+        ["2xl", 48],
+        ["3xl", 64],
+      ];
+      document.getElementById("spacingBars").innerHTML = spacing
+        .map(
+          ([name, px]) => `
+        <div class="space-item">
+          <div class="text-label">${name}</div>
+          <div class="bar" style="width:${px * 4}px"></div>
+          <div class="text-caption">${px}px</div>
+        </div>`
+        )
+        .join("");
+
+      const radii = [
+        ["sm", 4],
+        ["md", 8],
+        ["lg", 12],
+        ["xl", 16],
+        ["full", 9999],
+      ];
+      document.getElementById("radiusRow").innerHTML = radii
+        .map(
+          ([name, px]) => `
+        <div class="radius-item">
+          <div class="text-label">${name}</div>
+          <div class="radius-demo" style="border-radius:${
+            px === 9999 ? "9999px" : px + "px"
+          }"></div>
+          <div class="text-caption">${px === 9999 ? "full" : px + "px"}</div>
+        </div>`
+        )
+        .join("");
+
+      document.getElementById("themeToggle").addEventListener("click", () => {
+        const root = document.documentElement;
+        const next =
+          root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        if (next === "dark") root.setAttribute("data-theme", "dark");
+        else root.removeAttribute("data-theme");
+      });
+    </script>
+  </body>
+</html>
