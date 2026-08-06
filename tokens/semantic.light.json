@@ -1,0 +1,53 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "Semantic color tokens — Light mode. Aliases resolve to primitives.",
+  "color": {
+    "bg": {
+      "canvas": { "$type": "color", "$value": "{color.white.1000}" },
+      "surface": { "$type": "color", "$value": "{color.gray.50}" },
+      "elevated": { "$type": "color", "$value": "{color.white.1000}" },
+      "muted": { "$type": "color", "$value": "{color.gray.100}" },
+      "inverse": { "$type": "color", "$value": "{color.primary.900}" },
+      "brand": { "$type": "color", "$value": "{color.primary.600}" },
+      "brand-subtle": { "$type": "color", "$value": "{color.primary.50}" },
+      "danger": { "$type": "color", "$value": "{color.secondary.600}" },
+      "danger-subtle": { "$type": "color", "$value": "{color.secondary.50}" },
+      "success": { "$type": "color", "$value": "{color.success.500}" },
+      "warning": { "$type": "color", "$value": "{color.warning.500}" }
+    },
+    "text": {
+      "primary": { "$type": "color", "$value": "{color.gray.900}" },
+      "secondary": { "$type": "color", "$value": "{color.gray.600}" },
+      "muted": { "$type": "color", "$value": "{color.gray.500}" },
+      "inverse": { "$type": "color", "$value": "{color.white.1000}" },
+      "brand": { "$type": "color", "$value": "{color.primary.600}" },
+      "danger": { "$type": "color", "$value": "{color.secondary.600}" },
+      "success": { "$type": "color", "$value": "{color.success.700}" },
+      "on-brand": { "$type": "color", "$value": "{color.white.1000}" },
+      "on-danger": { "$type": "color", "$value": "{color.white.1000}" }
+    },
+    "border": {
+      "default": { "$type": "color", "$value": "{color.gray.200}" },
+      "strong": { "$type": "color", "$value": "{color.gray.300}" },
+      "focus": { "$type": "color", "$value": "{color.primary.500}" },
+      "brand": { "$type": "color", "$value": "{color.primary.600}" },
+      "danger": { "$type": "color", "$value": "{color.secondary.600}" }
+    },
+    "action": {
+      "primary": { "$type": "color", "$value": "{color.primary.600}" },
+      "primary-hover": { "$type": "color", "$value": "{color.primary.700}" },
+      "primary-active": { "$type": "color", "$value": "{color.primary.800}" },
+      "secondary": { "$type": "color", "$value": "{color.secondary.600}" },
+      "secondary-hover": { "$type": "color", "$value": "{color.secondary.700}" },
+      "secondary-active": { "$type": "color", "$value": "{color.secondary.800}" },
+      "ghost-hover": { "$type": "color", "$value": "{color.primary.50}" }
+    },
+    "icon": {
+      "default": { "$type": "color", "$value": "{color.gray.700}" },
+      "muted": { "$type": "color", "$value": "{color.gray.400}" },
+      "brand": { "$type": "color", "$value": "{color.primary.600}" },
+      "danger": { "$type": "color", "$value": "{color.secondary.600}" },
+      "inverse": { "$type": "color", "$value": "{color.white.1000}" }
+    }
+  }
+}

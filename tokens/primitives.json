@@ -1,0 +1,109 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "Primitive color and dimension tokens. Brand primary #002C76, secondary #B51F26, typeface Poppins.",
+  "color": {
+    "primary": {
+      "50": { "$type": "color", "$value": "#EBEEF4" },
+      "100": { "$type": "color", "$value": "#CCD5E4" },
+      "200": { "$type": "color", "$value": "#99ABC8" },
+      "300": { "$type": "color", "$value": "#6680AD" },
+      "400": { "$type": "color", "$value": "#335691" },
+      "500": { "$type": "color", "$value": "#0D377D" },
+      "600": { "$type": "color", "$value": "#002C76", "$description": "Brand primary" },
+      "700": { "$type": "color", "$value": "#002564" },
+      "800": { "$type": "color", "$value": "#001F53" },
+      "900": { "$type": "color", "$value": "#001841" },
+      "950": { "$type": "color", "$value": "#00122F" }
+    },
+    "secondary": {
+      "50": { "$type": "color", "$value": "#F9EDEE" },
+      "100": { "$type": "color", "$value": "#F0D2D4" },
+      "200": { "$type": "color", "$value": "#E1A5A8" },
+      "300": { "$type": "color", "$value": "#D3797D" },
+      "400": { "$type": "color", "$value": "#C44C51" },
+      "500": { "$type": "color", "$value": "#B92A31" },
+      "600": { "$type": "color", "$value": "#B51F26", "$description": "Brand secondary" },
+      "700": { "$type": "color", "$value": "#9A1A20" },
+      "800": { "$type": "color", "$value": "#7F161B" },
+      "900": { "$type": "color", "$value": "#641115" },
+      "950": { "$type": "color", "$value": "#480C0F" }
+    },
+    "gray": {
+      "50": { "$type": "color", "$value": "#F7F8F9" },
+      "100": { "$type": "color", "$value": "#F0F1F3" },
+      "200": { "$type": "color", "$value": "#D8DCE2" },
+      "300": { "$type": "color", "$value": "#B9C0CB" },
+      "400": { "$type": "color", "$value": "#929EAE" },
+      "500": { "$type": "color", "$value": "#64748B" },
+      "600": { "$type": "color", "$value": "#505D6F" },
+      "700": { "$type": "color", "$value": "#3C4653" },
+      "800": { "$type": "color", "$value": "#2D343F" },
+      "900": { "$type": "color", "$value": "#1E232A" },
+      "950": { "$type": "color", "$value": "#121519" }
+    },
+    "white": {
+      "1000": { "$type": "color", "$value": "#FFFFFF" }
+    },
+    "black": {
+      "1000": { "$type": "color", "$value": "#000000" }
+    },
+    "success": {
+      "500": { "$type": "color", "$value": "#16A34A" },
+      "700": { "$type": "color", "$value": "#15803D" }
+    },
+    "warning": {
+      "500": { "$type": "color", "$value": "#D97706" },
+      "700": { "$type": "color", "$value": "#B45309" }
+    },
+    "info": {
+      "500": { "$type": "color", "$value": "#0284C7" },
+      "700": { "$type": "color", "$value": "#0369A1" }
+    }
+  },
+  "spacing": {
+    "none": { "$type": "dimension", "$value": "0px" },
+    "xs": { "$type": "dimension", "$value": "4px" },
+    "sm": { "$type": "dimension", "$value": "8px" },
+    "md": { "$type": "dimension", "$value": "16px" },
+    "lg": { "$type": "dimension", "$value": "24px" },
+    "xl": { "$type": "dimension", "$value": "32px" },
+    "2xl": { "$type": "dimension", "$value": "48px" },
+    "3xl": { "$type": "dimension", "$value": "64px" }
+  },
+  "radius": {
+    "none": { "$type": "dimension", "$value": "0px" },
+    "sm": { "$type": "dimension", "$value": "4px" },
+    "md": { "$type": "dimension", "$value": "8px" },
+    "lg": { "$type": "dimension", "$value": "12px" },
+    "xl": { "$type": "dimension", "$value": "16px" },
+    "full": { "$type": "dimension", "$value": "9999px" }
+  },
+  "font": {
+    "family": {
+      "sans": { "$type": "fontFamily", "$value": "Poppins" }
+    },
+    "weight": {
+      "regular": { "$type": "fontWeight", "$value": 400 },
+      "medium": { "$type": "fontWeight", "$value": 500 },
+      "semibold": { "$type": "fontWeight", "$value": 600 },
+      "bold": { "$type": "fontWeight", "$value": 700 }
+    },
+    "size": {
+      "xs": { "$type": "dimension", "$value": "12px" },
+      "sm": { "$type": "dimension", "$value": "14px" },
+      "md": { "$type": "dimension", "$value": "16px" },
+      "lg": { "$type": "dimension", "$value": "18px" },
+      "xl": { "$type": "dimension", "$value": "20px" },
+      "2xl": { "$type": "dimension", "$value": "24px" },
+      "3xl": { "$type": "dimension", "$value": "30px" },
+      "4xl": { "$type": "dimension", "$value": "36px" },
+      "5xl": { "$type": "dimension", "$value": "48px" }
+    },
+    "lineHeight": {
+      "tight": { "$type": "number", "$value": 1.2 },
+      "snug": { "$type": "number", "$value": 1.35 },
+      "normal": { "$type": "number", "$value": 1.5 },
+      "relaxed": { "$type": "number", "$value": 1.65 }
+    }
+  }
+}
