@@ -2,6 +2,8 @@
 
 Source of truth for pushing this design system onto a Figma file via `use_figma` once MCP is authenticated.
 
+**Code canvas (available now):** open `docs/canvas.html` — Cover, Color, Typography, Spacing & Radius, and Components artboards mirroring the page plan below.
+
 ## Brand lock
 
 - Primary: `#002C76` → `primary/600`

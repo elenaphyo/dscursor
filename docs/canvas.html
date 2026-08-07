@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design System Canvas — dscursor</title>
+    <link rel="stylesheet" href="../styles/tokens.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        font-family: var(--font-family-sans);
+        color: var(--color-text-primary);
+        background: #d8dce2;
+      }
+
+      /* ——— Canvas chrome ——— */
+      .chrome {
+        position: fixed;
+        inset: 0 0 auto 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-md);
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.88);
+        border-bottom: 1px solid rgba(0, 44, 118, 0.08);
+        backdrop-filter: blur(12px);
+      }
+
+      .chrome-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .chrome-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: linear-gradient(
+          135deg,
+          var(--color-primary-600),
+          var(--color-secondary-600)
+        );
+        flex-shrink: 0;
+      }
+
+      .chrome-title {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+      }
+
+      .chrome-sub {
+        margin: 2px 0 0;
+        font-size: 11px;
+        color: var(--color-text-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .chrome-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+
+      .chrome-btn {
+        font: inherit;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--color-border-default);
+        background: var(--color-bg-elevated);
+        color: var(--color-text-primary);
+        cursor: pointer;
+        transition: background 160ms ease, transform 160ms ease;
+      }
+
+      .chrome-btn:hover {
+        background: var(--color-action-ghost-hover);
+      }
+
+      .chrome-btn:active {
+        transform: scale(0.98);
+      }
+
+      .chrome-btn.primary {
+        background: var(--color-primary-600);
+        border-color: var(--color-primary-600);
+        color: #fff;
+      }
+
+      .chrome-btn.primary:hover {
+        background: var(--color-primary-700);
+      }
+
+      .nav-pills {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-pills a {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        padding: 6px 10px;
+        border-radius: 6px;
+        transition: background 160ms ease, color 160ms ease;
+      }
+
+      .nav-pills a:hover,
+      .nav-pills a.active {
+        background: var(--color-primary-50);
+        color: var(--color-primary-600);
+      }
+
+      /* ——— Infinite-style canvas ——— */
+      .viewport {
+        position: fixed;
+        inset: 57px 0 0 0;
+        overflow: auto;
+        background-color: #cfd5dd;
+        background-image: radial-gradient(
+          circle,
+          rgba(0, 44, 118, 0.12) 1px,
+          transparent 1px
+        );
+        background-size: 24px 24px;
+      }
+
+      .stage {
+        position: relative;
+        width: 4200px;
+        height: 2600px;
+        padding: 80px;
+        transform-origin: 0 0;
+      }
+
+      .artboard {
+        position: absolute;
+        background: var(--color-bg-canvas);
+        border-radius: 2px;
+        box-shadow: 0 1px 0 rgba(0, 44, 118, 0.04),
+          0 24px 48px rgba(0, 44, 118, 0.12);
+        overflow: hidden;
+        animation: boardIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      .artboard:nth-child(1) {
+        animation-delay: 40ms;
+      }
+      .artboard:nth-child(2) {
+        animation-delay: 100ms;
+      }
+      .artboard:nth-child(3) {
+        animation-delay: 160ms;
+      }
+      .artboard:nth-child(4) {
+        animation-delay: 220ms;
+      }
+      .artboard:nth-child(5) {
+        animation-delay: 280ms;
+      }
+
+      @keyframes boardIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px) scale(0.985);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .artboard-label {
+        position: absolute;
+        left: 0;
+        top: -28px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #3c4653;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+      }
+
+      .artboard-inner {
+        padding: 40px;
+        height: 100%;
+      }
+
+      /* Positions */
+      #board-cover {
+        left: 80px;
+        top: 80px;
+        width: 960px;
+        height: 640px;
+      }
+
+      #board-color {
+        left: 1120px;
+        top: 80px;
+        width: 1180px;
+        height: 860px;
+      }
+
+      #board-type {
+        left: 80px;
+        top: 820px;
+        width: 960px;
+        height: 920px;
+      }
+
+      #board-space {
+        left: 1120px;
+        top: 1020px;
+        width: 700px;
+        height: 720px;
+      }
+
+      #board-components {
+        left: 2400px;
+        top: 80px;
+        width: 1100px;
+        height: 1260px;
+      }
+
+      /* ——— Cover board ——— */
+      .cover-board {
+        padding: 0;
+        height: 100%;
+        display: grid;
+        grid-template-rows: 1fr auto;
+        background: linear-gradient(
+          145deg,
+          #001841 0%,
+          #002c76 48%,
+          #001f53 72%,
+          #7f161b 100%
+        );
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cover-board::before {
+        content: "";
+        position: absolute;
+        width: 520px;
+        height: 520px;
+        right: -120px;
+        top: -80px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(181, 31, 38, 0.45),
+          transparent 68%
+        );
+        animation: pulseGlow 6s ease-in-out infinite;
+      }
+
+      .cover-board::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          transparent 40%,
+          rgba(0, 18, 47, 0.35) 100%
+        );
+        pointer-events: none;
+      }
+
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          opacity: 0.7;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.06);
+        }
+      }
+
+      .cover-main {
+        position: relative;
+        z-index: 1;
+        padding: 56px 56px 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 16px;
+      }
+
+      .cover-eyebrow {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        opacity: 0.75;
+      }
+
+      .cover-brand {
+        margin: 0;
+        font-size: 64px;
+        font-weight: 700;
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+      }
+
+      .cover-line {
+        margin: 0;
+        max-width: 28rem;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.45;
+        opacity: 0.9;
+      }
+
+      .cover-footer {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: 24px;
+        padding: 24px 56px 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .token-chip {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .token-chip span {
+        font-size: 11px;
+        opacity: 0.65;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .token-chip strong {
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .swatch-dot {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+        margin-right: 8px;
+        vertical-align: -1px;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+      }
+
+      /* ——— Shared board content ——— */
+      .board-h {
+        margin: 0 0 8px;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--color-text-primary);
+      }
+
+      .board-p {
+        margin: 0 0 28px;
+        font-size: 14px;
+        color: var(--color-text-secondary);
+        max-width: 40rem;
+        line-height: 1.5;
+      }
+
+      .ramp-title {
+        margin: 0 0 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--color-text-primary);
+      }
+
+      .ramp-block + .ramp-block {
+        margin-top: 22px;
+      }
+
+      .swatch-grid {
+        display: grid;
+        grid-template-columns: repeat(11, 1fr);
+        gap: 8px;
+      }
+
+      .swatch {
+        border: 1px solid var(--color-border-default);
+        border-radius: 8px;
+        overflow: hidden;
+        background: var(--color-bg-elevated);
+        transition: transform 180ms ease, box-shadow 180ms ease;
+      }
+
+      .swatch:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .swatch-color {
+        height: 56px;
+      }
+
+      .swatch-meta {
+        padding: 8px;
+        font-size: 10px;
+        line-height: 1.35;
+      }
+
+      .swatch-meta strong {
+        display: block;
+        font-weight: 600;
+        color: var(--color-text-primary);
+      }
+
+      .swatch-meta span {
+        color: var(--color-text-muted);
+        word-break: break-all;
+      }
+
+      /* Typography */
+      .type-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .type-row {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 16px;
+        align-items: baseline;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--color-border-default);
+      }
+
+      .type-row:first-child {
+        border-top: 1px solid var(--color-border-default);
+      }
+
+      .type-meta {
+        font-size: 11px;
+        color: var(--color-text-muted);
+        font-weight: 500;
+      }
+
+      /* Spacing / radius */
+      .space-item,
+      .radius-item {
+        display: grid;
+        grid-template-columns: 56px 1fr 52px;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .bar {
+        height: 14px;
+        background: linear-gradient(
+          90deg,
+          var(--color-primary-600),
+          var(--color-primary-400)
+        );
+        border-radius: 4px;
+      }
+
+      .radius-demo {
+        width: 44px;
+        height: 44px;
+        background: var(--color-bg-brand-subtle);
+        border: 2px solid var(--color-border-brand);
+      }
+
+      .section-label {
+        margin: 28px 0 12px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--color-text-muted);
+      }
+
+      /* Components */
+      .comp-group {
+        margin-bottom: 28px;
+      }
+
+      .comp-label {
+        margin: 0 0 12px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .btn {
+        font-family: var(--font-family-sans);
+        font-size: 14px;
+        font-weight: 500;
+        padding: 10px 16px;
+        border-radius: var(--radius-md);
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: background 160ms ease, border-color 160ms ease,
+          transform 120ms ease;
+      }
+
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      .btn-sm {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+
+      .btn-lg {
+        font-size: 16px;
+        padding: 14px 22px;
+      }
+
+      .btn-primary {
+        background: var(--color-action-primary);
+        color: var(--color-text-on-brand);
+      }
+
+      .btn-primary:hover {
+        background: var(--color-action-primary-hover);
+      }
+
+      .btn-secondary {
+        background: var(--color-action-secondary);
+        color: var(--color-text-on-danger);
+      }
+
+      .btn-secondary:hover {
+        background: var(--color-action-secondary-hover);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--color-text-brand);
+        border-color: var(--color-border-brand);
+      }
+
+      .btn-outline:hover {
+        background: var(--color-action-ghost-hover);
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--color-text-primary);
+      }
+
+      .btn-ghost:hover {
+        background: var(--color-action-ghost-hover);
+      }
+
+      .btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .input {
+        font-family: var(--font-family-sans);
+        font-size: 14px;
+        padding: 10px 12px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border-default);
+        background: var(--color-bg-elevated);
+        color: var(--color-text-primary);
+        min-width: 220px;
+      }
+
+      .input:focus {
+        outline: 2px solid var(--color-border-focus);
+        outline-offset: 1px;
+      }
+
+      .input.error {
+        border-color: var(--color-border-danger);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: var(--radius-full);
+      }
+
+      .badge-brand {
+        background: var(--color-bg-brand-subtle);
+        color: var(--color-text-brand);
+      }
+
+      .badge-danger {
+        background: var(--color-bg-danger-subtle);
+        color: var(--color-text-danger);
+      }
+
+      .badge-neutral {
+        background: var(--color-bg-muted);
+        color: var(--color-text-secondary);
+      }
+
+      .check,
+      .toggle-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: var(--color-text-primary);
+      }
+
+      .check input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--color-primary-600);
+      }
+
+      .toggle {
+        position: relative;
+        width: 44px;
+        height: 26px;
+        border-radius: 999px;
+        background: var(--color-gray-300);
+        border: none;
+        cursor: pointer;
+        transition: background 180ms ease;
+        padding: 0;
+      }
+
+      .toggle[aria-checked="true"] {
+        background: var(--color-primary-600);
+      }
+
+      .toggle::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        transition: transform 180ms ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      .toggle[aria-checked="true"]::after {
+        transform: translateX(18px);
+      }
+
+      .avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: var(--color-primary-600);
+        color: #fff;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+
+      .avatar-sm {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+      }
+
+      .avatar-md {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+      }
+
+      .avatar-lg {
+        width: 56px;
+        height: 56px;
+        font-size: 18px;
+      }
+
+      .card {
+        border: 1px solid var(--color-border-default);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-lg);
+        background: var(--color-bg-elevated);
+        box-shadow: var(--shadow-sm);
+        max-width: 300px;
+      }
+
+      .card.elev-md {
+        box-shadow: var(--shadow-md);
+      }
+
+      .card h4 {
+        margin: 0 0 6px;
+      }
+
+      .card p {
+        margin: 0 0 16px;
+        color: var(--color-text-secondary);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .zoom-hint {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 20;
+        font-size: 11px;
+        color: #3c4653;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(0, 44, 118, 0.1);
+        padding: 8px 12px;
+        border-radius: 8px;
+        backdrop-filter: blur(8px);
+      }
+
+      [data-theme="dark"] .chrome {
+        background: rgba(18, 21, 25, 0.9);
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+      }
+
+      [data-theme="dark"] .viewport {
+        background-color: #1a1f27;
+        background-image: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.08) 1px,
+          transparent 1px
+        );
+      }
+
+      [data-theme="dark"] .artboard-label,
+      [data-theme="dark"] .zoom-hint {
+        color: #b9c0cb;
+      }
+
+      [data-theme="dark"] .zoom-hint {
+        background: rgba(30, 35, 42, 0.92);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+
+      @media (max-width: 900px) {
+        .chrome {
+          flex-wrap: wrap;
+        }
+
+        .nav-pills {
+          order: 3;
+          width: 100%;
+          justify-content: flex-start;
+          overflow-x: auto;
+          flex-wrap: nowrap;
+        }
+
+        .viewport {
+          inset: 96px 0 0 0;
+        }
+
+        .stage {
+          width: auto;
+          height: auto;
+          min-width: 100%;
+          padding: 40px 20px 80px;
+          display: flex;
+          flex-direction: column;
+          gap: 48px;
+        }
+
+        .artboard {
+          position: relative !important;
+          left: auto !important;
+          top: auto !important;
+          width: 100% !important;
+          height: auto !important;
+          min-height: 0;
+        }
+
+        .artboard-label {
+          position: static;
+          display: block;
+          margin-bottom: 8px;
+        }
+
+        .cover-brand {
+          font-size: 40px;
+        }
+
+        .swatch-grid {
+          grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+        }
+
+        .type-row {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+
+        .zoom-hint {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="chrome">
+      <div class="chrome-brand">
+        <div class="chrome-mark" aria-hidden="true"></div>
+        <div>
+          <p class="chrome-title">dscursor · Design System Canvas</p>
+          <p class="chrome-sub">
+            Primary #002C76 · Secondary #B51F26 · Poppins
+          </p>
+        </div>
+      </div>
+      <nav class="nav-pills" aria-label="Artboards">
+        <a href="#board-cover">Cover</a>
+        <a href="#board-color">Color</a>
+        <a href="#board-type">Typography</a>
+        <a href="#board-space">Spacing</a>
+        <a href="#board-components">Components</a>
+      </nav>
+      <div class="chrome-actions">
+        <button class="chrome-btn" type="button" id="themeToggle">
+          Dark mode
+        </button>
+        <a class="chrome-btn primary" href="./foundations.html">Foundations</a>
+      </div>
+    </header>
+
+    <div class="viewport" id="viewport">
+      <div class="stage" id="stage">
+        <!-- Cover -->
+        <section class="artboard" id="board-cover" aria-label="Cover">
+          <span class="artboard-label">01 · Cover</span>
+          <div class="cover-board">
+            <div class="cover-main">
+              <p class="cover-eyebrow">Design System</p>
+              <h1 class="cover-brand">dscursor</h1>
+              <p class="cover-line">
+                Brand foundations and v1 components — primary navy, secondary
+                crimson, Poppins throughout.
+              </p>
+            </div>
+            <div class="cover-footer">
+              <div class="token-chip">
+                <span>Primary</span>
+                <strong
+                  ><i
+                    class="swatch-dot"
+                    style="background: #002c76"
+                    aria-hidden="true"
+                  ></i
+                  >#002C76</strong
+                >
+              </div>
+              <div class="token-chip">
+                <span>Secondary</span>
+                <strong
+                  ><i
+                    class="swatch-dot"
+                    style="background: #b51f26"
+                    aria-hidden="true"
+                  ></i
+                  >#B51F26</strong
+                >
+              </div>
+              <div class="token-chip">
+                <span>Typeface</span>
+                <strong>Poppins</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Color -->
+        <section class="artboard" id="board-color" aria-label="Color">
+          <span class="artboard-label">02 · Foundations / Color</span>
+          <div class="artboard-inner">
+            <h2 class="board-h">Color</h2>
+            <p class="board-p">
+              Primitive ramps from brand primary and secondary, plus neutral
+              gray. Semantic tokens alias these for Light and Dark modes.
+            </p>
+            <div class="ramp-block">
+              <h3 class="ramp-title">Primary · brand</h3>
+              <div class="swatch-grid" id="primaryRamp"></div>
+            </div>
+            <div class="ramp-block">
+              <h3 class="ramp-title">Secondary · accent / danger</h3>
+              <div class="swatch-grid" id="secondaryRamp"></div>
+            </div>
+            <div class="ramp-block">
+              <h3 class="ramp-title">Gray · neutrals</h3>
+              <div class="swatch-grid" id="grayRamp"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Typography -->
+        <section class="artboard" id="board-type" aria-label="Typography">
+          <span class="artboard-label">03 · Foundations / Typography</span>
+          <div class="artboard-inner">
+            <h2 class="board-h">Typography</h2>
+            <p class="board-p">
+              All text styles use Poppins — Regular 400, Medium 500, Semibold
+              600, Bold 700.
+            </p>
+            <div class="type-list">
+              <div class="type-row">
+                <div class="type-meta">Display · 48 / Bold</div>
+                <div class="text-display">The quick brown fox</div>
+              </div>
+              <div class="type-row">
+                <div class="type-meta">H1 · 36 / Bold</div>
+                <div class="text-h1">The quick brown fox</div>
+              </div>
+              <div class="type-row">
+                <div class="type-meta">H2 · 30 / Semibold</div>
+                <div class="text-h2">The quick brown fox</div>
+              </div>
+              <div class="type-row">
+                <div class="type-meta">H3 · 24 / Semibold</div>
+                <div class="text-h3">The quick brown fox</div>
+              </div>
+              <div class="type-row">
+                <div class="type-meta">H4 · 20 / Semibold</div>
+                <div class="text-h4">The quick brown fox</div>
+              </div>
+              <div class="type-row">
+                <div class="type-meta">Body LG · 18 / Regular</div>
+                <div class="text-body-lg">
+                  Lead paragraphs and supporting product copy.
+                </div>
+              </div>
+              <div class="type-row">
+                <div class="type-meta">Body · 16 / Regular</div>
+                <div class="text-body">
+                  Default body for UI and long-form content.
+                </div>
+              </div>
+              <div class="type-row">
+                <div class="type-meta">Body SM · 14 / Regular</div>
+                <div class="text-body-sm">
+                  Dense layouts, helper text, and secondary lines.
+                </div>
+              </div>
+              <div class="type-row">
+                <div class="type-meta">Label · 14 / Medium</div>
+                <div class="text-label">Form labels and UI chrome</div>
+              </div>
+              <div class="type-row">
+                <div class="type-meta">Caption · 12 / Regular</div>
+                <div class="text-caption">Captions, metadata, footnotes</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Spacing & Radius -->
+        <section class="artboard" id="board-space" aria-label="Spacing">
+          <span class="artboard-label">04 · Foundations / Spacing & Radius</span>
+          <div class="artboard-inner">
+            <h2 class="board-h">Spacing & Radius</h2>
+            <p class="board-p">4px base scale and corner radii for controls.</p>
+            <p class="section-label">Spacing</p>
+            <div id="spacingBars"></div>
+            <p class="section-label">Radius</p>
+            <div id="radiusRow"></div>
+          </div>
+        </section>
+
+        <!-- Components -->
+        <section
+          class="artboard"
+          id="board-components"
+          aria-label="Components"
+        >
+          <span class="artboard-label">05 · Components (v1 preview)</span>
+          <div class="artboard-inner">
+            <h2 class="board-h">Components</h2>
+            <p class="board-p">
+              Lightweight previews of the v1 set. Full Figma variant matrices
+              sync once MCP is authenticated in Cursor Desktop.
+            </p>
+
+            <div class="comp-group">
+              <p class="comp-label">Button</p>
+              <div class="row" style="margin-bottom: 12px">
+                <button class="btn btn-primary btn-sm" type="button">
+                  Primary Sm
+                </button>
+                <button class="btn btn-primary" type="button">Primary</button>
+                <button class="btn btn-primary btn-lg" type="button">
+                  Primary Lg
+                </button>
+                <button class="btn btn-primary" type="button" disabled>
+                  Disabled
+                </button>
+              </div>
+              <div class="row">
+                <button class="btn btn-secondary" type="button">
+                  Secondary
+                </button>
+                <button class="btn btn-outline" type="button">Outline</button>
+                <button class="btn btn-ghost" type="button">Ghost</button>
+              </div>
+            </div>
+
+            <div class="comp-group">
+              <p class="comp-label">Input</p>
+              <div class="row">
+                <input class="input" type="text" placeholder="Default" />
+                <input
+                  class="input"
+                  type="text"
+                  value="Focused example"
+                  style="outline: 2px solid var(--color-border-focus)"
+                />
+                <input class="input error" type="text" value="Error state" />
+              </div>
+            </div>
+
+            <div class="comp-group">
+              <p class="comp-label">Checkbox · Toggle · Badge</p>
+              <div class="row">
+                <label class="check"
+                  ><input type="checkbox" /> Unchecked</label
+                >
+                <label class="check"
+                  ><input type="checkbox" checked /> Checked</label
+                >
+                <label class="check"
+                  ><input type="checkbox" disabled /> Disabled</label
+                >
+                <span class="toggle-wrap">
+                  <button
+                    class="toggle"
+                    type="button"
+                    role="switch"
+                    aria-checked="false"
+                    id="toggleDemo"
+                    aria-label="Toggle"
+                  ></button>
+                  Off / On
+                </span>
+                <span class="badge badge-brand">Brand</span>
+                <span class="badge badge-danger">Danger</span>
+                <span class="badge badge-neutral">Neutral</span>
+              </div>
+            </div>
+
+            <div class="comp-group">
+              <p class="comp-label">Avatar</p>
+              <div class="row">
+                <span class="avatar avatar-sm">AL</span>
+                <span class="avatar avatar-md">AL</span>
+                <span class="avatar avatar-lg">AL</span>
+              </div>
+            </div>
+
+            <div class="comp-group">
+              <p class="comp-label">Card</p>
+              <div class="row">
+                <div class="card">
+                  <h4 class="text-h4">Default card</h4>
+                  <p>
+                    Surface container using border, radius, and elevation
+                    tokens.
+                  </p>
+                  <button class="btn btn-primary" type="button">Action</button>
+                </div>
+                <div class="card elev-md">
+                  <h4 class="text-h4">Elevated card</h4>
+                  <p>Same structure with shadow/md for higher emphasis.</p>
+                  <button class="btn btn-outline" type="button">
+                    Secondary
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="zoom-hint">Scroll the canvas · Click nav to jump artboards</div>
+
+    <script>
+      const steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+      const primaryHex = {
+        50: "#EBEEF4",
+        100: "#CCD5E4",
+        200: "#99ABC8",
+        300: "#6680AD",
+        400: "#335691",
+        500: "#0D377D",
+        600: "#002C76",
+        700: "#002564",
+        800: "#001F53",
+        900: "#001841",
+        950: "#00122F",
+      };
+      const secondaryHex = {
+        50: "#F9EDEE",
+        100: "#F0D2D4",
+        200: "#E1A5A8",
+        300: "#D3797D",
+        400: "#C44C51",
+        500: "#B92A31",
+        600: "#B51F26",
+        700: "#9A1A20",
+        800: "#7F161B",
+        900: "#641115",
+        950: "#480C0F",
+      };
+      const grayHex = {
+        50: "#F7F8F9",
+        100: "#F0F1F3",
+        200: "#D8DCE2",
+        300: "#B9C0CB",
+        400: "#929EAE",
+        500: "#64748B",
+        600: "#505D6F",
+        700: "#3C4653",
+        800: "#2D343F",
+        900: "#1E232A",
+        950: "#121519",
+      };
+
+      function renderRamp(targetId, prefix, map) {
+        const el = document.getElementById(targetId);
+        el.innerHTML = steps
+          .map(
+            (step) => `
+          <div class="swatch">
+            <div class="swatch-color" style="background:${map[step]}"></div>
+            <div class="swatch-meta">
+              <strong>${prefix}/${step}</strong>
+              <span>${map[step]}</span>
+            </div>
+          </div>`
+          )
+          .join("");
+      }
+
+      renderRamp("primaryRamp", "primary", primaryHex);
+      renderRamp("secondaryRamp", "secondary", secondaryHex);
+      renderRamp("grayRamp", "gray", grayHex);
+
+      const spacing = [
+        ["xs", 4],
+        ["sm", 8],
+        ["md", 16],
+        ["lg", 24],
+        ["xl", 32],
+        ["2xl", 48],
+        ["3xl", 64],
+      ];
+      document.getElementById("spacingBars").innerHTML = spacing
+        .map(
+          ([name, px]) => `
+        <div class="space-item">
+          <div class="text-label">${name}</div>
+          <div class="bar" style="width:${Math.max(px * 3.5, 8)}px"></div>
+          <div class="text-caption">${px}px</div>
+        </div>`
+        )
+        .join("");
+
+      const radii = [
+        ["sm", 4],
+        ["md", 8],
+        ["lg", 12],
+        ["xl", 16],
+        ["full", 9999],
+      ];
+      document.getElementById("radiusRow").innerHTML = radii
+        .map(
+          ([name, px]) => `
+        <div class="radius-item">
+          <div class="text-label">${name}</div>
+          <div class="radius-demo" style="border-radius:${
+            px === 9999 ? "9999px" : px + "px"
+          }"></div>
+          <div class="text-caption">${px === 9999 ? "full" : px + "px"}</div>
+        </div>`
+        )
+        .join("");
+
+      const themeBtn = document.getElementById("themeToggle");
+      themeBtn.addEventListener("click", () => {
+        const root = document.documentElement;
+        const dark = root.getAttribute("data-theme") === "dark";
+        if (dark) {
+          root.removeAttribute("data-theme");
+          themeBtn.textContent = "Dark mode";
+        } else {
+          root.setAttribute("data-theme", "dark");
+          themeBtn.textContent = "Light mode";
+        }
+      });
+
+      const toggle = document.getElementById("toggleDemo");
+      toggle.addEventListener("click", () => {
+        const on = toggle.getAttribute("aria-checked") === "true";
+        toggle.setAttribute("aria-checked", on ? "false" : "true");
+      });
+
+      // Smooth scroll to artboards inside viewport
+      document.querySelectorAll(".nav-pills a").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          const id = link.getAttribute("href").slice(1);
+          const board = document.getElementById(id);
+          const viewport = document.getElementById("viewport");
+          if (!board || !viewport) return;
+          viewport.scrollTo({
+            left: Math.max(board.offsetLeft - 60, 0),
+            top: Math.max(board.offsetTop - 60, 0),
+            behavior: "smooth",
+          });
+          document
+            .querySelectorAll(".nav-pills a")
+            .forEach((a) => a.classList.remove("active"));
+          link.classList.add("active");
+        });
+      });
+    </script>
+  </body>
+</html>

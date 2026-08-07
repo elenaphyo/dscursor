@@ -1,6 +1,6 @@
 # Design System
 
-Brand foundations for **dscursor**.
+Brand foundations and canvas for **dscursor**.
 
 | Token | Value |
 | --- | --- |
@@ -18,17 +18,33 @@ tokens/
 styles/
   tokens.css               # CSS custom properties + text utility classes
 docs/
-  foundations.html         # Visual foundations preview
-docs/figma-plan.md         # Canvas sync plan (variables, pages, components)
+  canvas.html              # Design System Canvas (artboard layout)
+  foundations.html         # Linear foundations preview
+  figma-plan.md            # Figma sync plan (variables, pages, components)
 ```
 
 ## Preview
 
-Open `docs/foundations.html` in a browser to review color ramps, typography, spacing, radius, and component previews (light/dark toggle included).
+Open the **Design System Canvas**:
+
+```bash
+# from repo root
+python3 -m http.server 5173
+```
+
+Then open [http://localhost:5173/docs/canvas.html](http://localhost:5173/docs/canvas.html)
+
+Artboards: Cover · Color · Typography · Spacing & Radius · Components (v1). Light/dark toggle included.
+
+Linear view: [docs/foundations.html](docs/foundations.html)
 
 ## Figma canvas
 
-Creating the live Figma library requires **Figma MCP authentication** in Cursor Desktop. Token files above are the source of truth; see `docs/figma-plan.md` for the exact collections, pages, and v1 components to build on canvas once connected.
+Live Figma library creation requires **Figma MCP authentication in Cursor Desktop** (not available in this cloud agent environment). Token files above are the source of truth; see [docs/figma-plan.md](docs/figma-plan.md) for collections, pages, and v1 components to push once connected.
+
+**Resume prompt after auth:**
+
+> Continue design system build. Run ID: ds-brand-002c76. Load figma-generate-library + figma-use. Authenticate Figma MCP, create new design file, execute Phase 1 from tokens in `/workspace/tokens`.
 
 ## Collections (Figma mapping)
 
