@@ -604,10 +604,6 @@
             <div class="stat"><div class="stat-value" id="studentMatchCount">5</div><div class="stat-label">Matching filters</div></div>
           </div>
           <div class="toolbar">
-            <button class="btn btn-primary" data-open-modal="student-add">Add Student</button>
-            <button class="btn" data-open-modal="student-import">Import Excel</button>
-            <button class="btn" id="exportStudents">Export</button>
-            <div class="spacer"></div>
             <input class="field search" id="studentQuery" type="search" placeholder="Search ID, name, college, email…" />
             <select class="select" id="studentRegion">
               <option value="all">All regions</option>
@@ -620,6 +616,10 @@
               <option>SA Batch 7</option>
               <option>SA Batch 6</option>
             </select>
+            <div class="spacer"></div>
+            <button class="btn btn-primary" data-open-modal="student-add">Add Student</button>
+            <button class="btn" data-open-modal="student-import">Import Excel</button>
+            <button class="btn" id="exportStudents">Export</button>
           </div>
           <div class="table-wrap">
             <table>
@@ -758,9 +758,9 @@
             <div class="stat"><div class="stat-value">Q3 2026</div><div class="stat-label">Current cycle</div></div>
           </div>
           <div class="toolbar">
-            <button class="btn btn-primary" data-open-modal="kpi-import">Import KPI</button>
-            <div class="spacer"></div>
             <input class="field search" id="kpiQuery" type="search" placeholder="Search student or college…" />
+            <div class="spacer"></div>
+            <button class="btn btn-primary" data-open-modal="kpi-import">Import KPI</button>
           </div>
           <div class="upload-note" style="margin-bottom:12px">
             Required columns: Student ID, Student Name, Contact Number, College Name, Attendance, Operation Performance, Onboarding, Social Media, Assignment, Total KPI (%).
