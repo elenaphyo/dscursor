@@ -704,74 +704,98 @@
 
         <!-- Student Record -->
         <section class="panel active" data-panel="students">
-          <div class="intro">
-            <h1>Student Record</h1>
-            <p>
-              Administrators can add, view, search, filter, and export student
-              information for reporting and operational purposes. Upload a
-              single record or import Student Ambassador records from Excel.
-            </p>
+          <div id="studentListView">
+            <div class="intro">
+              <h1>Student Record</h1>
+              <p>
+                Administrators can add, view, search, filter, and export student
+                information for reporting and operational purposes. Upload a
+                single record or import Student Ambassador records from Excel.
+              </p>
+            </div>
+            <div class="stats">
+              <div class="stat"><div class="stat-value">5</div><div class="stat-label">Total ambassadors</div></div>
+              <div class="stat"><div class="stat-value">3</div><div class="stat-label">Active regions</div></div>
+              <div class="stat"><div class="stat-value">2</div><div class="stat-label">SA batches</div></div>
+              <div class="stat"><div class="stat-value" id="studentMatchCount">5</div><div class="stat-label">Matching filters</div></div>
+            </div>
+            <div class="toolbar">
+              <input class="field search" id="studentQuery" type="search" placeholder="Search ID, name, college, email…" />
+              <select class="select" id="studentRegion">
+                <option value="all">All regions</option>
+                <option>Yangon</option>
+                <option>Mandalay</option>
+                <option>Ayeyarwady</option>
+              </select>
+              <select class="select" id="studentBatch">
+                <option value="all">All batches</option>
+                <option>SA Batch 7</option>
+                <option>SA Batch 6</option>
+              </select>
+              <div class="spacer"></div>
+              <button class="btn btn-primary" data-open-modal="student-add">Add Student</button>
+              <button class="btn" data-open-modal="student-import">Import Excel</button>
+              <button class="btn" id="exportStudents">Export</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student ID</th><th>Student Name</th><th>College Name</th><th>Training Region</th><th>Township</th><th>Address</th><th>SA Batch</th><th>Gender</th><th>Age</th><th>Date of Birth</th><th>Phone Number</th><th>Email Address</th><th>Education</th><th>Specialization or Major</th><th>Expected Graduation</th><th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="studentRows"></tbody>
+              </table>
+            </div>
           </div>
-          <div class="stats">
-            <div class="stat"><div class="stat-value">5</div><div class="stat-label">Total ambassadors</div></div>
-            <div class="stat"><div class="stat-value">3</div><div class="stat-label">Active regions</div></div>
-            <div class="stat"><div class="stat-value">2</div><div class="stat-label">SA batches</div></div>
-            <div class="stat"><div class="stat-value" id="studentMatchCount">5</div><div class="stat-label">Matching filters</div></div>
-          </div>
-          <div class="toolbar">
-            <input class="field search" id="studentQuery" type="search" placeholder="Search ID, name, college, email…" />
-            <select class="select" id="studentRegion">
-              <option value="all">All regions</option>
-              <option>Yangon</option>
-              <option>Mandalay</option>
-              <option>Ayeyarwady</option>
-            </select>
-            <select class="select" id="studentBatch">
-              <option value="all">All batches</option>
-              <option>SA Batch 7</option>
-              <option>SA Batch 6</option>
-            </select>
-            <div class="spacer"></div>
-            <button class="btn btn-primary" data-open-modal="student-add">Add Student</button>
-            <button class="btn" data-open-modal="student-import">Import Excel</button>
-            <button class="btn" id="exportStudents">Export</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Student ID</th><th>Student Name</th><th>College Name</th><th>Training Region</th><th>Township</th><th>Address</th><th>SA Batch</th><th>Gender</th><th>Age</th><th>Date of Birth</th><th>Phone Number</th><th>Email Address</th><th>Education</th><th>Specialization or Major</th><th>Expected Graduation</th>
-                </tr>
-              </thead>
-              <tbody id="studentRows"></tbody>
-            </table>
+
+          <div id="studentDetailView" class="hidden">
+            <div class="toolbar" style="margin-bottom:10px">
+              <button class="btn" id="backToStudents" type="button">Back to Students</button>
+              <div class="spacer"></div>
+              <button class="btn" id="editStudentBtn" type="button">Edit</button>
+              <button class="btn btn-reject" id="deleteStudentBtn" type="button">Delete</button>
+            </div>
+            <div class="detail-banner" id="studentDetailBanner"></div>
           </div>
         </section>
 
         <!-- Partner School -->
         <section class="panel" data-panel="schools">
-          <div class="intro">
-            <h1>Partner School</h1>
-            <p>Admin can add each partner school as a single record with college details, partnership status, contacts, and logo.</p>
+          <div id="schoolListView">
+            <div class="intro">
+              <h1>Partner School</h1>
+              <p>Admin can add each partner school as a single record with college details, partnership status, contacts, and logo.</p>
+            </div>
+            <div class="stats cols-3">
+              <div class="stat"><div class="stat-value">4</div><div class="stat-label">Partner schools</div></div>
+              <div class="stat"><div class="stat-value">3</div><div class="stat-label">Active partners</div></div>
+              <div class="stat"><div class="stat-value">3,280</div><div class="stat-label">Total students covered</div></div>
+            </div>
+            <div class="toolbar">
+              <div class="spacer"></div>
+              <button class="btn btn-primary" data-open-modal="school-add">Add Partner School</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>College Name</th><th>Region</th><th>Total Students</th><th>Partner Since</th><th>Year Established</th><th>Status</th><th>About School</th><th>Contact Person</th><th>Phone Number</th><th>Email Address</th><th>College Address</th><th>College Logo</th><th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="schoolRows"></tbody>
+              </table>
+            </div>
           </div>
-          <div class="stats cols-3">
-            <div class="stat"><div class="stat-value">4</div><div class="stat-label">Partner schools</div></div>
-            <div class="stat"><div class="stat-value">3</div><div class="stat-label">Active partners</div></div>
-            <div class="stat"><div class="stat-value">3,280</div><div class="stat-label">Total students covered</div></div>
-          </div>
-          <div class="toolbar">
-            <div class="spacer"></div>
-            <button class="btn btn-primary" data-open-modal="school-add">Add Partner School</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>College Name</th><th>Region</th><th>Total Students</th><th>Partner Since</th><th>Year Established</th><th>Status</th><th>About School</th><th>Contact Person</th><th>Phone Number</th><th>Email Address</th><th>College Address</th><th>College Logo</th>
-                </tr>
-              </thead>
-              <tbody id="schoolRows"></tbody>
-            </table>
+
+          <div id="schoolDetailView" class="hidden">
+            <div class="toolbar" style="margin-bottom:10px">
+              <button class="btn" id="backToSchools" type="button">Back to Partner Schools</button>
+              <div class="spacer"></div>
+              <button class="btn" id="editSchoolBtn" type="button">Edit</button>
+              <button class="btn btn-reject" id="deleteSchoolBtn" type="button">Delete</button>
+            </div>
+            <div class="detail-banner" id="schoolDetailBanner"></div>
           </div>
         </section>
 
@@ -807,6 +831,8 @@
             <div class="toolbar" style="margin-bottom:10px">
               <button class="btn" id="backToEvents" type="button">Back to Events</button>
               <div class="spacer"></div>
+              <button class="btn" id="editEventBtn" type="button">Edit</button>
+              <button class="btn btn-reject" id="deleteEventBtn" type="button">Delete</button>
             </div>
             <div class="detail-banner" id="eventDetailBanner"></div>
             <div class="tabs" id="eventAppTabs">
@@ -867,6 +893,8 @@
             <div class="toolbar" style="margin-bottom:10px">
               <button class="btn" id="backToVolunteers" type="button">Back to Volunteers</button>
               <div class="spacer"></div>
+              <button class="btn" id="editVolBtn" type="button">Edit</button>
+              <button class="btn btn-reject" id="deleteVolBtn" type="button">Delete</button>
             </div>
             <div class="detail-banner" id="volDetailBanner"></div>
             <div class="tabs" id="volAppTabs">
@@ -897,35 +925,65 @@
 
         <!-- Job Management -->
         <section class="panel" data-panel="jobs">
-          <div class="intro">
-            <h1>Job Management</h1>
-            <p>Create, manage, and publish job opportunities for Student Ambassadors. Post vacancies and monitor recruitment.</p>
+          <div id="jobListView">
+            <div class="intro">
+              <h1>Job Management</h1>
+              <p>Create, manage, and publish job opportunities for Student Ambassadors. Post vacancies and monitor recruitment.</p>
+            </div>
+            <div class="stats cols-3">
+              <div class="stat"><div class="stat-value">4</div><div class="stat-label">Open postings</div></div>
+              <div class="stat"><div class="stat-value">14</div><div class="stat-label">Total vacancies</div></div>
+              <div class="stat"><div class="stat-value">2</div><div class="stat-label">Closing this month</div></div>
+            </div>
+            <div class="toolbar">
+              <select class="select" id="jobType">
+                <option value="all">All job types</option>
+                <option>Full-time</option>
+                <option>Part-time</option>
+                <option>Internship</option>
+                <option>Contract</option>
+              </select>
+              <div class="spacer"></div>
+              <button class="btn btn-primary" data-open-modal="job-add">Post Job</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Job Title</th><th>Job Type</th><th>Company Name</th><th>Location</th><th>Vacancies</th><th>Application Start</th><th>Application Deadline</th><th>Job Summary</th><th>Candidates</th><th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="jobRows"></tbody>
+              </table>
+            </div>
           </div>
-          <div class="stats cols-3">
-            <div class="stat"><div class="stat-value">4</div><div class="stat-label">Open postings</div></div>
-            <div class="stat"><div class="stat-value">14</div><div class="stat-label">Total vacancies</div></div>
-            <div class="stat"><div class="stat-value">2</div><div class="stat-label">Closing this month</div></div>
-          </div>
-          <div class="toolbar">
-            <select class="select" id="jobType">
-              <option value="all">All job types</option>
-              <option>Full-time</option>
-              <option>Part-time</option>
-              <option>Internship</option>
-              <option>Contract</option>
-            </select>
-            <div class="spacer"></div>
-            <button class="btn btn-primary" data-open-modal="job-add">Post Job</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Job Title</th><th>Job Type</th><th>Company Name</th><th>Location</th><th>Vacancies</th><th>Application Start</th><th>Application Deadline</th><th>Job Summary</th><th>Responsibilities</th><th>Requirements</th><th>Description PDF</th><th>Cover Photo</th>
-                </tr>
-              </thead>
-              <tbody id="jobRows"></tbody>
-            </table>
+
+          <div id="jobDetailView" class="hidden">
+            <div class="toolbar" style="margin-bottom:10px">
+              <button class="btn" id="backToJobs" type="button">Back to Jobs</button>
+              <div class="spacer"></div>
+              <button class="btn" id="editJobBtn" type="button">Edit</button>
+              <button class="btn btn-reject" id="deleteJobBtn" type="button">Delete</button>
+            </div>
+            <div class="detail-banner" id="jobDetailBanner"></div>
+            <h3 style="margin:16px 0 8px;font-size:16px;color:var(--brand)">Candidate List</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Candidate ID</th>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>College Name</th>
+                    <th>Phone Number</th>
+                    <th>Email Address</th>
+                    <th>Applied On</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="jobCandidateRows"></tbody>
+              </table>
+            </div>
           </div>
         </section>
 
@@ -1035,19 +1093,23 @@
       ];
 
       const STUDENTS = [
-        ["SA-2024-001", "Aye Chan Moe", "University of Yangon", "Yangon", "Kamayut", "12 Inya Road", "SA Batch 7", "Female", "21", "2004-03-12", "09-250-111-001", "aye.chan@example.com", "Bachelor", "Computer Science", "2026"],
-        ["SA-2024-014", "Kyaw Zin Htet", "Mandalay University", "Mandalay", "Chanayethazan", "88 26th Street", "SA Batch 7", "Male", "22", "2003-11-02", "09-250-111-014", "kyaw.zin@example.com", "Bachelor", "Business Admin", "2025"],
-        ["SA-2023-088", "Su Myat Hnin", "Technological University (Thanlyin)", "Yangon", "Thanlyin", "4 University Avenue", "SA Batch 6", "Female", "23", "2002-07-19", "09-250-111-088", "su.myat@example.com", "Bachelor", "Electronics", "2025"],
-        ["SA-2024-042", "Min Thu Aung", "University of Computer Studies, Yangon", "Yangon", "Hlaing", "21 Parami Road", "SA Batch 7", "Male", "20", "2005-01-28", "09-250-111-042", "min.thu@example.com", "Bachelor", "Software Engineering", "2027"],
-        ["SA-2023-055", "Hnin Wai Lwin", "Pathein University", "Ayeyarwady", "Pathein", "9 Strand Road", "SA Batch 6", "Female", "22", "2003-09-05", "09-250-111-055", "hnin.wai@example.com", "Bachelor", "Economics", "2025"],
+        { id: "SA-2024-001", name: "Aye Chan Moe", college: "University of Yangon", region: "Yangon", township: "Kamayut", address: "12 Inya Road", batch: "SA Batch 7", gender: "Female", age: "21", dob: "2004-03-12", phone: "09-250-111-001", email: "aye.chan@example.com", education: "Bachelor", major: "Computer Science", grad: "2026" },
+        { id: "SA-2024-014", name: "Kyaw Zin Htet", college: "Mandalay University", region: "Mandalay", township: "Chanayethazan", address: "88 26th Street", batch: "SA Batch 7", gender: "Male", age: "22", dob: "2003-11-02", phone: "09-250-111-014", email: "kyaw.zin@example.com", education: "Bachelor", major: "Business Admin", grad: "2025" },
+        { id: "SA-2023-088", name: "Su Myat Hnin", college: "Technological University (Thanlyin)", region: "Yangon", township: "Thanlyin", address: "4 University Avenue", batch: "SA Batch 6", gender: "Female", age: "23", dob: "2002-07-19", phone: "09-250-111-088", email: "su.myat@example.com", education: "Bachelor", major: "Electronics", grad: "2025" },
+        { id: "SA-2024-042", name: "Min Thu Aung", college: "University of Computer Studies, Yangon", region: "Yangon", township: "Hlaing", address: "21 Parami Road", batch: "SA Batch 7", gender: "Male", age: "20", dob: "2005-01-28", phone: "09-250-111-042", email: "min.thu@example.com", education: "Bachelor", major: "Software Engineering", grad: "2027" },
+        { id: "SA-2023-055", name: "Hnin Wai Lwin", college: "Pathein University", region: "Ayeyarwady", township: "Pathein", address: "9 Strand Road", batch: "SA Batch 6", gender: "Female", age: "22", dob: "2003-09-05", phone: "09-250-111-055", email: "hnin.wai@example.com", education: "Bachelor", major: "Economics", grad: "2025" },
       ];
 
+      let selectedStudentId = null;
+
       const SCHOOLS = [
-        ["University of Yangon", "Yangon", "1,240", "2021", "1878", "Active", "Flagship partner campus for SA recruitment and activations.", "Dr. Win Mar", "01-534-200", "partnerships@uy.edu.mm", "University Avenue, Kamayut", "logo.png"],
-        ["Mandalay University", "Mandalay", "980", "2022", "1925", "Active", "Upper Myanmar hub for ambassador training.", "U Aung Kyaw", "02-406-112", "sa@mu.edu.mm", "University Drive, Mandalay", "logo.png"],
-        ["Technological University (Thanlyin)", "Yangon", "640", "2023", "1993", "Active", "STEM-focused partner supporting campus activations.", "Daw Thin Zar", "01-590-441", "admin@tuthanlyin.edu.mm", "Thanlyin Township", "logo.png"],
-        ["Pathein University", "Ayeyarwady", "420", "2024", "1958", "Inactive", "Regional campus partnership under review.", "U Soe Myint", "042-251-088", "info@pu.edu.mm", "Pathein Township", "logo.png"],
+        { id: "SCH-001", name: "University of Yangon", region: "Yangon", students: "1,240", partnerSince: "2021", established: "1878", status: "Active", about: "Flagship partner campus for SA recruitment and activations.", contact: "Dr. Win Mar", phone: "01-534-200", email: "partnerships@uy.edu.mm", address: "University Avenue, Kamayut", logo: "logo.png" },
+        { id: "SCH-002", name: "Mandalay University", region: "Mandalay", students: "980", partnerSince: "2022", established: "1925", status: "Active", about: "Upper Myanmar hub for ambassador training.", contact: "U Aung Kyaw", phone: "02-406-112", email: "sa@mu.edu.mm", address: "University Drive, Mandalay", logo: "logo.png" },
+        { id: "SCH-003", name: "Technological University (Thanlyin)", region: "Yangon", students: "640", partnerSince: "2023", established: "1993", status: "Active", about: "STEM-focused partner supporting campus activations.", contact: "Daw Thin Zar", phone: "01-590-441", email: "admin@tuthanlyin.edu.mm", address: "Thanlyin Township", logo: "logo.png" },
+        { id: "SCH-004", name: "Pathein University", region: "Ayeyarwady", students: "420", partnerSince: "2024", established: "1958", status: "Inactive", about: "Regional campus partnership under review.", contact: "U Soe Myint", phone: "042-251-088", email: "info@pu.edu.mm", address: "Pathein Township", logo: "logo.png" },
       ];
+
+      let selectedSchoolId = null;
 
       const EVENTS = [
         {
@@ -1174,10 +1236,23 @@
       ];
 
       const JOBS = [
-        ["Campus Partnership Intern", "Internship", "KBZPay", "Yangon", "5", "2026-08-15", "2026-09-05", "Support partner-school engagement and ambassador onboarding.", "Campus outreach support", "Current student or recent grad", "job-description.pdf", "cover.jpg"],
-        ["Regional Field Coordinator", "Full-time", "KBZPay", "Mandalay", "2", "2026-08-01", "2026-08-30", "Coordinate SA activities across Upper Myanmar campuses.", "Regional ops leadership", "2+ years field experience", "job-description.pdf", "cover.jpg"],
-        ["Social Media Content Assistant", "Part-time", "KBZPay Student Program", "Remote / Yangon", "3", "2026-09-01", "2026-09-20", "Produce campus stories and campaign assets with the SA community.", "Content production", "Strong social media skills", "job-description.pdf", "cover.jpg"],
-        ["Event Operations Contractor", "Contract", "KBZPay", "Yangon", "4", "2026-08-20", "2026-09-10", "Short-term ops support for Q3 campus activation events.", "Event day operations", "Available for event weekends", "job-description.pdf", "cover.jpg"],
+        { id: "JOB-001", title: "Campus Partnership Intern", type: "Internship", company: "KBZPay", location: "Yangon", vacancies: "5", start: "2026-08-15", deadline: "2026-09-05", summary: "Support partner-school engagement and ambassador onboarding.", responsibilities: "Campus outreach support", requirements: "Current student or recent grad", descriptionPdf: "job-description.pdf", cover: "cover.jpg" },
+        { id: "JOB-002", title: "Regional Field Coordinator", type: "Full-time", company: "KBZPay", location: "Mandalay", vacancies: "2", start: "2026-08-01", deadline: "2026-08-30", summary: "Coordinate SA activities across Upper Myanmar campuses.", responsibilities: "Regional ops leadership", requirements: "2+ years field experience", descriptionPdf: "job-description.pdf", cover: "cover.jpg" },
+        { id: "JOB-003", title: "Social Media Content Assistant", type: "Part-time", company: "KBZPay Student Program", location: "Remote / Yangon", vacancies: "3", start: "2026-09-01", deadline: "2026-09-20", summary: "Produce campus stories and campaign assets with the SA community.", responsibilities: "Content production", requirements: "Strong social media skills", descriptionPdf: "job-description.pdf", cover: "cover.jpg" },
+        { id: "JOB-004", title: "Event Operations Contractor", type: "Contract", company: "KBZPay", location: "Yangon", vacancies: "4", start: "2026-08-20", deadline: "2026-09-10", summary: "Short-term ops support for Q3 campus activation events.", responsibilities: "Event day operations", requirements: "Available for event weekends", descriptionPdf: "job-description.pdf", cover: "cover.jpg" },
+      ];
+
+      let selectedJobId = null;
+
+      const JOB_CANDIDATES = [
+        { id: "CAND-1001", jobId: "JOB-001", studentId: "SA-2024-001", name: "Aye Chan Moe", college: "University of Yangon", phone: "09-250-111-001", email: "aye.chan@example.com", appliedOn: "2026-08-18", status: "pending" },
+        { id: "CAND-1002", jobId: "JOB-001", studentId: "SA-2024-042", name: "Min Thu Aung", college: "University of Computer Studies, Yangon", phone: "09-250-111-042", email: "min.thu@example.com", appliedOn: "2026-08-19", status: "pending" },
+        { id: "CAND-1003", jobId: "JOB-001", studentId: "SA-2023-088", name: "Su Myat Hnin", college: "Technological University (Thanlyin)", phone: "09-250-111-088", email: "su.myat@example.com", appliedOn: "2026-08-17", status: "shortlisted" },
+        { id: "CAND-2001", jobId: "JOB-002", studentId: "SA-2024-014", name: "Kyaw Zin Htet", college: "Mandalay University", phone: "09-250-111-014", email: "kyaw.zin@example.com", appliedOn: "2026-08-05", status: "pending" },
+        { id: "CAND-2002", jobId: "JOB-002", studentId: "SA-2023-055", name: "Hnin Wai Lwin", college: "Pathein University", phone: "09-250-111-055", email: "hnin.wai@example.com", appliedOn: "2026-08-06", status: "rejected" },
+        { id: "CAND-3001", jobId: "JOB-003", studentId: "SA-2024-001", name: "Aye Chan Moe", college: "University of Yangon", phone: "09-250-111-001", email: "aye.chan@example.com", appliedOn: "2026-09-03", status: "pending" },
+        { id: "CAND-3002", jobId: "JOB-003", studentId: "SA-2024-014", name: "Kyaw Zin Htet", college: "Mandalay University", phone: "09-250-111-014", email: "kyaw.zin@example.com", appliedOn: "2026-09-04", status: "shortlisted" },
+        { id: "CAND-4001", jobId: "JOB-004", studentId: "SA-2024-042", name: "Min Thu Aung", college: "University of Computer Studies, Yangon", phone: "09-250-111-042", email: "min.thu@example.com", appliedOn: "2026-08-22", status: "pending" },
       ];
 
       const KPI = [
@@ -1231,12 +1306,13 @@
         const key = String(value).toLowerCase();
         let cls = "inactive";
         let label = value;
-        if (key === "active" || key === "approved" || key === "distributed") cls = "active";
+        if (key === "active" || key === "approved" || key === "distributed" || key === "shortlisted") cls = "active";
         if (key.includes("ready") || key === "pending") cls = "ready";
         if (key === "rejected") cls = "inactive";
         if (key === "pending") label = "Pending";
         if (key === "approved") label = "Approved";
         if (key === "rejected") label = "Rejected";
+        if (key === "shortlisted") label = "Shortlisted";
         return `<span class="status ${cls}">${label}</span>`;
       }
 
@@ -1261,20 +1337,122 @@
         const region = document.getElementById("studentRegion").value;
         const batch = document.getElementById("studentBatch").value;
         const filtered = STUDENTS.filter((s) => {
-          const hay = s.join(" ").toLowerCase();
+          const hay = [s.id, s.name, s.college, s.email].join(" ").toLowerCase();
           const matchQ = !q || hay.includes(q);
-          const matchR = region === "all" || s[3] === region;
-          const matchB = batch === "all" || s[6] === batch;
+          const matchR = region === "all" || s.region === region;
+          const matchB = batch === "all" || s.batch === batch;
           return matchQ && matchR && matchB;
         });
         document.getElementById("studentMatchCount").textContent = String(filtered.length);
-        fillTable("studentRows", filtered);
+        document.getElementById("studentRows").innerHTML = filtered.map((s) => `<tr>
+          <td>${s.id}</td><td>${s.name}</td><td>${s.college}</td><td>${s.region}</td><td>${s.township}</td><td>${s.address}</td><td>${s.batch}</td><td>${s.gender}</td><td>${s.age}</td><td>${s.dob}</td><td>${s.phone}</td><td>${s.email}</td><td>${s.education}</td><td>${s.major}</td><td>${s.grad}</td>
+          <td class="action-cell"><button type="button" class="btn btn-link btn-sm" data-student-details="${s.id}">Details</button></td>
+        </tr>`).join("");
+      }
+
+      function getSelectedStudent() {
+        return STUDENTS.find((s) => s.id === selectedStudentId) || null;
+      }
+
+      function showStudentList() {
+        selectedStudentId = null;
+        document.getElementById("studentListView").classList.remove("hidden");
+        document.getElementById("studentDetailView").classList.add("hidden");
+        renderStudents();
+      }
+
+      function showStudentDetails(id) {
+        selectedStudentId = id;
+        document.getElementById("studentListView").classList.add("hidden");
+        document.getElementById("studentDetailView").classList.remove("hidden");
+        renderStudentDetail();
+      }
+
+      function renderStudentDetail() {
+        const s = getSelectedStudent();
+        if (!s) return showStudentList();
+        document.getElementById("studentDetailBanner").innerHTML = `
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div>
+              <h1 style="margin:0;font-size:22px;color:var(--brand)">${s.name}</h1>
+              <p style="margin:6px 0 0;color:var(--muted);font-size:13px">${s.id} · ${s.batch}</p>
+            </div>
+          </div>
+          <div class="detail-grid">
+            <div><div class="detail-item-label">College Name</div><div class="detail-item-value">${s.college}</div></div>
+            <div><div class="detail-item-label">Training Region</div><div class="detail-item-value">${s.region}</div></div>
+            <div><div class="detail-item-label">Township</div><div class="detail-item-value">${s.township}</div></div>
+            <div><div class="detail-item-label">Address</div><div class="detail-item-value">${s.address}</div></div>
+            <div><div class="detail-item-label">Gender</div><div class="detail-item-value">${s.gender}</div></div>
+            <div><div class="detail-item-label">Age</div><div class="detail-item-value">${s.age}</div></div>
+            <div><div class="detail-item-label">Date of Birth</div><div class="detail-item-value">${s.dob}</div></div>
+            <div><div class="detail-item-label">Phone Number</div><div class="detail-item-value">${s.phone}</div></div>
+            <div><div class="detail-item-label">Email Address</div><div class="detail-item-value">${s.email}</div></div>
+            <div><div class="detail-item-label">Education</div><div class="detail-item-value">${s.education}</div></div>
+            <div><div class="detail-item-label">Specialization or Major</div><div class="detail-item-value">${s.major}</div></div>
+            <div><div class="detail-item-label">Expected Graduation</div><div class="detail-item-value">${s.grad}</div></div>
+          </div>`;
+      }
+
+      function candidateCountFor(jobId) {
+        return JOB_CANDIDATES.filter((c) => c.jobId === jobId).length;
       }
 
       function renderJobs() {
         const type = document.getElementById("jobType").value;
-        const rows = JOBS.filter((j) => type === "all" || j[1] === type);
-        fillTable("jobRows", rows);
+        const rows = JOBS.filter((j) => type === "all" || j.type === type);
+        document.getElementById("jobRows").innerHTML = rows.map((j) => `<tr>
+          <td>${j.title}</td><td>${j.type}</td><td>${j.company}</td><td>${j.location}</td><td>${j.vacancies}</td><td>${j.start}</td><td>${j.deadline}</td><td>${j.summary}</td>
+          <td>${candidateCountFor(j.id)}</td>
+          <td class="action-cell"><button type="button" class="btn btn-link btn-sm" data-job-details="${j.id}">Details</button></td>
+        </tr>`).join("");
+      }
+
+      function getSelectedJob() {
+        return JOBS.find((j) => j.id === selectedJobId) || null;
+      }
+
+      function showJobList() {
+        selectedJobId = null;
+        document.getElementById("jobListView").classList.remove("hidden");
+        document.getElementById("jobDetailView").classList.add("hidden");
+        renderJobs();
+      }
+
+      function showJobDetails(id) {
+        selectedJobId = id;
+        document.getElementById("jobListView").classList.add("hidden");
+        document.getElementById("jobDetailView").classList.remove("hidden");
+        renderJobDetail();
+      }
+
+      function renderJobDetail() {
+        const j = getSelectedJob();
+        if (!j) return showJobList();
+        document.getElementById("jobDetailBanner").innerHTML = `
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div>
+              <h1 style="margin:0;font-size:22px;color:var(--brand)">${j.title}</h1>
+              <p style="margin:6px 0 0;color:var(--muted);font-size:13px">${j.type} · ${j.company}</p>
+            </div>
+          </div>
+          <div class="detail-grid">
+            <div><div class="detail-item-label">Location</div><div class="detail-item-value">${j.location}</div></div>
+            <div><div class="detail-item-label">Vacancies</div><div class="detail-item-value">${j.vacancies}</div></div>
+            <div><div class="detail-item-label">Application Window</div><div class="detail-item-value">${j.start} → ${j.deadline}</div></div>
+            <div><div class="detail-item-label">Job Summary</div><div class="detail-item-value">${j.summary}</div></div>
+            <div><div class="detail-item-label">Responsibilities</div><div class="detail-item-value">${j.responsibilities}</div></div>
+            <div><div class="detail-item-label">Requirements</div><div class="detail-item-value">${j.requirements}</div></div>
+          </div>`;
+        const candidates = JOB_CANDIDATES.filter((c) => c.jobId === j.id);
+        const body = document.getElementById("jobCandidateRows");
+        if (!candidates.length) {
+          body.innerHTML = `<tr><td colspan="8" style="white-space:normal;color:var(--muted)">No candidates have applied for this job yet.</td></tr>`;
+          return;
+        }
+        body.innerHTML = candidates.map((c) => `<tr>
+          <td>${c.id}</td><td>${c.studentId}</td><td>${c.name}</td><td>${c.college}</td><td>${c.phone}</td><td>${c.email}</td><td>${c.appliedOn}</td><td>${statusHtml(c.status)}</td>
+        </tr>`).join("");
       }
 
       function renderKpi() {
@@ -1332,7 +1510,7 @@
         if (totalStudents) totalStudents.textContent = String(STUDENTS.length);
         const schoolStats = document.querySelectorAll('[data-panel="schools"] .stat-value');
         if (schoolStats[0]) schoolStats[0].textContent = String(SCHOOLS.length);
-        if (schoolStats[1]) schoolStats[1].textContent = String(SCHOOLS.filter((s) => s[5] === "Active").length);
+        if (schoolStats[1]) schoolStats[1].textContent = String(SCHOOLS.filter((s) => s.status === "Active").length);
         const eventStats = document.querySelectorAll('[data-panel="events"] .stat-value');
         if (eventStats[0]) eventStats[0].textContent = String(EVENTS.length);
         if (eventStats[1]) eventStats[1].textContent = String(EVENTS.filter((e) => e.status === "Active").length);
@@ -1350,8 +1528,54 @@
       }
 
       function renderSchools() {
-        fillTable("schoolRows", SCHOOLS, [5]);
+        document.getElementById("schoolRows").innerHTML = SCHOOLS.map((s) => `<tr>
+          <td>${s.name}</td><td>${s.region}</td><td>${s.students}</td><td>${s.partnerSince}</td><td>${s.established}</td><td>${statusHtml(s.status)}</td><td>${s.about}</td><td>${s.contact}</td><td>${s.phone}</td><td>${s.email}</td><td>${s.address}</td><td>${s.logo}</td>
+          <td class="action-cell"><button type="button" class="btn btn-link btn-sm" data-school-details="${s.id}">Details</button></td>
+        </tr>`).join("");
       }
+
+      function getSelectedSchool() {
+        return SCHOOLS.find((s) => s.id === selectedSchoolId) || null;
+      }
+
+      function showSchoolList() {
+        selectedSchoolId = null;
+        document.getElementById("schoolListView").classList.remove("hidden");
+        document.getElementById("schoolDetailView").classList.add("hidden");
+        renderSchools();
+      }
+
+      function showSchoolDetails(id) {
+        selectedSchoolId = id;
+        document.getElementById("schoolListView").classList.add("hidden");
+        document.getElementById("schoolDetailView").classList.remove("hidden");
+        renderSchoolDetail();
+      }
+
+      function renderSchoolDetail() {
+        const s = getSelectedSchool();
+        if (!s) return showSchoolList();
+        document.getElementById("schoolDetailBanner").innerHTML = `
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div>
+              <h1 style="margin:0;font-size:22px;color:var(--brand)">${s.name}</h1>
+              <p style="margin:6px 0 0;color:var(--muted);font-size:13px">${s.about}</p>
+            </div>
+            ${statusHtml(s.status)}
+          </div>
+          <div class="detail-grid">
+            <div><div class="detail-item-label">Region</div><div class="detail-item-value">${s.region}</div></div>
+            <div><div class="detail-item-label">Total Students</div><div class="detail-item-value">${s.students}</div></div>
+            <div><div class="detail-item-label">Partner Since</div><div class="detail-item-value">${s.partnerSince}</div></div>
+            <div><div class="detail-item-label">Year Established</div><div class="detail-item-value">${s.established}</div></div>
+            <div><div class="detail-item-label">Contact Person</div><div class="detail-item-value">${s.contact}</div></div>
+            <div><div class="detail-item-label">Phone Number</div><div class="detail-item-value">${s.phone}</div></div>
+            <div><div class="detail-item-label">Email Address</div><div class="detail-item-value">${s.email}</div></div>
+            <div><div class="detail-item-label">College Address</div><div class="detail-item-value">${s.address}</div></div>
+            <div><div class="detail-item-label">College Logo</div><div class="detail-item-value">${s.logo}</div></div>
+          </div>`;
+      }
+
 
       function pendingCountFor(eventId) {
         return EVENT_APPLICATIONS.filter((a) => a.eventId === eventId && a.status === "pending").length;
@@ -1600,63 +1824,79 @@
       }
 
       function addRecord(type, form) {
-        if (type === "student-add") {
-          STUDENTS.unshift([
-            val(form, "id", `SA-NEW-${Date.now().toString().slice(-4)}`),
-            val(form, "name", "New Student"),
-            val(form, "college", "—"),
-            val(form, "region", "Yangon"),
-            val(form, "township", "—"),
-            val(form, "address", "—"),
-            val(form, "batch", "SA Batch 7"),
-            val(form, "gender", "Female"),
-            val(form, "age", "—"),
-            val(form, "dob", "—"),
-            val(form, "phone", "—"),
-            val(form, "email", "—"),
-            val(form, "education", "—"),
-            val(form, "major", "—"),
-            val(form, "grad", "—"),
-          ]);
+        if (type === "student-add" || type === "student-edit") {
+          const payload = {
+            id: val(form, "id", `SA-NEW-${Date.now().toString().slice(-4)}`),
+            name: val(form, "name", "New Student"),
+            college: val(form, "college", "—"),
+            region: val(form, "region", "Yangon"),
+            township: val(form, "township", "—"),
+            address: val(form, "address", "—"),
+            batch: val(form, "batch", "SA Batch 7"),
+            gender: val(form, "gender", "Female"),
+            age: val(form, "age", "—"),
+            dob: val(form, "dob", "—"),
+            phone: val(form, "phone", "—"),
+            email: val(form, "email", "—"),
+            education: val(form, "education", "—"),
+            major: val(form, "major", "—"),
+            grad: val(form, "grad", "—"),
+          };
+          if (type === "student-edit") {
+            const idx = STUDENTS.findIndex((s) => s.id === selectedStudentId);
+            if (idx >= 0) STUDENTS[idx] = payload;
+            selectedStudentId = payload.id;
+            renderStudentDetail();
+          } else {
+            STUDENTS.unshift(payload);
+          }
           renderStudents();
         } else if (type === "student-import") {
-          STUDENTS.unshift([
-            `SA-IMP-${Date.now().toString().slice(-4)}`,
-            "Imported Ambassador",
-            "Imported College",
-            "Yangon",
-            "Kamayut",
-            "Imported Address",
-            "SA Batch 7",
-            "Female",
-            "21",
-            "2005-01-01",
-            "09-000-000-000",
-            "imported@example.com",
-            "Bachelor",
-            "General",
-            "2027",
-          ]);
+          STUDENTS.unshift({
+            id: `SA-IMP-${Date.now().toString().slice(-4)}`,
+            name: "Imported Ambassador",
+            college: "Imported College",
+            region: "Yangon",
+            township: "Kamayut",
+            address: "Imported Address",
+            batch: "SA Batch 7",
+            gender: "Female",
+            age: "21",
+            dob: "2005-01-01",
+            phone: "09-000-000-000",
+            email: "imported@example.com",
+            education: "Bachelor",
+            major: "General",
+            grad: "2027",
+          });
           renderStudents();
-        } else if (type === "school-add") {
-          SCHOOLS.unshift([
-            val(form, "name", "New Partner School"),
-            val(form, "region", "Yangon"),
-            val(form, "students", "0"),
-            val(form, "partnerSince", "2026"),
-            val(form, "established", "—"),
-            val(form, "status", "Active"),
-            val(form, "about", "Newly added partner school."),
-            val(form, "contact", "—"),
-            val(form, "phone", "—"),
-            val(form, "email", "—"),
-            val(form, "address", "—"),
-            "logo.png",
-          ]);
+        } else if (type === "school-add" || type === "school-edit") {
+          const payload = {
+            id: type === "school-edit" && selectedSchoolId ? selectedSchoolId : `SCH-${Date.now().toString().slice(-4)}`,
+            name: val(form, "name", "New Partner School"),
+            region: val(form, "region", "Yangon"),
+            students: val(form, "students", "0"),
+            partnerSince: val(form, "partnerSince", "2026"),
+            established: val(form, "established", "—"),
+            status: val(form, "status", "Active"),
+            about: val(form, "about", "Newly added partner school."),
+            contact: val(form, "contact", "—"),
+            phone: val(form, "phone", "—"),
+            email: val(form, "email", "—"),
+            address: val(form, "address", "—"),
+            logo: "logo.png",
+          };
+          if (type === "school-edit") {
+            const idx = SCHOOLS.findIndex((s) => s.id === selectedSchoolId);
+            if (idx >= 0) SCHOOLS[idx] = payload;
+            renderSchoolDetail();
+          } else {
+            SCHOOLS.unshift(payload);
+          }
           renderSchools();
-        } else if (type === "event-add") {
-          EVENTS.unshift({
-            id: `EVT-${Date.now().toString().slice(-4)}`,
+        } else if (type === "event-add" || type === "event-edit") {
+          const payload = {
+            id: type === "event-edit" && selectedEventId ? selectedEventId : `EVT-${Date.now().toString().slice(-4)}`,
             title: val(form, "title", "New Event"),
             region: val(form, "region", "Yangon"),
             status: val(form, "status", "Active"),
@@ -1669,11 +1909,18 @@
             detailsPdf: "details.pdf",
             cover: "cover.jpg",
             meeting: val(form, "meeting", "—"),
-          });
+          };
+          if (type === "event-edit") {
+            const idx = EVENTS.findIndex((e) => e.id === selectedEventId);
+            if (idx >= 0) EVENTS[idx] = payload;
+            renderEventDetail();
+          } else {
+            EVENTS.unshift(payload);
+          }
           renderEvents();
-        } else if (type === "vol-add") {
-          VOLUNTEERS.unshift({
-            id: `VOL-${Date.now().toString().slice(-4)}`,
+        } else if (type === "vol-add" || type === "vol-edit") {
+          const payload = {
+            id: type === "vol-edit" && selectedVolunteerId ? selectedVolunteerId : `VOL-${Date.now().toString().slice(-4)}`,
             title: val(form, "title", "New Volunteer Opportunity"),
             region: val(form, "region", "Yangon"),
             status: val(form, "status", "Active"),
@@ -1686,23 +1933,38 @@
             summary: val(form, "summary", "—"),
             detailsPdf: "volunteer-brief.pdf",
             cover: "cover.jpg",
-          });
+          };
+          if (type === "vol-edit") {
+            const idx = VOLUNTEERS.findIndex((v) => v.id === selectedVolunteerId);
+            if (idx >= 0) VOLUNTEERS[idx] = payload;
+            renderVolunteerDetail();
+          } else {
+            VOLUNTEERS.unshift(payload);
+          }
           renderVolunteers();
-        } else if (type === "job-add") {
-          JOBS.unshift([
-            val(form, "title", "New Job"),
-            val(form, "type", "Internship"),
-            val(form, "company", "KBZPay"),
-            val(form, "location", "Yangon"),
-            val(form, "vacancies", "1"),
-            val(form, "start", "—"),
-            val(form, "deadline", "—"),
-            val(form, "summary", "—"),
-            val(form, "responsibilities", "—"),
-            val(form, "requirements", "—"),
-            "job-description.pdf",
-            "cover.jpg",
-          ]);
+        } else if (type === "job-add" || type === "job-edit") {
+          const payload = {
+            id: type === "job-edit" && selectedJobId ? selectedJobId : `JOB-${Date.now().toString().slice(-4)}`,
+            title: val(form, "title", "New Job"),
+            type: val(form, "type", "Internship"),
+            company: val(form, "company", "KBZPay"),
+            location: val(form, "location", "Yangon"),
+            vacancies: val(form, "vacancies", "1"),
+            start: val(form, "start", "—"),
+            deadline: val(form, "deadline", "—"),
+            summary: val(form, "summary", "—"),
+            responsibilities: val(form, "responsibilities", "—"),
+            requirements: val(form, "requirements", "—"),
+            descriptionPdf: "job-description.pdf",
+            cover: "cover.jpg",
+          };
+          if (type === "job-edit") {
+            const idx = JOBS.findIndex((j) => j.id === selectedJobId);
+            if (idx >= 0) JOBS[idx] = payload;
+            renderJobDetail();
+          } else {
+            JOBS.unshift(payload);
+          }
           renderJobs();
         } else if (type === "kpi-import") {
           KPI.unshift([
@@ -1754,12 +2016,11 @@
         });
         document.getElementById("crumbLabel").textContent = item.label;
         history.replaceState(null, "", `#${item.id}`);
-        if (item.id === "events") {
-          showEventList();
-        }
-        if (item.id === "volunteers") {
-          showVolunteerList();
-        }
+        if (item.id === "students") showStudentList();
+        if (item.id === "schools") showSchoolList();
+        if (item.id === "jobs") showJobList();
+        if (item.id === "events") showEventList();
+        if (item.id === "volunteers") showVolunteerList();
       }
 
       function initNav() {
@@ -1772,6 +2033,137 @@
           const btn = e.target.closest("[data-tab]");
           if (btn) setTab(btn.dataset.tab);
         });
+      }
+
+
+      function fillForm(form, values) {
+        Object.entries(values).forEach(([key, value]) => {
+          const el = form.elements.namedItem(key);
+          if (el) el.value = value;
+        });
+      }
+
+      function openEditStudent() {
+        const s = getSelectedStudent();
+        if (!s) return;
+        openModal("student-add");
+        const form = document.querySelector("#modalRoot form");
+        const title = document.querySelector("#modalRoot .modal-title");
+        const submit = document.querySelector("#modalRoot [data-submit-add]");
+        if (title) title.textContent = "Edit Student Ambassador";
+        if (submit) {
+          submit.dataset.submitAdd = "student-edit";
+          submit.textContent = "Save Changes";
+        }
+        fillForm(form, s);
+      }
+
+      function openEditSchool() {
+        const s = getSelectedSchool();
+        if (!s) return;
+        openModal("school-add");
+        const form = document.querySelector("#modalRoot form");
+        const title = document.querySelector("#modalRoot .modal-title");
+        const submit = document.querySelector("#modalRoot [data-submit-add]");
+        if (title) title.textContent = "Edit Partner School";
+        if (submit) {
+          submit.dataset.submitAdd = "school-edit";
+          submit.textContent = "Save Changes";
+        }
+        fillForm(form, s);
+      }
+
+      function openEditJob() {
+        const j = getSelectedJob();
+        if (!j) return;
+        openModal("job-add");
+        const form = document.querySelector("#modalRoot form");
+        const title = document.querySelector("#modalRoot .modal-title");
+        const submit = document.querySelector("#modalRoot [data-submit-add]");
+        if (title) title.textContent = "Edit Job Vacancy";
+        if (submit) {
+          submit.dataset.submitAdd = "job-edit";
+          submit.textContent = "Save Changes";
+        }
+        fillForm(form, j);
+      }
+
+      function openEditEvent() {
+        const e = getSelectedEvent();
+        if (!e) return;
+        openModal("event-add");
+        const form = document.querySelector("#modalRoot form");
+        const title = document.querySelector("#modalRoot .modal-title");
+        const submit = document.querySelector("#modalRoot [data-submit-add]");
+        if (title) title.textContent = "Edit Event";
+        if (submit) {
+          submit.dataset.submitAdd = "event-edit";
+          submit.textContent = "Save Changes";
+        }
+        fillForm(form, e);
+      }
+
+      function openEditVolunteer() {
+        const v = getSelectedVolunteer();
+        if (!v) return;
+        openModal("vol-add");
+        const form = document.querySelector("#modalRoot form");
+        const title = document.querySelector("#modalRoot .modal-title");
+        const submit = document.querySelector("#modalRoot [data-submit-add]");
+        if (title) title.textContent = "Edit Volunteer Opportunity";
+        if (submit) {
+          submit.dataset.submitAdd = "vol-edit";
+          submit.textContent = "Save Changes";
+        }
+        fillForm(form, v);
+      }
+
+      function deleteSelected(kind) {
+        if (kind === "student") {
+          if (!selectedStudentId || !confirm("Delete this student record?")) return;
+          const idx = STUDENTS.findIndex((s) => s.id === selectedStudentId);
+          if (idx >= 0) STUDENTS.splice(idx, 1);
+          alert("Successfully deleted");
+          showStudentList();
+          updateCounts();
+        } else if (kind === "school") {
+          if (!selectedSchoolId || !confirm("Delete this partner school?")) return;
+          const idx = SCHOOLS.findIndex((s) => s.id === selectedSchoolId);
+          if (idx >= 0) SCHOOLS.splice(idx, 1);
+          alert("Successfully deleted");
+          showSchoolList();
+          updateCounts();
+        } else if (kind === "job") {
+          if (!selectedJobId || !confirm("Delete this job posting?")) return;
+          const idx = JOBS.findIndex((j) => j.id === selectedJobId);
+          if (idx >= 0) JOBS.splice(idx, 1);
+          for (let i = JOB_CANDIDATES.length - 1; i >= 0; i--) {
+            if (JOB_CANDIDATES[i].jobId === selectedJobId) JOB_CANDIDATES.splice(i, 1);
+          }
+          alert("Successfully deleted");
+          showJobList();
+          updateCounts();
+        } else if (kind === "event") {
+          if (!selectedEventId || !confirm("Delete this event?")) return;
+          const idx = EVENTS.findIndex((e) => e.id === selectedEventId);
+          if (idx >= 0) EVENTS.splice(idx, 1);
+          for (let i = EVENT_APPLICATIONS.length - 1; i >= 0; i--) {
+            if (EVENT_APPLICATIONS[i].eventId === selectedEventId) EVENT_APPLICATIONS.splice(i, 1);
+          }
+          alert("Successfully deleted");
+          showEventList();
+          updateCounts();
+        } else if (kind === "volunteer") {
+          if (!selectedVolunteerId || !confirm("Delete this volunteer opportunity?")) return;
+          const idx = VOLUNTEERS.findIndex((v) => v.id === selectedVolunteerId);
+          if (idx >= 0) VOLUNTEERS.splice(idx, 1);
+          for (let i = VOLUNTEER_APPLICATIONS.length - 1; i >= 0; i--) {
+            if (VOLUNTEER_APPLICATIONS[i].volunteerId === selectedVolunteerId) VOLUNTEER_APPLICATIONS.splice(i, 1);
+          }
+          alert("Successfully deleted");
+          showVolunteerList();
+          updateCounts();
+        }
       }
 
       function initActions() {
@@ -1790,9 +2182,10 @@
           const submit = e.target.closest("[data-submit-add]");
           if (submit) {
             const form = submit.closest("form") || submit.closest(".modal");
-            addRecord(submit.dataset.submitAdd, form);
+            const action = submit.dataset.submitAdd;
+            addRecord(action, form);
             closeModal();
-            alert("Successfully added");
+            alert(action.includes("edit") ? "Successfully updated" : "Successfully added");
             return;
           }
         });
@@ -1858,6 +2251,34 @@
           if (!actionBtn) return;
           setVolunteerApplicationStatus(actionBtn.dataset.volAppId, actionBtn.dataset.volAppAction);
         });
+
+        document.getElementById("studentRows").addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-student-details]");
+          if (btn) showStudentDetails(btn.dataset.studentDetails);
+        });
+        document.getElementById("schoolRows").addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-school-details]");
+          if (btn) showSchoolDetails(btn.dataset.schoolDetails);
+        });
+        document.getElementById("jobRows").addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-job-details]");
+          if (btn) showJobDetails(btn.dataset.jobDetails);
+        });
+
+        document.getElementById("backToStudents").addEventListener("click", showStudentList);
+        document.getElementById("backToSchools").addEventListener("click", showSchoolList);
+        document.getElementById("backToJobs").addEventListener("click", showJobList);
+
+        document.getElementById("editStudentBtn").addEventListener("click", openEditStudent);
+        document.getElementById("deleteStudentBtn").addEventListener("click", () => deleteSelected("student"));
+        document.getElementById("editSchoolBtn").addEventListener("click", openEditSchool);
+        document.getElementById("deleteSchoolBtn").addEventListener("click", () => deleteSelected("school"));
+        document.getElementById("editJobBtn").addEventListener("click", openEditJob);
+        document.getElementById("deleteJobBtn").addEventListener("click", () => deleteSelected("job"));
+        document.getElementById("editEventBtn").addEventListener("click", openEditEvent);
+        document.getElementById("deleteEventBtn").addEventListener("click", () => deleteSelected("event"));
+        document.getElementById("editVolBtn").addEventListener("click", openEditVolunteer);
+        document.getElementById("deleteVolBtn").addEventListener("click", () => deleteSelected("volunteer"));
       }
 
       initNav();
