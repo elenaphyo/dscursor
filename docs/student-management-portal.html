@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KBZPay Student Management Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --brand: #002c76;
+        --brand-soft: rgba(0, 44, 118, 0.08);
+        --brand-mid: rgba(0, 44, 118, 0.14);
+        --text: #152238;
+        --muted: #5b677a;
+        --line: #e4e8ef;
+        --surface: #ffffff;
+        --page: #f3f5f9;
+        --success: #0f7a45;
+        --success-bg: #e8f7ef;
+        --info: #0b6e99;
+        --info-bg: #e7f5fb;
+        --warning: #9a6700;
+        --warning-bg: #fff6dd;
+        --radius: 8px;
+        --font: "Poppins", "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        font-family: var(--font);
+        color: var(--text);
+        background: var(--page);
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: 248px 1fr;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        background: var(--brand);
+        color: #fff;
+        padding: 22px 12px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .brand-block {
+        padding: 0 10px 6px;
+      }
+
+      .brand-name {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        line-height: 1.3;
+      }
+
+      .brand-sub {
+        margin: 6px 0 0;
+        font-size: 12px;
+        line-height: 1.4;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .nav-btn {
+        appearance: none;
+        border: 1px solid transparent;
+        background: transparent;
+        color: #fff;
+        text-align: left;
+        border-radius: 4px;
+        padding: 11px 12px;
+        font-size: 13px;
+        line-height: 1.35;
+        cursor: pointer;
+        transition: background 140ms ease, border-color 140ms ease;
+      }
+
+      .nav-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .nav-btn.active {
+        background: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.35);
+        font-weight: 600;
+      }
+
+      .sidebar-foot {
+        margin-top: auto;
+        padding: 8px 10px 4px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.5;
+      }
+
+      .main {
+        padding: 20px 28px 40px;
+        min-width: 0;
+      }
+
+      .crumb {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 12px;
+        margin-bottom: 18px;
+        border-bottom: 1px solid rgba(0, 44, 118, 0.12);
+        flex-wrap: wrap;
+      }
+
+      .crumb-muted {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .crumb-current {
+        color: var(--brand);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .pill {
+        margin-left: auto;
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: var(--brand-soft);
+        color: var(--brand);
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .panel {
+        display: none;
+      }
+
+      .panel.active {
+        display: block;
+      }
+
+      .intro h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--brand);
+        line-height: 1.25;
+      }
+
+      .intro p {
+        margin: 8px 0 0;
+        max-width: 720px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin: 18px 0 16px;
+      }
+
+      .stats.cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .stat {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 14px 16px;
+      }
+
+      .stat-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--brand);
+        line-height: 1.2;
+      }
+
+      .stat-label {
+        margin-top: 4px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+
+      .toolbar .spacer {
+        flex: 1;
+        min-width: 8px;
+      }
+
+      .btn {
+        appearance: none;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--text);
+        border-radius: 6px;
+        padding: 9px 14px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background: #f7f8fb;
+      }
+
+      .btn-primary {
+        background: var(--brand);
+        border-color: var(--brand);
+        color: #fff;
+      }
+
+      .btn-primary:hover {
+        background: #00245f;
+      }
+
+      .btn-ghost {
+        background: transparent;
+        border-color: transparent;
+        color: var(--muted);
+      }
+
+      .field,
+      .select,
+      .textarea {
+        border: 1px solid var(--line);
+        background: var(--surface);
+        border-radius: 6px;
+        padding: 9px 12px;
+        font-size: 13px;
+        color: var(--text);
+        min-width: 0;
+      }
+
+      .field:focus,
+      .select:focus,
+      .textarea:focus {
+        outline: 2px solid rgba(0, 44, 118, 0.2);
+        border-color: var(--brand);
+      }
+
+      .search {
+        width: 260px;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        margin-bottom: 14px;
+      }
+
+      .card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .card-body {
+        padding: 16px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .form-grid.cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .textarea {
+        width: 100%;
+        resize: vertical;
+        margin-top: 10px;
+      }
+
+      .upload-note {
+        background: var(--info-bg);
+        color: var(--info);
+        border-radius: 6px;
+        padding: 12px 14px;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .notice {
+        display: none;
+        margin-bottom: 12px;
+        padding: 12px 14px;
+        border-radius: 6px;
+        background: var(--success-bg);
+        color: var(--success);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .notice.show {
+        display: block;
+      }
+
+      .table-wrap {
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        min-width: 960px;
+      }
+
+      th,
+      td {
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+        white-space: nowrap;
+      }
+
+      th {
+        position: sticky;
+        top: 0;
+        background: #eef1f7;
+        color: var(--brand);
+        font-weight: 600;
+        z-index: 1;
+      }
+
+      tbody tr:nth-child(even) {
+        background: #fafbfd;
+      }
+
+      tbody tr:hover {
+        background: var(--brand-soft);
+      }
+
+      .status {
+        display: inline-flex;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .status.active {
+        background: var(--success-bg);
+        color: var(--success);
+      }
+
+      .status.inactive {
+        background: #eef0f4;
+        color: var(--muted);
+      }
+
+      .status.ready {
+        background: var(--info-bg);
+        color: var(--info);
+      }
+
+      .hof-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .hof-card h3 {
+        margin: 0 0 6px;
+        color: var(--brand);
+        font-size: 16px;
+      }
+
+      .hof-meta {
+        color: var(--muted);
+        font-size: 12px;
+        margin: 0 0 10px;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .row-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+        flex-wrap: wrap;
+      }
+
+      @media (max-width: 980px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: sticky;
+          top: 0;
+          z-index: 5;
+        }
+
+        .nav {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 4px;
+        }
+
+        .stats,
+        .stats.cols-3,
+        .form-grid,
+        .form-grid.cols-2,
+        .hof-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .search {
+          width: 100%;
+        }
+
+        .main {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <p class="brand-name">KBZPay</p>
+          <p class="brand-sub">Student Management Portal</p>
+        </div>
+        <nav class="nav" id="nav"></nav>
+        <div class="sidebar-foot">
+          Administrator<br />
+          SA Program console
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="crumb">
+          <span class="crumb-muted">Portal</span>
+          <span class="crumb-muted">/</span>
+          <span class="crumb-current" id="crumbLabel">Student Record</span>
+          <span class="pill">Live admin view</span>
+        </div>
+
+        <!-- Student Record -->
+        <section class="panel active" data-panel="students">
+          <div class="intro">
+            <h1>Student Record</h1>
+            <p>
+              Administrators can add, view, search, filter, and export student
+              information for reporting and operational purposes. Upload a
+              single record or import Student Ambassador records from Excel.
+            </p>
+          </div>
+          <div class="stats">
+            <div class="stat"><div class="stat-value">5</div><div class="stat-label">Total ambassadors</div></div>
+            <div class="stat"><div class="stat-value">3</div><div class="stat-label">Active regions</div></div>
+            <div class="stat"><div class="stat-value">2</div><div class="stat-label">SA batches</div></div>
+            <div class="stat"><div class="stat-value" id="studentMatchCount">5</div><div class="stat-label">Matching filters</div></div>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-primary" data-toggle="student-add">Add Student</button>
+            <button class="btn" data-toggle="student-import">Import Excel</button>
+            <button class="btn" data-notice="studentNotice" data-msg="Exported matching student records to CSV for reporting.">Export</button>
+            <div class="spacer"></div>
+            <input class="field search" id="studentQuery" type="search" placeholder="Search ID, name, college, email…" />
+            <select class="select" id="studentRegion">
+              <option value="all">All regions</option>
+              <option>Yangon</option>
+              <option>Mandalay</option>
+              <option>Ayeyarwady</option>
+            </select>
+            <select class="select" id="studentBatch">
+              <option value="all">All batches</option>
+              <option>SA Batch 7</option>
+              <option>SA Batch 6</option>
+            </select>
+          </div>
+          <div class="notice" id="studentNotice"></div>
+          <div class="card hidden" id="student-add">
+            <div class="card-head">Add Student Ambassador <span class="pill">Single record</span></div>
+            <div class="card-body">
+              <div class="form-grid">
+                <input class="field" placeholder="Student ID" />
+                <input class="field" placeholder="Student Name" />
+                <input class="field" placeholder="College Name" />
+                <select class="select"><option>Training Region: Yangon</option><option>Training Region: Mandalay</option><option>Training Region: Ayeyarwady</option></select>
+                <input class="field" placeholder="Township" />
+                <input class="field" placeholder="Address" />
+                <select class="select"><option>SA Batch 7</option><option>SA Batch 6</option></select>
+                <select class="select"><option>Gender: Female</option><option>Gender: Male</option><option>Gender: Other</option></select>
+                <input class="field" placeholder="Age" type="number" />
+                <input class="field" placeholder="Date of Birth (YYYY-MM-DD)" />
+                <input class="field" placeholder="Phone Number" />
+                <input class="field" placeholder="Email Address" type="email" />
+                <input class="field" placeholder="Education" />
+                <input class="field" placeholder="Specialization or Major" />
+                <input class="field" placeholder="Expected Graduation" />
+              </div>
+              <div class="row-actions">
+                <button class="btn btn-primary" data-save="student-add" data-notice="studentNotice" data-msg="Student record saved (demo).">Save Record</button>
+                <button class="btn btn-ghost" data-hide="student-add">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="card hidden" id="student-import">
+            <div class="card-head">Import Student Ambassador Records <span class="pill">.xlsx</span></div>
+            <div class="card-body">
+              <p style="margin:0 0 10px;font-size:13px;color:var(--muted);line-height:1.5">
+                Expected columns: Student ID, Student Name, College Name, Training Region, Township, Address, SA Batch, Gender, Age, Date of Birth, Phone Number, Email Address, Education, Specialization or Major, and Expected Graduation.
+              </p>
+              <div class="upload-note">Choose an Excel (.xlsx) file, then import to validate and merge records.</div>
+              <div class="row-actions">
+                <input type="file" accept=".xlsx,.xls" />
+                <button class="btn btn-primary" data-save="student-import" data-notice="studentNotice" data-msg="Excel import validated. Student Ambassador records ready to merge.">Import Excel</button>
+                <button class="btn btn-ghost" data-hide="student-import">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student ID</th><th>Student Name</th><th>College Name</th><th>Training Region</th><th>Township</th><th>Address</th><th>SA Batch</th><th>Gender</th><th>Age</th><th>Date of Birth</th><th>Phone Number</th><th>Email Address</th><th>Education</th><th>Specialization or Major</th><th>Expected Graduation</th>
+                </tr>
+              </thead>
+              <tbody id="studentRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Partner School -->
+        <section class="panel" data-panel="schools">
+          <div class="intro">
+            <h1>Partner School</h1>
+            <p>Admin can add each partner school as a single record with college details, partnership status, contacts, and logo.</p>
+          </div>
+          <div class="stats cols-3">
+            <div class="stat"><div class="stat-value">4</div><div class="stat-label">Partner schools</div></div>
+            <div class="stat"><div class="stat-value">3</div><div class="stat-label">Active partners</div></div>
+            <div class="stat"><div class="stat-value">3,280</div><div class="stat-label">Total students covered</div></div>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-primary" data-toggle="school-add">Add Partner School</button>
+          </div>
+          <div class="notice" id="schoolNotice"></div>
+          <div class="card hidden" id="school-add">
+            <div class="card-head">Add Partner School</div>
+            <div class="card-body">
+              <div class="form-grid cols-2">
+                <input class="field" placeholder="College Name" />
+                <input class="field" placeholder="Region" />
+                <input class="field" placeholder="Total Students" type="number" />
+                <input class="field" placeholder="Partner Since" />
+                <input class="field" placeholder="Year Established" />
+                <select class="select"><option>Status: Active</option><option>Status: Inactive</option></select>
+                <input class="field" placeholder="Contact Person" />
+                <input class="field" placeholder="Phone Number" />
+                <input class="field" placeholder="Email Address" type="email" />
+                <input class="field" placeholder="College Address" />
+              </div>
+              <textarea class="textarea" rows="3" placeholder="About School"></textarea>
+              <div class="upload-note" style="margin-top:10px">College Logo — image upload (PNG/JPG).</div>
+              <div class="row-actions">
+                <input type="file" accept="image/*" />
+                <button class="btn btn-primary" data-save="school-add" data-notice="schoolNotice" data-msg="Partner school record saved (demo).">Save School</button>
+                <button class="btn btn-ghost" data-hide="school-add">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>College Name</th><th>Region</th><th>Total Students</th><th>Partner Since</th><th>Year Established</th><th>Status</th><th>About School</th><th>Contact Person</th><th>Phone Number</th><th>Email Address</th><th>College Address</th><th>College Logo</th>
+                </tr>
+              </thead>
+              <tbody id="schoolRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Event Management -->
+        <section class="panel" data-panel="events">
+          <div class="intro">
+            <h1>Event Management</h1>
+            <p>Create, manage, and monitor events for the KBZPay Student Ambassador Program — including registrations and participants.</p>
+          </div>
+          <div class="stats cols-3">
+            <div class="stat"><div class="stat-value">3</div><div class="stat-label">Total events</div></div>
+            <div class="stat"><div class="stat-value">2</div><div class="stat-label">Active events</div></div>
+            <div class="stat"><div class="stat-value">500</div><div class="stat-label">Max seats (open)</div></div>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-primary" data-toggle="event-add">Add Event</button>
+            <button class="btn" data-notice="eventNotice" data-msg="Registration monitor opened for active events (demo).">Manage Registrations</button>
+          </div>
+          <div class="notice" id="eventNotice"></div>
+          <div class="card hidden" id="event-add">
+            <div class="card-head">Add Event</div>
+            <div class="card-body">
+              <div class="form-grid cols-2">
+                <input class="field" placeholder="Event Title" />
+                <input class="field" placeholder="Region" />
+                <select class="select"><option>Status: Active</option><option>Status: Inactive</option></select>
+                <input class="field" placeholder="Event Venue" />
+                <input class="field" placeholder="Event Date and Time" />
+                <input class="field" placeholder="Registration Start Date" />
+                <input class="field" placeholder="Registration End Date" />
+                <input class="field" placeholder="Maximum Participants" type="number" />
+                <input class="field" placeholder="Meeting Link" type="url" />
+              </div>
+              <textarea class="textarea" rows="3" placeholder="Event Summary"></textarea>
+              <div class="form-grid cols-2" style="margin-top:10px">
+                <div class="upload-note">Event Details (PDF Upload)</div>
+                <div class="upload-note">Event Cover Image (Image Upload)</div>
+              </div>
+              <div class="row-actions">
+                <input type="file" accept=".pdf" />
+                <input type="file" accept="image/*" />
+                <button class="btn btn-primary" data-save="event-add" data-notice="eventNotice" data-msg="Event created and opened for registration (demo).">Publish Event</button>
+                <button class="btn btn-ghost" data-hide="event-add">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Event Title</th><th>Region</th><th>Status</th><th>Event Venue</th><th>Event Date and Time</th><th>Registration Start</th><th>Registration End</th><th>Maximum Participants</th><th>Event Summary</th><th>Details PDF</th><th>Cover Image</th><th>Meeting Link</th>
+                </tr>
+              </thead>
+              <tbody id="eventRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Volunteer Management -->
+        <section class="panel" data-panel="volunteers">
+          <div class="intro">
+            <h1>Volunteer Management</h1>
+            <p>Coordinate volunteer opportunities for Student Ambassadors, including scheduling, registration windows, capacity, and materials.</p>
+          </div>
+          <div class="stats cols-3">
+            <div class="stat"><div class="stat-value">3</div><div class="stat-label">Volunteer drives</div></div>
+            <div class="stat"><div class="stat-value">2</div><div class="stat-label">Open for registration</div></div>
+            <div class="stat"><div class="stat-value">65</div><div class="stat-label">Open seats</div></div>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-primary" data-toggle="vol-add">Add Volunteer Opportunity</button>
+          </div>
+          <div class="notice" id="volNotice"></div>
+          <div class="card hidden" id="vol-add">
+            <div class="card-head">Add Volunteer Opportunity</div>
+            <div class="card-body">
+              <div class="form-grid cols-2">
+                <input class="field" placeholder="Volunteer Title" />
+                <input class="field" placeholder="Region" />
+                <select class="select"><option>Status: Active</option><option>Status: Inactive</option></select>
+                <input class="field" placeholder="Venue" />
+                <input class="field" placeholder="Volunteer Date and Time" />
+                <input class="field" placeholder="Registration Start Date" />
+                <input class="field" placeholder="Registration End Date" />
+                <input class="field" placeholder="Duration" />
+                <input class="field" placeholder="Maximum Participants" type="number" />
+              </div>
+              <textarea class="textarea" rows="3" placeholder="Volunteer Summary"></textarea>
+              <div class="form-grid cols-2" style="margin-top:10px">
+                <div class="upload-note">Volunteer Details (PDF Upload)</div>
+                <div class="upload-note">Cover Image (Image Upload)</div>
+              </div>
+              <div class="row-actions">
+                <button class="btn btn-primary" data-save="vol-add" data-notice="volNotice" data-msg="Volunteer opportunity published (demo).">Save Opportunity</button>
+                <button class="btn btn-ghost" data-hide="vol-add">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Volunteer Title</th><th>Region</th><th>Status</th><th>Venue</th><th>Volunteer Date and Time</th><th>Registration Start</th><th>Registration End</th><th>Duration</th><th>Maximum Participants</th><th>Volunteer Summary</th><th>Details PDF</th><th>Cover Image</th>
+                </tr>
+              </thead>
+              <tbody id="volRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Job Management -->
+        <section class="panel" data-panel="jobs">
+          <div class="intro">
+            <h1>Job Management</h1>
+            <p>Create, manage, and publish job opportunities for Student Ambassadors. Post vacancies and monitor recruitment.</p>
+          </div>
+          <div class="stats cols-3">
+            <div class="stat"><div class="stat-value">4</div><div class="stat-label">Open postings</div></div>
+            <div class="stat"><div class="stat-value">14</div><div class="stat-label">Total vacancies</div></div>
+            <div class="stat"><div class="stat-value">2</div><div class="stat-label">Closing this month</div></div>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-primary" data-toggle="job-add">Post Job</button>
+            <select class="select" id="jobType">
+              <option value="all">All job types</option>
+              <option>Full-time</option>
+              <option>Part-time</option>
+              <option>Internship</option>
+              <option>Contract</option>
+            </select>
+          </div>
+          <div class="notice" id="jobNotice"></div>
+          <div class="card hidden" id="job-add">
+            <div class="card-head">Post Job Vacancy</div>
+            <div class="card-body">
+              <div class="form-grid cols-2">
+                <input class="field" placeholder="Job Title" />
+                <select class="select"><option>Job Type: Full-time</option><option>Job Type: Part-time</option><option>Job Type: Internship</option><option>Job Type: Contract</option></select>
+                <input class="field" placeholder="Company Name" />
+                <input class="field" placeholder="Location" />
+                <input class="field" placeholder="Number of Vacancies" type="number" />
+                <input class="field" placeholder="Application Start Date" />
+                <input class="field" placeholder="Application Deadline" />
+              </div>
+              <textarea class="textarea" rows="2" placeholder="Job Summary"></textarea>
+              <textarea class="textarea" rows="3" placeholder="Job Responsibilities"></textarea>
+              <textarea class="textarea" rows="3" placeholder="Job Requirements"></textarea>
+              <div class="form-grid cols-2" style="margin-top:10px">
+                <div class="upload-note">Job Description (PDF Upload)</div>
+                <div class="upload-note">Job Cover Photo (Image Upload)</div>
+              </div>
+              <div class="row-actions">
+                <button class="btn btn-primary" data-save="job-add" data-notice="jobNotice" data-msg="Job vacancy published to Student Ambassadors (demo).">Publish Job</button>
+                <button class="btn btn-ghost" data-hide="job-add">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Job Title</th><th>Job Type</th><th>Company Name</th><th>Location</th><th>Vacancies</th><th>Application Start</th><th>Application Deadline</th><th>Job Summary</th><th>Responsibilities</th><th>Requirements</th><th>Description PDF</th><th>Cover Photo</th>
+                </tr>
+              </thead>
+              <tbody id="jobRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- KPI Management -->
+        <section class="panel" data-panel="kpi">
+          <div class="intro">
+            <h1>KPI Management</h1>
+            <p>Upload Student Ambassador KPI data with Import KPI (.xlsx). The system validates uploaded data before updating KPI records.</p>
+          </div>
+          <div class="stats">
+            <div class="stat"><div class="stat-value">87.5%</div><div class="stat-label">Average total KPI</div></div>
+            <div class="stat"><div class="stat-value">95.6%</div><div class="stat-label">Top performer</div></div>
+            <div class="stat"><div class="stat-value">5</div><div class="stat-label">Ambassadors tracked</div></div>
+            <div class="stat"><div class="stat-value">Q3 2026</div><div class="stat-label">Current cycle</div></div>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-primary" data-notice="kpiNotice" data-msg="Excel validated. Attendance, Operation Performance, Onboarding, Social Media, Assignment, and Total KPI (%) updated.">Import KPI</button>
+            <input type="file" accept=".xlsx,.xls" />
+            <div class="spacer"></div>
+            <input class="field search" id="kpiQuery" type="search" placeholder="Search student or college…" />
+          </div>
+          <div class="notice" id="kpiNotice"></div>
+          <div class="upload-note" style="margin-bottom:12px">
+            Required columns: Student ID, Student Name, Contact Number, College Name, Attendance, Operation Performance, Onboarding, Social Media, Assignment, Total KPI (%).
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student ID</th><th>Student Name</th><th>Contact Number</th><th>College Name</th><th>Attendance</th><th>Operation Performance</th><th>Onboarding</th><th>Social Media</th><th>Assignment</th><th>Total KPI (%)</th>
+                </tr>
+              </thead>
+              <tbody id="kpiRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Hall of Fame -->
+        <section class="panel" data-panel="hof">
+          <div class="intro">
+            <h1>Hall of Fame</h1>
+            <p>Manage and showcase achievements of outstanding Student Ambassadors. Add, update, and manage recognition records.</p>
+          </div>
+          <div class="stats cols-3">
+            <div class="stat"><div class="stat-value">3</div><div class="stat-label">Honorees</div></div>
+            <div class="stat"><div class="stat-value">3</div><div class="stat-label">Award categories</div></div>
+            <div class="stat"><div class="stat-value">2026</div><div class="stat-label">Latest award year</div></div>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-primary" data-toggle="hof-add">Add Hall of Fame Record</button>
+          </div>
+          <div class="notice" id="hofNotice"></div>
+          <div class="card hidden" id="hof-add">
+            <div class="card-head">Add Hall of Fame Record</div>
+            <div class="card-body">
+              <div class="form-grid cols-2">
+                <input class="field" placeholder="Student ID" />
+                <input class="field" placeholder="Student Name" />
+                <input class="field" placeholder="College Name" />
+                <input class="field" placeholder="SA Batch" />
+                <input class="field" placeholder="Award Category" />
+                <input class="field" placeholder="Award Title" />
+                <input class="field" placeholder="Award Year" />
+              </div>
+              <textarea class="textarea" rows="3" placeholder="Achievement Description"></textarea>
+              <div class="row-actions">
+                <button class="btn btn-primary" data-save="hof-add" data-notice="hofNotice" data-msg="Hall of Fame record added (demo).">Save Record</button>
+                <button class="btn btn-ghost" data-hide="hof-add">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="hof-grid" id="hofCards"></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student ID</th><th>Student Name</th><th>College Name</th><th>SA Batch</th><th>Award Category</th><th>Award Title</th><th>Award Year</th><th>Achievement Description</th>
+                </tr>
+              </thead>
+              <tbody id="hofRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Certificate Management -->
+        <section class="panel" data-panel="certificates">
+          <div class="intro">
+            <h1>Certificate Management</h1>
+            <p>Upload, manage, and distribute certificates for Student Ambassadors. Certificates are uploaded as a ZIP file, organized by Student Ambassador Batch.</p>
+          </div>
+          <div class="stats cols-3">
+            <div class="stat"><div class="stat-value">3</div><div class="stat-label">Batch packages</div></div>
+            <div class="stat"><div class="stat-value">400</div><div class="stat-label">Certificates on file</div></div>
+            <div class="stat"><div class="stat-value">1</div><div class="stat-label">Ready to distribute</div></div>
+          </div>
+          <div class="card">
+            <div class="card-head">Upload Certificates by Batch <span class="pill">.zip</span></div>
+            <div class="card-body">
+              <p style="margin:0 0 12px;font-size:13px;color:var(--muted);line-height:1.5">
+                Select the Student Ambassador Batch, then upload a ZIP archive of certificate files for that batch.
+              </p>
+              <div class="toolbar" style="margin:0">
+                <select class="select" id="certBatch">
+                  <option>SA Batch 7</option>
+                  <option>SA Batch 6</option>
+                  <option>SA Batch 5</option>
+                </select>
+                <input type="file" accept=".zip" />
+                <button class="btn btn-primary" id="certUpload">Upload ZIP</button>
+                <button class="btn" id="certDistribute">Distribute</button>
+              </div>
+              <div class="notice" id="certNotice" style="margin-top:12px"></div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>SA Batch</th><th>ZIP File</th><th>Certificate Count</th><th>Uploaded On</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="certRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const NAV = [
+        { id: "students", label: "Student Record" },
+        { id: "schools", label: "Partner School" },
+        { id: "events", label: "Event Management" },
+        { id: "volunteers", label: "Volunteer Management" },
+        { id: "jobs", label: "Job Management" },
+        { id: "kpi", label: "KPI Management" },
+        { id: "hof", label: "Hall of Fame" },
+        { id: "certificates", label: "Certificate Management" },
+      ];
+
+      const STUDENTS = [
+        ["SA-2024-001", "Aye Chan Moe", "University of Yangon", "Yangon", "Kamayut", "12 Inya Road", "SA Batch 7", "Female", "21", "2004-03-12", "09-250-111-001", "aye.chan@example.com", "Bachelor", "Computer Science", "2026"],
+        ["SA-2024-014", "Kyaw Zin Htet", "Mandalay University", "Mandalay", "Chanayethazan", "88 26th Street", "SA Batch 7", "Male", "22", "2003-11-02", "09-250-111-014", "kyaw.zin@example.com", "Bachelor", "Business Admin", "2025"],
+        ["SA-2023-088", "Su Myat Hnin", "Technological University (Thanlyin)", "Yangon", "Thanlyin", "4 University Avenue", "SA Batch 6", "Female", "23", "2002-07-19", "09-250-111-088", "su.myat@example.com", "Bachelor", "Electronics", "2025"],
+        ["SA-2024-042", "Min Thu Aung", "University of Computer Studies, Yangon", "Yangon", "Hlaing", "21 Parami Road", "SA Batch 7", "Male", "20", "2005-01-28", "09-250-111-042", "min.thu@example.com", "Bachelor", "Software Engineering", "2027"],
+        ["SA-2023-055", "Hnin Wai Lwin", "Pathein University", "Ayeyarwady", "Pathein", "9 Strand Road", "SA Batch 6", "Female", "22", "2003-09-05", "09-250-111-055", "hnin.wai@example.com", "Bachelor", "Economics", "2025"],
+      ];
+
+      const SCHOOLS = [
+        ["University of Yangon", "Yangon", "1,240", "2021", "1878", "Active", "Flagship partner campus for SA recruitment and activations.", "Dr. Win Mar", "01-534-200", "partnerships@uy.edu.mm", "University Avenue, Kamayut", "logo.png"],
+        ["Mandalay University", "Mandalay", "980", "2022", "1925", "Active", "Upper Myanmar hub for ambassador training.", "U Aung Kyaw", "02-406-112", "sa@mu.edu.mm", "University Drive, Mandalay", "logo.png"],
+        ["Technological University (Thanlyin)", "Yangon", "640", "2023", "1993", "Active", "STEM-focused partner supporting campus activations.", "Daw Thin Zar", "01-590-441", "admin@tuthanlyin.edu.mm", "Thanlyin Township", "logo.png"],
+        ["Pathein University", "Ayeyarwady", "420", "2024", "1958", "Inactive", "Regional campus partnership under review.", "U Soe Myint", "042-251-088", "info@pu.edu.mm", "Pathein Township", "logo.png"],
+      ];
+
+      const EVENTS = [
+        ["KBZPay Campus Activation Day", "Yangon", "Active", "University of Yangon Convocation Hall", "2026-09-12 09:00", "2026-08-20", "2026-09-10", "300", "On-campus activation with ambassador booths and QR onboarding.", "details.pdf", "cover.jpg", "meet.kbzpay.com/sa-event"],
+        ["Digital Finance Workshop", "Mandalay", "Active", "Mandalay University Seminar Room B", "2026-09-28 13:30", "2026-09-01", "2026-09-25", "120", "Hands-on workshop covering wallet safety and peer outreach.", "details.pdf", "cover.jpg", "meet.kbzpay.com/sa-event"],
+        ["SA Leadership Meetup", "Ayeyarwady", "Inactive", "Pathein Community Center", "2026-07-05 10:00", "2026-06-10", "2026-07-01", "80", "Regional leadership sync for Batch 6 ambassadors.", "details.pdf", "cover.jpg", "meet.kbzpay.com/sa-event"],
+      ];
+
+      const VOLUNTEERS = [
+        ["Community Cashless Drive", "Yangon", "Active", "Hlaing Township Market", "2026-09-18 08:00", "2026-08-25", "2026-09-15", "4 hours", "40", "Volunteer outreach supporting merchant QR adoption.", "volunteer-brief.pdf", "cover.jpg"],
+        ["Student Orientation Support", "Mandalay", "Active", "Mandalay University Main Gate", "2026-10-02 07:30", "2026-09-10", "2026-09-28", "6 hours", "25", "Help new students enroll and learn KBZPay basics.", "volunteer-brief.pdf", "cover.jpg"],
+        ["Flood Relief Digitization Desk", "Ayeyarwady", "Inactive", "Pathein Relief Hub", "2026-06-22 09:00", "2026-06-10", "2026-06-20", "8 hours", "30", "Assisted beneficiaries with digital aid disbursement.", "volunteer-brief.pdf", "cover.jpg"],
+      ];
+
+      const JOBS = [
+        ["Campus Partnership Intern", "Internship", "KBZPay", "Yangon", "5", "2026-08-15", "2026-09-05", "Support partner-school engagement and ambassador onboarding.", "Campus outreach support", "Current student or recent grad", "job-description.pdf", "cover.jpg"],
+        ["Regional Field Coordinator", "Full-time", "KBZPay", "Mandalay", "2", "2026-08-01", "2026-08-30", "Coordinate SA activities across Upper Myanmar campuses.", "Regional ops leadership", "2+ years field experience", "job-description.pdf", "cover.jpg"],
+        ["Social Media Content Assistant", "Part-time", "KBZPay Student Program", "Remote / Yangon", "3", "2026-09-01", "2026-09-20", "Produce campus stories and campaign assets with the SA community.", "Content production", "Strong social media skills", "job-description.pdf", "cover.jpg"],
+        ["Event Operations Contractor", "Contract", "KBZPay", "Yangon", "4", "2026-08-20", "2026-09-10", "Short-term ops support for Q3 campus activation events.", "Event day operations", "Available for event weekends", "job-description.pdf", "cover.jpg"],
+      ];
+
+      const KPI = [
+        ["SA-2024-001", "Aye Chan Moe", "09-250-111-001", "University of Yangon", "95", "88", "92", "90", "94", "91.8%"],
+        ["SA-2024-014", "Kyaw Zin Htet", "09-250-111-014", "Mandalay University", "86", "80", "84", "78", "88", "83.2%"],
+        ["SA-2023-088", "Su Myat Hnin", "09-250-111-088", "Technological University (Thanlyin)", "98", "94", "96", "93", "97", "95.6%"],
+        ["SA-2024-042", "Min Thu Aung", "09-250-111-042", "University of Computer Studies, Yangon", "90", "85", "88", "91", "87", "88.2%"],
+        ["SA-2023-055", "Hnin Wai Lwin", "09-250-111-055", "Pathein University", "82", "76", "80", "74", "81", "78.6%"],
+      ];
+
+      const HOF = [
+        {
+          id: "SA-2023-088",
+          name: "Su Myat Hnin",
+          college: "Technological University (Thanlyin)",
+          batch: "SA Batch 6",
+          category: "Top Performer",
+          title: "National KPI Champion",
+          year: "2025",
+          desc: "Highest annual KPI across all regions with consistent campus leadership.",
+        },
+        {
+          id: "SA-2024-001",
+          name: "Aye Chan Moe",
+          college: "University of Yangon",
+          batch: "SA Batch 7",
+          category: "Community Impact",
+          title: "Merchant Onboarding Star",
+          year: "2026",
+          desc: "Led peer teams that onboarded 180+ merchants during campus activation.",
+        },
+        {
+          id: "SA-2024-014",
+          name: "Kyaw Zin Htet",
+          college: "Mandalay University",
+          batch: "SA Batch 7",
+          category: "Leadership",
+          title: "Regional Mentorship Award",
+          year: "2026",
+          desc: "Mentored new ambassadors and improved Batch 7 retention in Mandalay.",
+        },
+      ];
+
+      const CERTS = [
+        ["SA Batch 7", "sa-batch-7-certificates.zip", "148", "2026-07-18", "Ready to distribute"],
+        ["SA Batch 6", "sa-batch-6-certificates.zip", "132", "2025-12-02", "Distributed"],
+        ["SA Batch 5", "sa-batch-5-certificates.zip", "120", "2025-06-14", "Distributed"],
+      ];
+
+      function statusHtml(value) {
+        const key = String(value).toLowerCase();
+        let cls = "inactive";
+        if (key === "active") cls = "active";
+        if (key.includes("ready")) cls = "ready";
+        if (key === "distributed") cls = "active";
+        return `<span class="status ${cls}">${value}</span>`;
+      }
+
+      function fillTable(id, rows, statusIndexes = []) {
+        const body = document.getElementById(id);
+        body.innerHTML = rows
+          .map(
+            (row) =>
+              `<tr>${row
+                .map((cell, i) =>
+                  statusIndexes.includes(i)
+                    ? `<td>${statusHtml(cell)}</td>`
+                    : `<td>${cell}</td>`,
+                )
+                .join("")}</tr>`,
+          )
+          .join("");
+      }
+
+      function renderStudents() {
+        const q = document.getElementById("studentQuery").value.trim().toLowerCase();
+        const region = document.getElementById("studentRegion").value;
+        const batch = document.getElementById("studentBatch").value;
+        const filtered = STUDENTS.filter((s) => {
+          const hay = s.join(" ").toLowerCase();
+          const matchQ = !q || hay.includes(q);
+          const matchR = region === "all" || s[3] === region;
+          const matchB = batch === "all" || s[6] === batch;
+          return matchQ && matchR && matchB;
+        });
+        document.getElementById("studentMatchCount").textContent = String(filtered.length);
+        fillTable("studentRows", filtered);
+      }
+
+      function renderJobs() {
+        const type = document.getElementById("jobType").value;
+        const rows = JOBS.filter((j) => type === "all" || j[1] === type);
+        fillTable("jobRows", rows);
+      }
+
+      function renderKpi() {
+        const q = document.getElementById("kpiQuery").value.trim().toLowerCase();
+        const rows = KPI.filter((k) => !q || k.join(" ").toLowerCase().includes(q));
+        fillTable("kpiRows", rows);
+      }
+
+      function renderHof() {
+        document.getElementById("hofCards").innerHTML = HOF.map(
+          (h) => `
+          <div class="card hof-card">
+            <div class="card-head">${h.category}<span class="pill">${h.year}</span></div>
+            <div class="card-body">
+              <h3>${h.title}</h3>
+              <strong>${h.name}</strong>
+              <p class="hof-meta">${h.id} · ${h.batch} · ${h.college}</p>
+              <p style="margin:0;font-size:13px;line-height:1.5;color:var(--text)">${h.desc}</p>
+            </div>
+          </div>`,
+        ).join("");
+        fillTable(
+          "hofRows",
+          HOF.map((h) => [h.id, h.name, h.college, h.batch, h.category, h.title, h.year, h.desc]),
+        );
+      }
+
+      function showNotice(id, msg) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.add("show");
+      }
+
+      function setTab(id) {
+        const item = NAV.find((n) => n.id === id) || NAV[0];
+        document.querySelectorAll(".nav-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.tab === item.id);
+        });
+        document.querySelectorAll(".panel").forEach((panel) => {
+          panel.classList.toggle("active", panel.dataset.panel === item.id);
+        });
+        document.getElementById("crumbLabel").textContent = item.label;
+        history.replaceState(null, "", `#${item.id}`);
+      }
+
+      function initNav() {
+        const nav = document.getElementById("nav");
+        nav.innerHTML = NAV.map(
+          (item) =>
+            `<button class="nav-btn" type="button" data-tab="${item.id}">${item.label}</button>`,
+        ).join("");
+        nav.addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-tab]");
+          if (btn) setTab(btn.dataset.tab);
+        });
+      }
+
+      function initActions() {
+        document.body.addEventListener("click", (e) => {
+          const toggle = e.target.closest("[data-toggle]");
+          if (toggle) {
+            const target = document.getElementById(toggle.dataset.toggle);
+            if (target) target.classList.remove("hidden");
+          }
+
+          const hide = e.target.closest("[data-hide]");
+          if (hide) {
+            const target = document.getElementById(hide.dataset.hide);
+            if (target) target.classList.add("hidden");
+          }
+
+          const save = e.target.closest("[data-save]");
+          if (save) {
+            const target = document.getElementById(save.dataset.save);
+            if (target) target.classList.add("hidden");
+            showNotice(save.dataset.notice, save.dataset.msg);
+          }
+
+          const noticeBtn = e.target.closest("[data-notice]:not([data-save])");
+          if (noticeBtn && !noticeBtn.dataset.save && !noticeBtn.dataset.toggle) {
+            showNotice(noticeBtn.dataset.notice, noticeBtn.dataset.msg);
+          }
+        });
+
+        document.getElementById("studentQuery").addEventListener("input", renderStudents);
+        document.getElementById("studentRegion").addEventListener("change", renderStudents);
+        document.getElementById("studentBatch").addEventListener("change", renderStudents);
+        document.getElementById("jobType").addEventListener("change", renderJobs);
+        document.getElementById("kpiQuery").addEventListener("input", renderKpi);
+
+        document.getElementById("certUpload").addEventListener("click", () => {
+          const batch = document.getElementById("certBatch").value;
+          showNotice(
+            "certNotice",
+            `ZIP package for ${batch} validated and queued for distribution (demo).`,
+          );
+        });
+        document.getElementById("certDistribute").addEventListener("click", () => {
+          const batch = document.getElementById("certBatch").value;
+          showNotice("certNotice", `Distribution started for ${batch} certificates (demo).`);
+        });
+      }
+
+      initNav();
+      initActions();
+      fillTable("schoolRows", SCHOOLS, [5]);
+      fillTable("eventRows", EVENTS, [2]);
+      fillTable("volRows", VOLUNTEERS, [2]);
+      fillTable("certRows", CERTS, [4]);
+      renderStudents();
+      renderJobs();
+      renderKpi();
+      renderHof();
+
+      const initial = location.hash.replace("#", "") || "students";
+      setTab(NAV.some((n) => n.id === initial) ? initial : "students");
+    </script>
+  </body>
+</html>
