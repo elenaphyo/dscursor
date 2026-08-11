@@ -345,6 +345,99 @@
         display: block;
       }
 
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(10, 22, 48, 0.48);
+      }
+
+      .modal-backdrop.open {
+        display: flex;
+      }
+
+      .modal {
+        width: min(860px, 100%);
+        max-height: min(88vh, 920px);
+        overflow: auto;
+        background: var(--surface);
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        animation: modalIn 160ms ease;
+      }
+
+      .modal.modal-sm {
+        width: min(520px, 100%);
+      }
+
+      @keyframes modalIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .modal-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--line);
+        position: sticky;
+        top: 0;
+        background: var(--surface);
+        z-index: 1;
+      }
+
+      .modal-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--brand);
+      }
+
+      .modal-close {
+        appearance: none;
+        border: 1px solid var(--line);
+        background: #fff;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 1;
+        color: var(--muted);
+      }
+
+      .modal-body { padding: 18px; }
+
+      .modal-foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 14px 18px 18px;
+        border-top: 1px solid var(--line);
+        position: sticky;
+        bottom: 0;
+        background: var(--surface);
+      }
+
+      .field-label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      .field-wrap { min-width: 0; }
+
+      body.modal-open { overflow: hidden; }
+
       .table-wrap {
         overflow: auto;
         border: 1px solid var(--line);
@@ -511,9 +604,9 @@
             <div class="stat"><div class="stat-value" id="studentMatchCount">5</div><div class="stat-label">Matching filters</div></div>
           </div>
           <div class="toolbar">
-            <button class="btn btn-primary" data-toggle="student-add">Add Student</button>
-            <button class="btn" data-toggle="student-import">Import Excel</button>
-            <button class="btn" data-notice="studentNotice" data-msg="Exported matching student records to CSV for reporting.">Export</button>
+            <button class="btn btn-primary" data-open-modal="student-add">Add Student</button>
+            <button class="btn" data-open-modal="student-import">Import Excel</button>
+            <button class="btn" id="exportStudents">Export</button>
             <div class="spacer"></div>
             <input class="field search" id="studentQuery" type="search" placeholder="Search ID, name, college, email…" />
             <select class="select" id="studentRegion">
@@ -527,47 +620,6 @@
               <option>SA Batch 7</option>
               <option>SA Batch 6</option>
             </select>
-          </div>
-          <div class="notice" id="studentNotice"></div>
-          <div class="card hidden" id="student-add">
-            <div class="card-head">Add Student Ambassador <span class="pill">Single record</span></div>
-            <div class="card-body">
-              <div class="form-grid">
-                <input class="field" placeholder="Student ID" />
-                <input class="field" placeholder="Student Name" />
-                <input class="field" placeholder="College Name" />
-                <select class="select"><option>Training Region: Yangon</option><option>Training Region: Mandalay</option><option>Training Region: Ayeyarwady</option></select>
-                <input class="field" placeholder="Township" />
-                <input class="field" placeholder="Address" />
-                <select class="select"><option>SA Batch 7</option><option>SA Batch 6</option></select>
-                <select class="select"><option>Gender: Female</option><option>Gender: Male</option><option>Gender: Other</option></select>
-                <input class="field" placeholder="Age" type="number" />
-                <input class="field" placeholder="Date of Birth (YYYY-MM-DD)" />
-                <input class="field" placeholder="Phone Number" />
-                <input class="field" placeholder="Email Address" type="email" />
-                <input class="field" placeholder="Education" />
-                <input class="field" placeholder="Specialization or Major" />
-                <input class="field" placeholder="Expected Graduation" />
-              </div>
-              <div class="row-actions">
-                <button class="btn btn-primary" data-save="student-add" data-notice="studentNotice" data-msg="Student record saved (demo).">Save Record</button>
-                <button class="btn btn-ghost" data-hide="student-add">Cancel</button>
-              </div>
-            </div>
-          </div>
-          <div class="card hidden" id="student-import">
-            <div class="card-head">Import Student Ambassador Records <span class="pill">.xlsx</span></div>
-            <div class="card-body">
-              <p style="margin:0 0 10px;font-size:13px;color:var(--muted);line-height:1.5">
-                Expected columns: Student ID, Student Name, College Name, Training Region, Township, Address, SA Batch, Gender, Age, Date of Birth, Phone Number, Email Address, Education, Specialization or Major, and Expected Graduation.
-              </p>
-              <div class="upload-note">Choose an Excel (.xlsx) file, then import to validate and merge records.</div>
-              <div class="row-actions">
-                <input type="file" accept=".xlsx,.xls" />
-                <button class="btn btn-primary" data-save="student-import" data-notice="studentNotice" data-msg="Excel import validated. Student Ambassador records ready to merge.">Import Excel</button>
-                <button class="btn btn-ghost" data-hide="student-import">Cancel</button>
-              </div>
-            </div>
           </div>
           <div class="table-wrap">
             <table>
@@ -593,32 +645,7 @@
             <div class="stat"><div class="stat-value">3,280</div><div class="stat-label">Total students covered</div></div>
           </div>
           <div class="toolbar">
-            <button class="btn btn-primary" data-toggle="school-add">Add Partner School</button>
-          </div>
-          <div class="notice" id="schoolNotice"></div>
-          <div class="card hidden" id="school-add">
-            <div class="card-head">Add Partner School</div>
-            <div class="card-body">
-              <div class="form-grid cols-2">
-                <input class="field" placeholder="College Name" />
-                <input class="field" placeholder="Region" />
-                <input class="field" placeholder="Total Students" type="number" />
-                <input class="field" placeholder="Partner Since" />
-                <input class="field" placeholder="Year Established" />
-                <select class="select"><option>Status: Active</option><option>Status: Inactive</option></select>
-                <input class="field" placeholder="Contact Person" />
-                <input class="field" placeholder="Phone Number" />
-                <input class="field" placeholder="Email Address" type="email" />
-                <input class="field" placeholder="College Address" />
-              </div>
-              <textarea class="textarea" rows="3" placeholder="About School"></textarea>
-              <div class="upload-note" style="margin-top:10px">College Logo — image upload (PNG/JPG).</div>
-              <div class="row-actions">
-                <input type="file" accept="image/*" />
-                <button class="btn btn-primary" data-save="school-add" data-notice="schoolNotice" data-msg="Partner school record saved (demo).">Save School</button>
-                <button class="btn btn-ghost" data-hide="school-add">Cancel</button>
-              </div>
-            </div>
+            <button class="btn btn-primary" data-open-modal="school-add">Add Partner School</button>
           </div>
           <div class="table-wrap">
             <table>
@@ -644,36 +671,8 @@
             <div class="stat"><div class="stat-value">500</div><div class="stat-label">Max seats (open)</div></div>
           </div>
           <div class="toolbar">
-            <button class="btn btn-primary" data-toggle="event-add">Add Event</button>
-            <button class="btn" data-notice="eventNotice" data-msg="Registration monitor opened for active events (demo).">Manage Registrations</button>
-          </div>
-          <div class="notice" id="eventNotice"></div>
-          <div class="card hidden" id="event-add">
-            <div class="card-head">Add Event</div>
-            <div class="card-body">
-              <div class="form-grid cols-2">
-                <input class="field" placeholder="Event Title" />
-                <input class="field" placeholder="Region" />
-                <select class="select"><option>Status: Active</option><option>Status: Inactive</option></select>
-                <input class="field" placeholder="Event Venue" />
-                <input class="field" placeholder="Event Date and Time" />
-                <input class="field" placeholder="Registration Start Date" />
-                <input class="field" placeholder="Registration End Date" />
-                <input class="field" placeholder="Maximum Participants" type="number" />
-                <input class="field" placeholder="Meeting Link" type="url" />
-              </div>
-              <textarea class="textarea" rows="3" placeholder="Event Summary"></textarea>
-              <div class="form-grid cols-2" style="margin-top:10px">
-                <div class="upload-note">Event Details (PDF Upload)</div>
-                <div class="upload-note">Event Cover Image (Image Upload)</div>
-              </div>
-              <div class="row-actions">
-                <input type="file" accept=".pdf" />
-                <input type="file" accept="image/*" />
-                <button class="btn btn-primary" data-save="event-add" data-notice="eventNotice" data-msg="Event created and opened for registration (demo).">Publish Event</button>
-                <button class="btn btn-ghost" data-hide="event-add">Cancel</button>
-              </div>
-            </div>
+            <button class="btn btn-primary" data-open-modal="event-add">Add Event</button>
+            <button class="btn" id="manageRegs">Manage Registrations</button>
           </div>
           <div class="table-wrap">
             <table>
@@ -699,33 +698,7 @@
             <div class="stat"><div class="stat-value">65</div><div class="stat-label">Open seats</div></div>
           </div>
           <div class="toolbar">
-            <button class="btn btn-primary" data-toggle="vol-add">Add Volunteer Opportunity</button>
-          </div>
-          <div class="notice" id="volNotice"></div>
-          <div class="card hidden" id="vol-add">
-            <div class="card-head">Add Volunteer Opportunity</div>
-            <div class="card-body">
-              <div class="form-grid cols-2">
-                <input class="field" placeholder="Volunteer Title" />
-                <input class="field" placeholder="Region" />
-                <select class="select"><option>Status: Active</option><option>Status: Inactive</option></select>
-                <input class="field" placeholder="Venue" />
-                <input class="field" placeholder="Volunteer Date and Time" />
-                <input class="field" placeholder="Registration Start Date" />
-                <input class="field" placeholder="Registration End Date" />
-                <input class="field" placeholder="Duration" />
-                <input class="field" placeholder="Maximum Participants" type="number" />
-              </div>
-              <textarea class="textarea" rows="3" placeholder="Volunteer Summary"></textarea>
-              <div class="form-grid cols-2" style="margin-top:10px">
-                <div class="upload-note">Volunteer Details (PDF Upload)</div>
-                <div class="upload-note">Cover Image (Image Upload)</div>
-              </div>
-              <div class="row-actions">
-                <button class="btn btn-primary" data-save="vol-add" data-notice="volNotice" data-msg="Volunteer opportunity published (demo).">Save Opportunity</button>
-                <button class="btn btn-ghost" data-hide="vol-add">Cancel</button>
-              </div>
-            </div>
+            <button class="btn btn-primary" data-open-modal="vol-add">Add Volunteer Opportunity</button>
           </div>
           <div class="table-wrap">
             <table>
@@ -751,7 +724,7 @@
             <div class="stat"><div class="stat-value">2</div><div class="stat-label">Closing this month</div></div>
           </div>
           <div class="toolbar">
-            <button class="btn btn-primary" data-toggle="job-add">Post Job</button>
+            <button class="btn btn-primary" data-open-modal="job-add">Post Job</button>
             <select class="select" id="jobType">
               <option value="all">All job types</option>
               <option>Full-time</option>
@@ -759,32 +732,6 @@
               <option>Internship</option>
               <option>Contract</option>
             </select>
-          </div>
-          <div class="notice" id="jobNotice"></div>
-          <div class="card hidden" id="job-add">
-            <div class="card-head">Post Job Vacancy</div>
-            <div class="card-body">
-              <div class="form-grid cols-2">
-                <input class="field" placeholder="Job Title" />
-                <select class="select"><option>Job Type: Full-time</option><option>Job Type: Part-time</option><option>Job Type: Internship</option><option>Job Type: Contract</option></select>
-                <input class="field" placeholder="Company Name" />
-                <input class="field" placeholder="Location" />
-                <input class="field" placeholder="Number of Vacancies" type="number" />
-                <input class="field" placeholder="Application Start Date" />
-                <input class="field" placeholder="Application Deadline" />
-              </div>
-              <textarea class="textarea" rows="2" placeholder="Job Summary"></textarea>
-              <textarea class="textarea" rows="3" placeholder="Job Responsibilities"></textarea>
-              <textarea class="textarea" rows="3" placeholder="Job Requirements"></textarea>
-              <div class="form-grid cols-2" style="margin-top:10px">
-                <div class="upload-note">Job Description (PDF Upload)</div>
-                <div class="upload-note">Job Cover Photo (Image Upload)</div>
-              </div>
-              <div class="row-actions">
-                <button class="btn btn-primary" data-save="job-add" data-notice="jobNotice" data-msg="Job vacancy published to Student Ambassadors (demo).">Publish Job</button>
-                <button class="btn btn-ghost" data-hide="job-add">Cancel</button>
-              </div>
-            </div>
           </div>
           <div class="table-wrap">
             <table>
@@ -811,12 +758,10 @@
             <div class="stat"><div class="stat-value">Q3 2026</div><div class="stat-label">Current cycle</div></div>
           </div>
           <div class="toolbar">
-            <button class="btn btn-primary" data-notice="kpiNotice" data-msg="Excel validated. Attendance, Operation Performance, Onboarding, Social Media, Assignment, and Total KPI (%) updated.">Import KPI</button>
-            <input type="file" accept=".xlsx,.xls" />
+            <button class="btn btn-primary" data-open-modal="kpi-import">Import KPI</button>
             <div class="spacer"></div>
             <input class="field search" id="kpiQuery" type="search" placeholder="Search student or college…" />
           </div>
-          <div class="notice" id="kpiNotice"></div>
           <div class="upload-note" style="margin-bottom:12px">
             Required columns: Student ID, Student Name, Contact Number, College Name, Attendance, Operation Performance, Onboarding, Social Media, Assignment, Total KPI (%).
           </div>
@@ -844,27 +789,7 @@
             <div class="stat"><div class="stat-value">2026</div><div class="stat-label">Latest award year</div></div>
           </div>
           <div class="toolbar">
-            <button class="btn btn-primary" data-toggle="hof-add">Add Hall of Fame Record</button>
-          </div>
-          <div class="notice" id="hofNotice"></div>
-          <div class="card hidden" id="hof-add">
-            <div class="card-head">Add Hall of Fame Record</div>
-            <div class="card-body">
-              <div class="form-grid cols-2">
-                <input class="field" placeholder="Student ID" />
-                <input class="field" placeholder="Student Name" />
-                <input class="field" placeholder="College Name" />
-                <input class="field" placeholder="SA Batch" />
-                <input class="field" placeholder="Award Category" />
-                <input class="field" placeholder="Award Title" />
-                <input class="field" placeholder="Award Year" />
-              </div>
-              <textarea class="textarea" rows="3" placeholder="Achievement Description"></textarea>
-              <div class="row-actions">
-                <button class="btn btn-primary" data-save="hof-add" data-notice="hofNotice" data-msg="Hall of Fame record added (demo).">Save Record</button>
-                <button class="btn btn-ghost" data-hide="hof-add">Cancel</button>
-              </div>
-            </div>
+            <button class="btn btn-primary" data-open-modal="hof-add">Add Hall of Fame Record</button>
           </div>
           <div class="hof-grid" id="hofCards"></div>
           <div class="table-wrap">
@@ -890,24 +815,9 @@
             <div class="stat"><div class="stat-value">400</div><div class="stat-label">Certificates on file</div></div>
             <div class="stat"><div class="stat-value">1</div><div class="stat-label">Ready to distribute</div></div>
           </div>
-          <div class="card">
-            <div class="card-head">Upload Certificates by Batch <span class="pill">.zip</span></div>
-            <div class="card-body">
-              <p style="margin:0 0 12px;font-size:13px;color:var(--muted);line-height:1.5">
-                Select the Student Ambassador Batch, then upload a ZIP archive of certificate files for that batch.
-              </p>
-              <div class="toolbar" style="margin:0">
-                <select class="select" id="certBatch">
-                  <option>SA Batch 7</option>
-                  <option>SA Batch 6</option>
-                  <option>SA Batch 5</option>
-                </select>
-                <input type="file" accept=".zip" />
-                <button class="btn btn-primary" id="certUpload">Upload ZIP</button>
-                <button class="btn" id="certDistribute">Distribute</button>
-              </div>
-              <div class="notice" id="certNotice" style="margin-top:12px"></div>
-            </div>
+          <div class="toolbar">
+            <button class="btn btn-primary" data-open-modal="cert-upload">Upload ZIP</button>
+            <button class="btn" id="certDistribute">Distribute</button>
           </div>
           <div class="table-wrap">
             <table>
@@ -922,6 +832,9 @@
         </section>
       </main>
     </div>
+
+
+    <div id="modalRoot"></div>
 
     <script>
       const NAV = [
@@ -1087,11 +1000,210 @@
         );
       }
 
-      function showNotice(id, msg) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.textContent = msg;
-        el.classList.add("show");
+
+      function val(form, name, fallback = "") {
+        const el = form.elements.namedItem(name);
+        if (!el) return fallback;
+        const v = String(el.value || "").trim();
+        return v || fallback;
+      }
+
+      function openModal(id) {
+        const tpl = document.getElementById(`tpl-${id}`);
+        if (!tpl) return;
+        const root = document.getElementById("modalRoot");
+        root.innerHTML = tpl.innerHTML;
+        const backdrop = root.querySelector(".modal-backdrop");
+        backdrop.classList.add("open");
+        document.body.classList.add("modal-open");
+        const first = backdrop.querySelector("input, select, textarea");
+        if (first) first.focus();
+      }
+
+      function closeModal() {
+        document.getElementById("modalRoot").innerHTML = "";
+        document.body.classList.remove("modal-open");
+      }
+
+      function updateCounts() {
+        const totalStudents = document.querySelector('[data-panel="students"] .stat-value');
+        if (totalStudents) totalStudents.textContent = String(STUDENTS.length);
+        const schoolStats = document.querySelectorAll('[data-panel="schools"] .stat-value');
+        if (schoolStats[0]) schoolStats[0].textContent = String(SCHOOLS.length);
+        if (schoolStats[1]) schoolStats[1].textContent = String(SCHOOLS.filter((s) => s[5] === "Active").length);
+        const eventStats = document.querySelectorAll('[data-panel="events"] .stat-value');
+        if (eventStats[0]) eventStats[0].textContent = String(EVENTS.length);
+        if (eventStats[1]) eventStats[1].textContent = String(EVENTS.filter((e) => e[2] === "Active").length);
+        const volStats = document.querySelectorAll('[data-panel="volunteers"] .stat-value');
+        if (volStats[0]) volStats[0].textContent = String(VOLUNTEERS.length);
+        if (volStats[1]) volStats[1].textContent = String(VOLUNTEERS.filter((v) => v[2] === "Active").length);
+        const jobStats = document.querySelectorAll('[data-panel="jobs"] .stat-value');
+        if (jobStats[0]) jobStats[0].textContent = String(JOBS.length);
+        const hofStats = document.querySelectorAll('[data-panel="hof"] .stat-value');
+        if (hofStats[0]) hofStats[0].textContent = String(HOF.length);
+        const certStats = document.querySelectorAll('[data-panel="certificates"] .stat-value');
+        if (certStats[0]) certStats[0].textContent = String(CERTS.length);
+        const kpiStats = document.querySelectorAll('[data-panel="kpi"] .stat-value');
+        if (kpiStats[2]) kpiStats[2].textContent = String(KPI.length);
+      }
+
+      function renderSchools() {
+        fillTable("schoolRows", SCHOOLS, [5]);
+      }
+
+      function renderEvents() {
+        fillTable("eventRows", EVENTS, [2]);
+      }
+
+      function renderVolunteers() {
+        fillTable("volRows", VOLUNTEERS, [2]);
+      }
+
+      function renderCerts() {
+        fillTable("certRows", CERTS, [4]);
+      }
+
+      function addRecord(type, form) {
+        if (type === "student-add") {
+          STUDENTS.unshift([
+            val(form, "id", `SA-NEW-${Date.now().toString().slice(-4)}`),
+            val(form, "name", "New Student"),
+            val(form, "college", "—"),
+            val(form, "region", "Yangon"),
+            val(form, "township", "—"),
+            val(form, "address", "—"),
+            val(form, "batch", "SA Batch 7"),
+            val(form, "gender", "Female"),
+            val(form, "age", "—"),
+            val(form, "dob", "—"),
+            val(form, "phone", "—"),
+            val(form, "email", "—"),
+            val(form, "education", "—"),
+            val(form, "major", "—"),
+            val(form, "grad", "—"),
+          ]);
+          renderStudents();
+        } else if (type === "student-import") {
+          STUDENTS.unshift([
+            `SA-IMP-${Date.now().toString().slice(-4)}`,
+            "Imported Ambassador",
+            "Imported College",
+            "Yangon",
+            "Kamayut",
+            "Imported Address",
+            "SA Batch 7",
+            "Female",
+            "21",
+            "2005-01-01",
+            "09-000-000-000",
+            "imported@example.com",
+            "Bachelor",
+            "General",
+            "2027",
+          ]);
+          renderStudents();
+        } else if (type === "school-add") {
+          SCHOOLS.unshift([
+            val(form, "name", "New Partner School"),
+            val(form, "region", "Yangon"),
+            val(form, "students", "0"),
+            val(form, "partnerSince", "2026"),
+            val(form, "established", "—"),
+            val(form, "status", "Active"),
+            val(form, "about", "Newly added partner school."),
+            val(form, "contact", "—"),
+            val(form, "phone", "—"),
+            val(form, "email", "—"),
+            val(form, "address", "—"),
+            "logo.png",
+          ]);
+          renderSchools();
+        } else if (type === "event-add") {
+          EVENTS.unshift([
+            val(form, "title", "New Event"),
+            val(form, "region", "Yangon"),
+            val(form, "status", "Active"),
+            val(form, "venue", "—"),
+            val(form, "datetime", "—"),
+            val(form, "regStart", "—"),
+            val(form, "regEnd", "—"),
+            val(form, "max", "0"),
+            val(form, "summary", "—"),
+            "details.pdf",
+            "cover.jpg",
+            val(form, "meeting", "—"),
+          ]);
+          renderEvents();
+        } else if (type === "vol-add") {
+          VOLUNTEERS.unshift([
+            val(form, "title", "New Volunteer Opportunity"),
+            val(form, "region", "Yangon"),
+            val(form, "status", "Active"),
+            val(form, "venue", "—"),
+            val(form, "datetime", "—"),
+            val(form, "regStart", "—"),
+            val(form, "regEnd", "—"),
+            val(form, "duration", "—"),
+            val(form, "max", "0"),
+            val(form, "summary", "—"),
+            "volunteer-brief.pdf",
+            "cover.jpg",
+          ]);
+          renderVolunteers();
+        } else if (type === "job-add") {
+          JOBS.unshift([
+            val(form, "title", "New Job"),
+            val(form, "type", "Internship"),
+            val(form, "company", "KBZPay"),
+            val(form, "location", "Yangon"),
+            val(form, "vacancies", "1"),
+            val(form, "start", "—"),
+            val(form, "deadline", "—"),
+            val(form, "summary", "—"),
+            val(form, "responsibilities", "—"),
+            val(form, "requirements", "—"),
+            "job-description.pdf",
+            "cover.jpg",
+          ]);
+          renderJobs();
+        } else if (type === "kpi-import") {
+          KPI.unshift([
+            `SA-KPI-${Date.now().toString().slice(-4)}`,
+            "Imported KPI Student",
+            "09-000-000-111",
+            "Imported College",
+            "80",
+            "80",
+            "80",
+            "80",
+            "80",
+            "80%",
+          ]);
+          renderKpi();
+        } else if (type === "hof-add") {
+          HOF.unshift({
+            id: val(form, "id", `SA-HOF-${Date.now().toString().slice(-4)}`),
+            name: val(form, "name", "New Honoree"),
+            college: val(form, "college", "—"),
+            batch: val(form, "batch", "SA Batch 7"),
+            category: val(form, "category", "Recognition"),
+            title: val(form, "title", "New Award"),
+            year: val(form, "year", "2026"),
+            desc: val(form, "desc", "Newly added achievement."),
+          });
+          renderHof();
+        } else if (type === "cert-upload") {
+          const batch = val(form, "batch", "SA Batch 7");
+          CERTS.unshift([
+            batch,
+            `${batch.toLowerCase().replace(/\s+/g, "-")}-certificates.zip`,
+            val(form, "count", "1"),
+            new Date().toISOString().slice(0, 10),
+            "Ready to distribute",
+          ]);
+          renderCerts();
+        }
+        updateCounts();
       }
 
       function setTab(id) {
@@ -1120,29 +1232,29 @@
 
       function initActions() {
         document.body.addEventListener("click", (e) => {
-          const toggle = e.target.closest("[data-toggle]");
-          if (toggle) {
-            const target = document.getElementById(toggle.dataset.toggle);
-            if (target) target.classList.remove("hidden");
+          const openBtn = e.target.closest("[data-open-modal]");
+          if (openBtn) {
+            openModal(openBtn.dataset.openModal);
+            return;
           }
 
-          const hide = e.target.closest("[data-hide]");
-          if (hide) {
-            const target = document.getElementById(hide.dataset.hide);
-            if (target) target.classList.add("hidden");
+          if (e.target.closest("[data-close-modal]") || e.target.classList.contains("modal-backdrop")) {
+            closeModal();
+            return;
           }
 
-          const save = e.target.closest("[data-save]");
-          if (save) {
-            const target = document.getElementById(save.dataset.save);
-            if (target) target.classList.add("hidden");
-            showNotice(save.dataset.notice, save.dataset.msg);
+          const submit = e.target.closest("[data-submit-add]");
+          if (submit) {
+            const form = submit.closest("form") || submit.closest(".modal");
+            addRecord(submit.dataset.submitAdd, form);
+            closeModal();
+            alert("Successfully added");
+            return;
           }
+        });
 
-          const noticeBtn = e.target.closest("[data-notice]:not([data-save])");
-          if (noticeBtn && !noticeBtn.dataset.save && !noticeBtn.dataset.toggle) {
-            showNotice(noticeBtn.dataset.notice, noticeBtn.dataset.msg);
-          }
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeModal();
         });
 
         document.getElementById("studentQuery").addEventListener("input", renderStudents);
@@ -1150,33 +1262,248 @@
         document.getElementById("studentBatch").addEventListener("change", renderStudents);
         document.getElementById("jobType").addEventListener("change", renderJobs);
         document.getElementById("kpiQuery").addEventListener("input", renderKpi);
-
-        document.getElementById("certUpload").addEventListener("click", () => {
-          const batch = document.getElementById("certBatch").value;
-          showNotice(
-            "certNotice",
-            `ZIP package for ${batch} validated and queued for distribution (demo).`,
-          );
+        document.getElementById("exportStudents").addEventListener("click", () => {
+          alert(`Exported ${STUDENTS.length} student record(s).`);
+        });
+        document.getElementById("manageRegs").addEventListener("click", () => {
+          alert("Registration monitor opened for active events.");
         });
         document.getElementById("certDistribute").addEventListener("click", () => {
-          const batch = document.getElementById("certBatch").value;
-          showNotice("certNotice", `Distribution started for ${batch} certificates (demo).`);
+          alert("Certificate distribution started.");
         });
       }
 
       initNav();
       initActions();
-      fillTable("schoolRows", SCHOOLS, [5]);
-      fillTable("eventRows", EVENTS, [2]);
-      fillTable("volRows", VOLUNTEERS, [2]);
-      fillTable("certRows", CERTS, [4]);
+      renderSchools();
+      renderEvents();
+      renderVolunteers();
+      renderCerts();
       renderStudents();
       renderJobs();
       renderKpi();
       renderHof();
+      updateCounts();
 
       const initial = location.hash.replace("#", "") || "students";
       setTab(NAV.some((n) => n.id === initial) ? initial : "students");
     </script>
+
+    <template id="tpl-student-add">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Add Student Ambassador</h2><button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button></div>
+          <div class="modal-body">
+            <div class="form-grid">
+              <div class="field-wrap"><label class="field-label">Student ID</label><input class="field" name="id" placeholder="SA-2026-100" /></div>
+              <div class="field-wrap"><label class="field-label">Student Name</label><input class="field" name="name" placeholder="Student Name" /></div>
+              <div class="field-wrap"><label class="field-label">College Name</label><input class="field" name="college" placeholder="College Name" /></div>
+              <div class="field-wrap"><label class="field-label">Training Region</label><select class="select" name="region"><option>Yangon</option><option>Mandalay</option><option>Ayeyarwady</option></select></div>
+              <div class="field-wrap"><label class="field-label">Township</label><input class="field" name="township" placeholder="Township" /></div>
+              <div class="field-wrap"><label class="field-label">Address</label><input class="field" name="address" placeholder="Address" /></div>
+              <div class="field-wrap"><label class="field-label">SA Batch</label><select class="select" name="batch"><option>SA Batch 7</option><option>SA Batch 6</option></select></div>
+              <div class="field-wrap"><label class="field-label">Gender</label><select class="select" name="gender"><option>Female</option><option>Male</option><option>Other</option></select></div>
+              <div class="field-wrap"><label class="field-label">Age</label><input class="field" name="age" type="number" placeholder="Age" /></div>
+              <div class="field-wrap"><label class="field-label">Date of Birth</label><input class="field" name="dob" placeholder="YYYY-MM-DD" /></div>
+              <div class="field-wrap"><label class="field-label">Phone Number</label><input class="field" name="phone" placeholder="Phone Number" /></div>
+              <div class="field-wrap"><label class="field-label">Email Address</label><input class="field" name="email" type="email" placeholder="Email Address" /></div>
+              <div class="field-wrap"><label class="field-label">Education</label><input class="field" name="education" placeholder="Education" /></div>
+              <div class="field-wrap"><label class="field-label">Specialization or Major</label><input class="field" name="major" placeholder="Specialization or Major" /></div>
+              <div class="field-wrap"><label class="field-label">Expected Graduation</label><input class="field" name="grad" placeholder="Expected Graduation" /></div>
+            </div>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="student-add">Save Record</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-student-import">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal modal-sm" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Import Student Ambassador Records</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="upload-note">Upload an Excel (.xlsx) file. A sample imported row will be added to the list.</div>
+            <div class="row-actions"><input type="file" accept=".xlsx,.xls" /></div>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="student-import">Import Excel</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-school-add">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Add Partner School</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="form-grid cols-2">
+              <div class="field-wrap"><label class="field-label">College Name</label><input class="field" name="name" /></div>
+              <div class="field-wrap"><label class="field-label">Region</label><input class="field" name="region" value="Yangon" /></div>
+              <div class="field-wrap"><label class="field-label">Total Students</label><input class="field" name="students" type="number" /></div>
+              <div class="field-wrap"><label class="field-label">Partner Since</label><input class="field" name="partnerSince" /></div>
+              <div class="field-wrap"><label class="field-label">Year Established</label><input class="field" name="established" /></div>
+              <div class="field-wrap"><label class="field-label">Status</label><select class="select" name="status"><option>Active</option><option>Inactive</option></select></div>
+              <div class="field-wrap"><label class="field-label">Contact Person</label><input class="field" name="contact" /></div>
+              <div class="field-wrap"><label class="field-label">Phone Number</label><input class="field" name="phone" /></div>
+              <div class="field-wrap"><label class="field-label">Email Address</label><input class="field" name="email" type="email" /></div>
+              <div class="field-wrap"><label class="field-label">College Address</label><input class="field" name="address" /></div>
+            </div>
+            <textarea class="textarea" name="about" rows="3" placeholder="About School"></textarea>
+            <div class="upload-note" style="margin-top:10px">College Logo (PNG/JPG)</div>
+            <div class="row-actions"><input type="file" accept="image/*" /></div>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="school-add">Save School</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-event-add">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Add Event</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="form-grid cols-2">
+              <div class="field-wrap"><label class="field-label">Event Title</label><input class="field" name="title" /></div>
+              <div class="field-wrap"><label class="field-label">Region</label><input class="field" name="region" value="Yangon" /></div>
+              <div class="field-wrap"><label class="field-label">Status</label><select class="select" name="status"><option>Active</option><option>Inactive</option></select></div>
+              <div class="field-wrap"><label class="field-label">Event Venue</label><input class="field" name="venue" /></div>
+              <div class="field-wrap"><label class="field-label">Event Date and Time</label><input class="field" name="datetime" placeholder="YYYY-MM-DD HH:MM" /></div>
+              <div class="field-wrap"><label class="field-label">Registration Start Date</label><input class="field" name="regStart" /></div>
+              <div class="field-wrap"><label class="field-label">Registration End Date</label><input class="field" name="regEnd" /></div>
+              <div class="field-wrap"><label class="field-label">Maximum Participants</label><input class="field" name="max" type="number" /></div>
+              <div class="field-wrap"><label class="field-label">Meeting Link</label><input class="field" name="meeting" /></div>
+            </div>
+            <textarea class="textarea" name="summary" rows="3" placeholder="Event Summary"></textarea>
+            <div class="form-grid cols-2" style="margin-top:10px">
+              <div class="upload-note">Event Details (PDF)<div class="row-actions"><input type="file" accept=".pdf" /></div></div>
+              <div class="upload-note">Event Cover Image<div class="row-actions"><input type="file" accept="image/*" /></div></div>
+            </div>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="event-add">Publish Event</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-vol-add">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Add Volunteer Opportunity</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="form-grid cols-2">
+              <div class="field-wrap"><label class="field-label">Volunteer Title</label><input class="field" name="title" /></div>
+              <div class="field-wrap"><label class="field-label">Region</label><input class="field" name="region" value="Yangon" /></div>
+              <div class="field-wrap"><label class="field-label">Status</label><select class="select" name="status"><option>Active</option><option>Inactive</option></select></div>
+              <div class="field-wrap"><label class="field-label">Venue</label><input class="field" name="venue" /></div>
+              <div class="field-wrap"><label class="field-label">Volunteer Date and Time</label><input class="field" name="datetime" /></div>
+              <div class="field-wrap"><label class="field-label">Registration Start Date</label><input class="field" name="regStart" /></div>
+              <div class="field-wrap"><label class="field-label">Registration End Date</label><input class="field" name="regEnd" /></div>
+              <div class="field-wrap"><label class="field-label">Duration</label><input class="field" name="duration" /></div>
+              <div class="field-wrap"><label class="field-label">Maximum Participants</label><input class="field" name="max" type="number" /></div>
+            </div>
+            <textarea class="textarea" name="summary" rows="3" placeholder="Volunteer Summary"></textarea>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="vol-add">Save Opportunity</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-job-add">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Post Job Vacancy</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="form-grid cols-2">
+              <div class="field-wrap"><label class="field-label">Job Title</label><input class="field" name="title" /></div>
+              <div class="field-wrap"><label class="field-label">Job Type</label><select class="select" name="type"><option>Full-time</option><option>Part-time</option><option>Internship</option><option>Contract</option></select></div>
+              <div class="field-wrap"><label class="field-label">Company Name</label><input class="field" name="company" value="KBZPay" /></div>
+              <div class="field-wrap"><label class="field-label">Location</label><input class="field" name="location" /></div>
+              <div class="field-wrap"><label class="field-label">Number of Vacancies</label><input class="field" name="vacancies" type="number" /></div>
+              <div class="field-wrap"><label class="field-label">Application Start Date</label><input class="field" name="start" /></div>
+              <div class="field-wrap"><label class="field-label">Application Deadline</label><input class="field" name="deadline" /></div>
+            </div>
+            <textarea class="textarea" name="summary" rows="2" placeholder="Job Summary"></textarea>
+            <textarea class="textarea" name="responsibilities" rows="3" placeholder="Job Responsibilities"></textarea>
+            <textarea class="textarea" name="requirements" rows="3" placeholder="Job Requirements"></textarea>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="job-add">Publish Job</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-kpi-import">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal modal-sm" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Import KPI</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="upload-note">Upload Excel (.xlsx). A validated KPI row will be added to the list.</div>
+            <div class="row-actions"><input type="file" accept=".xlsx,.xls" /></div>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="kpi-import">Import KPI</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-hof-add">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Add Hall of Fame Record</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="form-grid cols-2">
+              <div class="field-wrap"><label class="field-label">Student ID</label><input class="field" name="id" /></div>
+              <div class="field-wrap"><label class="field-label">Student Name</label><input class="field" name="name" /></div>
+              <div class="field-wrap"><label class="field-label">College Name</label><input class="field" name="college" /></div>
+              <div class="field-wrap"><label class="field-label">SA Batch</label><input class="field" name="batch" value="SA Batch 7" /></div>
+              <div class="field-wrap"><label class="field-label">Award Category</label><input class="field" name="category" /></div>
+              <div class="field-wrap"><label class="field-label">Award Title</label><input class="field" name="title" /></div>
+              <div class="field-wrap"><label class="field-label">Award Year</label><input class="field" name="year" value="2026" /></div>
+            </div>
+            <textarea class="textarea" name="desc" rows="3" placeholder="Achievement Description"></textarea>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="hof-add">Save Record</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-cert-upload">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal modal-sm" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Upload Certificates by Batch</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="field-wrap" style="margin-bottom:10px"><label class="field-label">SA Batch</label>
+              <select class="select" name="batch" style="width:100%"><option>SA Batch 7</option><option>SA Batch 6</option><option>SA Batch 5</option></select>
+            </div>
+            <div class="field-wrap" style="margin-bottom:10px"><label class="field-label">Certificate Count</label><input class="field" name="count" type="number" value="1" style="width:100%" /></div>
+            <input type="file" accept=".zip" />
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="cert-upload">Upload ZIP</button>
+          </div>
+        </form>
+      </div>
+    </template>
   </body>
 </html>
