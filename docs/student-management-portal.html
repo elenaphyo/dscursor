@@ -438,6 +438,121 @@
 
       body.modal-open { overflow: hidden; }
 
+
+      .tabs {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin: 14px 0 12px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 8px;
+      }
+
+      .tab-btn {
+        appearance: none;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--muted);
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      .tab-btn:hover {
+        background: var(--brand-soft);
+        color: var(--brand);
+      }
+
+      .tab-btn.active {
+        background: var(--brand-soft);
+        color: var(--brand);
+        border-color: rgba(0, 44, 118, 0.18);
+        font-weight: 600;
+      }
+
+      .tab-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 18px;
+        margin-left: 6px;
+        padding: 0 6px;
+        border-radius: 999px;
+        background: rgba(0, 44, 118, 0.1);
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .detail-banner {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 16px 18px;
+        margin-bottom: 8px;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px 16px;
+        margin-top: 12px;
+      }
+
+      .detail-item-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 2px;
+      }
+
+      .detail-item-value {
+        font-size: 13px;
+        color: var(--text);
+        line-height: 1.4;
+      }
+
+      .action-cell {
+        white-space: nowrap;
+      }
+
+      .btn-sm {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+
+      .btn-approve {
+        background: var(--success-bg);
+        border-color: #b7e4c7;
+        color: var(--success);
+      }
+
+      .btn-reject {
+        background: #fdecec;
+        border-color: #f2c6c6;
+        color: #b42318;
+      }
+
+      .btn-link {
+        background: transparent;
+        border-color: transparent;
+        color: var(--brand);
+        font-weight: 600;
+        padding: 6px 8px;
+      }
+
+      .btn-link:hover {
+        background: var(--brand-soft);
+      }
+
+      @media (max-width: 980px) {
+        .detail-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
       .table-wrap {
         overflow: auto;
         border: 1px solid var(--line);
@@ -662,29 +777,61 @@
 
         <!-- Event Management -->
         <section class="panel" data-panel="events">
-          <div class="intro">
-            <h1>Event Management</h1>
-            <p>Create, manage, and monitor events for the KBZPay Student Ambassador Program — including registrations and participants.</p>
+          <div id="eventListView">
+            <div class="intro">
+              <h1>Event Management</h1>
+              <p>Create, manage, and monitor events for the KBZPay Student Ambassador Program — including registrations and participants.</p>
+            </div>
+            <div class="stats cols-3">
+              <div class="stat"><div class="stat-value">3</div><div class="stat-label">Total events</div></div>
+              <div class="stat"><div class="stat-value">2</div><div class="stat-label">Active events</div></div>
+              <div class="stat"><div class="stat-value">500</div><div class="stat-label">Max seats (open)</div></div>
+            </div>
+            <div class="toolbar">
+              <div class="spacer"></div>
+              <button class="btn btn-primary" data-open-modal="event-add">Add Event</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Event Title</th><th>Region</th><th>Status</th><th>Event Venue</th><th>Event Date and Time</th><th>Registration Start</th><th>Registration End</th><th>Maximum Participants</th><th>Event Summary</th><th>Pending</th><th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="eventRows"></tbody>
+              </table>
+            </div>
           </div>
-          <div class="stats cols-3">
-            <div class="stat"><div class="stat-value">3</div><div class="stat-label">Total events</div></div>
-            <div class="stat"><div class="stat-value">2</div><div class="stat-label">Active events</div></div>
-            <div class="stat"><div class="stat-value">500</div><div class="stat-label">Max seats (open)</div></div>
-          </div>
-          <div class="toolbar">
-            <button class="btn" id="manageRegs">Manage Registrations</button>
-            <div class="spacer"></div>
-            <button class="btn btn-primary" data-open-modal="event-add">Add Event</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Event Title</th><th>Region</th><th>Status</th><th>Event Venue</th><th>Event Date and Time</th><th>Registration Start</th><th>Registration End</th><th>Maximum Participants</th><th>Event Summary</th><th>Details PDF</th><th>Cover Image</th><th>Meeting Link</th>
-                </tr>
-              </thead>
-              <tbody id="eventRows"></tbody>
-            </table>
+
+          <div id="eventDetailView" class="hidden">
+            <div class="toolbar" style="margin-bottom:10px">
+              <button class="btn" id="backToEvents" type="button">Back to Events</button>
+              <div class="spacer"></div>
+            </div>
+            <div class="detail-banner" id="eventDetailBanner"></div>
+            <div class="tabs" id="eventAppTabs">
+              <button type="button" class="tab-btn active" data-app-tab="pending">Pending List <span class="tab-count" id="pendingCount">0</span></button>
+              <button type="button" class="tab-btn" data-app-tab="approved">Approved <span class="tab-count" id="approvedCount">0</span></button>
+              <button type="button" class="tab-btn" data-app-tab="rejected">Rejected <span class="tab-count" id="rejectedCount">0</span></button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Application ID</th>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>College Name</th>
+                    <th>Phone Number</th>
+                    <th>Email Address</th>
+                    <th>Applied On</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="eventAppRows"></tbody>
+              </table>
+            </div>
           </div>
         </section>
 
@@ -870,9 +1017,65 @@
       ];
 
       const EVENTS = [
-        ["KBZPay Campus Activation Day", "Yangon", "Active", "University of Yangon Convocation Hall", "2026-09-12 09:00", "2026-08-20", "2026-09-10", "300", "On-campus activation with ambassador booths and QR onboarding.", "details.pdf", "cover.jpg", "meet.kbzpay.com/sa-event"],
-        ["Digital Finance Workshop", "Mandalay", "Active", "Mandalay University Seminar Room B", "2026-09-28 13:30", "2026-09-01", "2026-09-25", "120", "Hands-on workshop covering wallet safety and peer outreach.", "details.pdf", "cover.jpg", "meet.kbzpay.com/sa-event"],
-        ["SA Leadership Meetup", "Ayeyarwady", "Inactive", "Pathein Community Center", "2026-07-05 10:00", "2026-06-10", "2026-07-01", "80", "Regional leadership sync for Batch 6 ambassadors.", "details.pdf", "cover.jpg", "meet.kbzpay.com/sa-event"],
+        {
+          id: "EVT-001",
+          title: "KBZPay Campus Activation Day",
+          region: "Yangon",
+          status: "Active",
+          venue: "University of Yangon Convocation Hall",
+          datetime: "2026-09-12 09:00",
+          regStart: "2026-08-20",
+          regEnd: "2026-09-10",
+          max: "300",
+          summary: "On-campus activation with ambassador booths and QR onboarding.",
+          detailsPdf: "details.pdf",
+          cover: "cover.jpg",
+          meeting: "meet.kbzpay.com/sa-event",
+        },
+        {
+          id: "EVT-002",
+          title: "Digital Finance Workshop",
+          region: "Mandalay",
+          status: "Active",
+          venue: "Mandalay University Seminar Room B",
+          datetime: "2026-09-28 13:30",
+          regStart: "2026-09-01",
+          regEnd: "2026-09-25",
+          max: "120",
+          summary: "Hands-on workshop covering wallet safety and peer outreach.",
+          detailsPdf: "details.pdf",
+          cover: "cover.jpg",
+          meeting: "meet.kbzpay.com/sa-workshop",
+        },
+        {
+          id: "EVT-003",
+          title: "SA Leadership Meetup",
+          region: "Ayeyarwady",
+          status: "Inactive",
+          venue: "Pathein Community Center",
+          datetime: "2026-07-05 10:00",
+          regStart: "2026-06-10",
+          regEnd: "2026-07-01",
+          max: "80",
+          summary: "Regional leadership sync for Batch 6 ambassadors.",
+          detailsPdf: "details.pdf",
+          cover: "cover.jpg",
+          meeting: "meet.kbzpay.com/sa-meetup",
+        },
+      ];
+
+      let selectedEventId = null;
+      let eventAppTab = "pending";
+
+      const EVENT_APPLICATIONS = [
+        { id: "APP-1001", eventId: "EVT-001", studentId: "SA-2024-001", name: "Aye Chan Moe", college: "University of Yangon", phone: "09-250-111-001", email: "aye.chan@example.com", appliedOn: "2026-08-22", status: "pending" },
+        { id: "APP-1002", eventId: "EVT-001", studentId: "SA-2024-042", name: "Min Thu Aung", college: "University of Computer Studies, Yangon", phone: "09-250-111-042", email: "min.thu@example.com", appliedOn: "2026-08-23", status: "pending" },
+        { id: "APP-1003", eventId: "EVT-001", studentId: "SA-2023-088", name: "Su Myat Hnin", college: "Technological University (Thanlyin)", phone: "09-250-111-088", email: "su.myat@example.com", appliedOn: "2026-08-21", status: "approved" },
+        { id: "APP-1004", eventId: "EVT-001", studentId: "SA-2023-055", name: "Hnin Wai Lwin", college: "Pathein University", phone: "09-250-111-055", email: "hnin.wai@example.com", appliedOn: "2026-08-24", status: "rejected" },
+        { id: "APP-2001", eventId: "EVT-002", studentId: "SA-2024-014", name: "Kyaw Zin Htet", college: "Mandalay University", phone: "09-250-111-014", email: "kyaw.zin@example.com", appliedOn: "2026-09-03", status: "pending" },
+        { id: "APP-2002", eventId: "EVT-002", studentId: "SA-2024-001", name: "Aye Chan Moe", college: "University of Yangon", phone: "09-250-111-001", email: "aye.chan@example.com", appliedOn: "2026-09-04", status: "pending" },
+        { id: "APP-2003", eventId: "EVT-002", studentId: "SA-2023-088", name: "Su Myat Hnin", college: "Technological University (Thanlyin)", phone: "09-250-111-088", email: "su.myat@example.com", appliedOn: "2026-09-02", status: "approved" },
+        { id: "APP-3001", eventId: "EVT-003", studentId: "SA-2023-055", name: "Hnin Wai Lwin", college: "Pathein University", phone: "09-250-111-055", email: "hnin.wai@example.com", appliedOn: "2026-06-15", status: "pending" },
       ];
 
       const VOLUNTEERS = [
@@ -938,10 +1141,14 @@
       function statusHtml(value) {
         const key = String(value).toLowerCase();
         let cls = "inactive";
-        if (key === "active") cls = "active";
-        if (key.includes("ready")) cls = "ready";
-        if (key === "distributed") cls = "active";
-        return `<span class="status ${cls}">${value}</span>`;
+        let label = value;
+        if (key === "active" || key === "approved" || key === "distributed") cls = "active";
+        if (key.includes("ready") || key === "pending") cls = "ready";
+        if (key === "rejected") cls = "inactive";
+        if (key === "pending") label = "Pending";
+        if (key === "approved") label = "Approved";
+        if (key === "rejected") label = "Rejected";
+        return `<span class="status ${cls}">${label}</span>`;
       }
 
       function fillTable(id, rows, statusIndexes = []) {
@@ -1039,7 +1246,7 @@
         if (schoolStats[1]) schoolStats[1].textContent = String(SCHOOLS.filter((s) => s[5] === "Active").length);
         const eventStats = document.querySelectorAll('[data-panel="events"] .stat-value');
         if (eventStats[0]) eventStats[0].textContent = String(EVENTS.length);
-        if (eventStats[1]) eventStats[1].textContent = String(EVENTS.filter((e) => e[2] === "Active").length);
+        if (eventStats[1]) eventStats[1].textContent = String(EVENTS.filter((e) => e.status === "Active").length);
         const volStats = document.querySelectorAll('[data-panel="volunteers"] .stat-value');
         if (volStats[0]) volStats[0].textContent = String(VOLUNTEERS.length);
         if (volStats[1]) volStats[1].textContent = String(VOLUNTEERS.filter((v) => v[2] === "Active").length);
@@ -1057,8 +1264,125 @@
         fillTable("schoolRows", SCHOOLS, [5]);
       }
 
+      function pendingCountFor(eventId) {
+        return EVENT_APPLICATIONS.filter((a) => a.eventId === eventId && a.status === "pending").length;
+      }
+
       function renderEvents() {
-        fillTable("eventRows", EVENTS, [2]);
+        const body = document.getElementById("eventRows");
+        body.innerHTML = EVENTS.map((e) => {
+          const pending = pendingCountFor(e.id);
+          const status = statusHtml(e.status);
+          return `<tr>
+            <td>${e.title}</td>
+            <td>${e.region}</td>
+            <td>${status}</td>
+            <td>${e.venue}</td>
+            <td>${e.datetime}</td>
+            <td>${e.regStart}</td>
+            <td>${e.regEnd}</td>
+            <td>${e.max}</td>
+            <td>${e.summary}</td>
+            <td>${pending}</td>
+            <td class="action-cell"><button type="button" class="btn btn-link btn-sm" data-event-details="${e.id}">Details</button></td>
+          </tr>`;
+        }).join("");
+      }
+
+      function getSelectedEvent() {
+        return EVENTS.find((e) => e.id === selectedEventId) || null;
+      }
+
+      function showEventList() {
+        selectedEventId = null;
+        document.getElementById("eventListView").classList.remove("hidden");
+        document.getElementById("eventDetailView").classList.add("hidden");
+        renderEvents();
+      }
+
+      function showEventDetails(eventId) {
+        selectedEventId = eventId;
+        eventAppTab = "pending";
+        document.getElementById("eventListView").classList.add("hidden");
+        document.getElementById("eventDetailView").classList.remove("hidden");
+        document.querySelectorAll("#eventAppTabs .tab-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.appTab === "pending");
+        });
+        renderEventDetail();
+      }
+
+      function renderEventDetail() {
+        const event = getSelectedEvent();
+        if (!event) {
+          showEventList();
+          return;
+        }
+        document.getElementById("eventDetailBanner").innerHTML = `
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div>
+              <h1 style="margin:0;font-size:22px;color:var(--brand)">${event.title}</h1>
+              <p style="margin:6px 0 0;color:var(--muted);font-size:13px;max-width:720px">${event.summary}</p>
+            </div>
+            ${statusHtml(event.status)}
+          </div>
+          <div class="detail-grid">
+            <div><div class="detail-item-label">Region</div><div class="detail-item-value">${event.region}</div></div>
+            <div><div class="detail-item-label">Venue</div><div class="detail-item-value">${event.venue}</div></div>
+            <div><div class="detail-item-label">Event Date and Time</div><div class="detail-item-value">${event.datetime}</div></div>
+            <div><div class="detail-item-label">Registration Window</div><div class="detail-item-value">${event.regStart} → ${event.regEnd}</div></div>
+            <div><div class="detail-item-label">Maximum Participants</div><div class="detail-item-value">${event.max}</div></div>
+            <div><div class="detail-item-label">Meeting Link</div><div class="detail-item-value">${event.meeting}</div></div>
+          </div>`;
+
+        const apps = EVENT_APPLICATIONS.filter((a) => a.eventId === event.id);
+        const pending = apps.filter((a) => a.status === "pending");
+        const approved = apps.filter((a) => a.status === "approved");
+        const rejected = apps.filter((a) => a.status === "rejected");
+        document.getElementById("pendingCount").textContent = String(pending.length);
+        document.getElementById("approvedCount").textContent = String(approved.length);
+        document.getElementById("rejectedCount").textContent = String(rejected.length);
+
+        const rows =
+          eventAppTab === "pending" ? pending :
+          eventAppTab === "approved" ? approved : rejected;
+
+        const body = document.getElementById("eventAppRows");
+        if (!rows.length) {
+          body.innerHTML = `<tr><td colspan="9" style="white-space:normal;color:var(--muted)">No ${eventAppTab} applications for this event.</td></tr>`;
+          return;
+        }
+
+        body.innerHTML = rows.map((a) => {
+          const actions =
+            a.status === "pending"
+              ? `<button type="button" class="btn btn-sm btn-approve" data-app-action="approved" data-app-id="${a.id}">Approve</button>
+                 <button type="button" class="btn btn-sm btn-reject" data-app-action="rejected" data-app-id="${a.id}">Reject</button>`
+              : `<span style="color:var(--muted);font-size:12px">Moved to ${a.status}</span>`;
+          return `<tr>
+            <td>${a.id}</td>
+            <td>${a.studentId}</td>
+            <td>${a.name}</td>
+            <td>${a.college}</td>
+            <td>${a.phone}</td>
+            <td>${a.email}</td>
+            <td>${a.appliedOn}</td>
+            <td>${statusHtml(a.status)}</td>
+            <td class="action-cell">${actions}</td>
+          </tr>`;
+        }).join("");
+      }
+
+      function setApplicationStatus(appId, status) {
+        const app = EVENT_APPLICATIONS.find((a) => a.id === appId);
+        if (!app || app.status !== "pending") return;
+        app.status = status;
+        eventAppTab = status;
+        document.querySelectorAll("#eventAppTabs .tab-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.appTab === status);
+        });
+        renderEventDetail();
+        renderEvents();
+        alert(status === "approved" ? "Application approved" : "Application rejected");
       }
 
       function renderVolunteers() {
@@ -1125,20 +1449,21 @@
           ]);
           renderSchools();
         } else if (type === "event-add") {
-          EVENTS.unshift([
-            val(form, "title", "New Event"),
-            val(form, "region", "Yangon"),
-            val(form, "status", "Active"),
-            val(form, "venue", "—"),
-            val(form, "datetime", "—"),
-            val(form, "regStart", "—"),
-            val(form, "regEnd", "—"),
-            val(form, "max", "0"),
-            val(form, "summary", "—"),
-            "details.pdf",
-            "cover.jpg",
-            val(form, "meeting", "—"),
-          ]);
+          EVENTS.unshift({
+            id: `EVT-${Date.now().toString().slice(-4)}`,
+            title: val(form, "title", "New Event"),
+            region: val(form, "region", "Yangon"),
+            status: val(form, "status", "Active"),
+            venue: val(form, "venue", "—"),
+            datetime: val(form, "datetime", "—"),
+            regStart: val(form, "regStart", "—"),
+            regEnd: val(form, "regEnd", "—"),
+            max: val(form, "max", "0"),
+            summary: val(form, "summary", "—"),
+            detailsPdf: "details.pdf",
+            cover: "cover.jpg",
+            meeting: val(form, "meeting", "—"),
+          });
           renderEvents();
         } else if (type === "vol-add") {
           VOLUNTEERS.unshift([
@@ -1222,6 +1547,9 @@
         });
         document.getElementById("crumbLabel").textContent = item.label;
         history.replaceState(null, "", `#${item.id}`);
+        if (item.id === "events") {
+          showEventList();
+        }
       }
 
       function initNav() {
@@ -1271,11 +1599,31 @@
         document.getElementById("exportStudents").addEventListener("click", () => {
           alert(`Exported ${STUDENTS.length} student record(s).`);
         });
-        document.getElementById("manageRegs").addEventListener("click", () => {
-          alert("Registration monitor opened for active events.");
-        });
         document.getElementById("certDistribute").addEventListener("click", () => {
           alert("Certificate distribution started.");
+        });
+
+        document.getElementById("backToEvents").addEventListener("click", showEventList);
+
+        document.getElementById("eventAppTabs").addEventListener("click", (e) => {
+          const tab = e.target.closest("[data-app-tab]");
+          if (!tab) return;
+          eventAppTab = tab.dataset.appTab;
+          document.querySelectorAll("#eventAppTabs .tab-btn").forEach((btn) => {
+            btn.classList.toggle("active", btn.dataset.appTab === eventAppTab);
+          });
+          renderEventDetail();
+        });
+
+        document.getElementById("eventRows").addEventListener("click", (e) => {
+          const details = e.target.closest("[data-event-details]");
+          if (details) showEventDetails(details.dataset.eventDetails);
+        });
+
+        document.getElementById("eventAppRows").addEventListener("click", (e) => {
+          const actionBtn = e.target.closest("[data-app-action]");
+          if (!actionBtn) return;
+          setApplicationStatus(actionBtn.dataset.appId, actionBtn.dataset.appAction);
         });
       }
 
