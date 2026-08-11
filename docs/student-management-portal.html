@@ -837,28 +837,61 @@
 
         <!-- Volunteer Management -->
         <section class="panel" data-panel="volunteers">
-          <div class="intro">
-            <h1>Volunteer Management</h1>
-            <p>Coordinate volunteer opportunities for Student Ambassadors, including scheduling, registration windows, capacity, and materials.</p>
+          <div id="volListView">
+            <div class="intro">
+              <h1>Volunteer Management</h1>
+              <p>Coordinate volunteer opportunities for Student Ambassadors, including scheduling, registration windows, capacity, and materials.</p>
+            </div>
+            <div class="stats cols-3">
+              <div class="stat"><div class="stat-value">3</div><div class="stat-label">Volunteer drives</div></div>
+              <div class="stat"><div class="stat-value">2</div><div class="stat-label">Open for registration</div></div>
+              <div class="stat"><div class="stat-value">65</div><div class="stat-label">Open seats</div></div>
+            </div>
+            <div class="toolbar">
+              <div class="spacer"></div>
+              <button class="btn btn-primary" data-open-modal="vol-add">Add Volunteer Opportunity</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Volunteer Title</th><th>Region</th><th>Status</th><th>Venue</th><th>Volunteer Date and Time</th><th>Registration Start</th><th>Registration End</th><th>Duration</th><th>Maximum Participants</th><th>Volunteer Summary</th><th>Pending</th><th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="volRows"></tbody>
+              </table>
+            </div>
           </div>
-          <div class="stats cols-3">
-            <div class="stat"><div class="stat-value">3</div><div class="stat-label">Volunteer drives</div></div>
-            <div class="stat"><div class="stat-value">2</div><div class="stat-label">Open for registration</div></div>
-            <div class="stat"><div class="stat-value">65</div><div class="stat-label">Open seats</div></div>
-          </div>
-          <div class="toolbar">
-            <div class="spacer"></div>
-            <button class="btn btn-primary" data-open-modal="vol-add">Add Volunteer Opportunity</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Volunteer Title</th><th>Region</th><th>Status</th><th>Venue</th><th>Volunteer Date and Time</th><th>Registration Start</th><th>Registration End</th><th>Duration</th><th>Maximum Participants</th><th>Volunteer Summary</th><th>Details PDF</th><th>Cover Image</th>
-                </tr>
-              </thead>
-              <tbody id="volRows"></tbody>
-            </table>
+
+          <div id="volDetailView" class="hidden">
+            <div class="toolbar" style="margin-bottom:10px">
+              <button class="btn" id="backToVolunteers" type="button">Back to Volunteers</button>
+              <div class="spacer"></div>
+            </div>
+            <div class="detail-banner" id="volDetailBanner"></div>
+            <div class="tabs" id="volAppTabs">
+              <button type="button" class="tab-btn active" data-vol-tab="pending">Pending List <span class="tab-count" id="volPendingCount">0</span></button>
+              <button type="button" class="tab-btn" data-vol-tab="approved">Approved <span class="tab-count" id="volApprovedCount">0</span></button>
+              <button type="button" class="tab-btn" data-vol-tab="rejected">Rejected <span class="tab-count" id="volRejectedCount">0</span></button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Application ID</th>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>College Name</th>
+                    <th>Phone Number</th>
+                    <th>Email Address</th>
+                    <th>Applied On</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="volAppRows"></tbody>
+              </table>
+            </div>
           </div>
         </section>
 
@@ -1079,9 +1112,65 @@
       ];
 
       const VOLUNTEERS = [
-        ["Community Cashless Drive", "Yangon", "Active", "Hlaing Township Market", "2026-09-18 08:00", "2026-08-25", "2026-09-15", "4 hours", "40", "Volunteer outreach supporting merchant QR adoption.", "volunteer-brief.pdf", "cover.jpg"],
-        ["Student Orientation Support", "Mandalay", "Active", "Mandalay University Main Gate", "2026-10-02 07:30", "2026-09-10", "2026-09-28", "6 hours", "25", "Help new students enroll and learn KBZPay basics.", "volunteer-brief.pdf", "cover.jpg"],
-        ["Flood Relief Digitization Desk", "Ayeyarwady", "Inactive", "Pathein Relief Hub", "2026-06-22 09:00", "2026-06-10", "2026-06-20", "8 hours", "30", "Assisted beneficiaries with digital aid disbursement.", "volunteer-brief.pdf", "cover.jpg"],
+        {
+          id: "VOL-001",
+          title: "Community Cashless Drive",
+          region: "Yangon",
+          status: "Active",
+          venue: "Hlaing Township Market",
+          datetime: "2026-09-18 08:00",
+          regStart: "2026-08-25",
+          regEnd: "2026-09-15",
+          duration: "4 hours",
+          max: "40",
+          summary: "Volunteer outreach supporting merchant QR adoption.",
+          detailsPdf: "volunteer-brief.pdf",
+          cover: "cover.jpg",
+        },
+        {
+          id: "VOL-002",
+          title: "Student Orientation Support",
+          region: "Mandalay",
+          status: "Active",
+          venue: "Mandalay University Main Gate",
+          datetime: "2026-10-02 07:30",
+          regStart: "2026-09-10",
+          regEnd: "2026-09-28",
+          duration: "6 hours",
+          max: "25",
+          summary: "Help new students enroll and learn KBZPay basics.",
+          detailsPdf: "volunteer-brief.pdf",
+          cover: "cover.jpg",
+        },
+        {
+          id: "VOL-003",
+          title: "Flood Relief Digitization Desk",
+          region: "Ayeyarwady",
+          status: "Inactive",
+          venue: "Pathein Relief Hub",
+          datetime: "2026-06-22 09:00",
+          regStart: "2026-06-10",
+          regEnd: "2026-06-20",
+          duration: "8 hours",
+          max: "30",
+          summary: "Assisted beneficiaries with digital aid disbursement.",
+          detailsPdf: "volunteer-brief.pdf",
+          cover: "cover.jpg",
+        },
+      ];
+
+      let selectedVolunteerId = null;
+      let volAppTab = "pending";
+
+      const VOLUNTEER_APPLICATIONS = [
+        { id: "VAPP-1001", volunteerId: "VOL-001", studentId: "SA-2024-001", name: "Aye Chan Moe", college: "University of Yangon", phone: "09-250-111-001", email: "aye.chan@example.com", appliedOn: "2026-08-28", status: "pending" },
+        { id: "VAPP-1002", volunteerId: "VOL-001", studentId: "SA-2024-042", name: "Min Thu Aung", college: "University of Computer Studies, Yangon", phone: "09-250-111-042", email: "min.thu@example.com", appliedOn: "2026-08-29", status: "pending" },
+        { id: "VAPP-1003", volunteerId: "VOL-001", studentId: "SA-2023-088", name: "Su Myat Hnin", college: "Technological University (Thanlyin)", phone: "09-250-111-088", email: "su.myat@example.com", appliedOn: "2026-08-27", status: "approved" },
+        { id: "VAPP-1004", volunteerId: "VOL-001", studentId: "SA-2023-055", name: "Hnin Wai Lwin", college: "Pathein University", phone: "09-250-111-055", email: "hnin.wai@example.com", appliedOn: "2026-08-30", status: "rejected" },
+        { id: "VAPP-2001", volunteerId: "VOL-002", studentId: "SA-2024-014", name: "Kyaw Zin Htet", college: "Mandalay University", phone: "09-250-111-014", email: "kyaw.zin@example.com", appliedOn: "2026-09-12", status: "pending" },
+        { id: "VAPP-2002", volunteerId: "VOL-002", studentId: "SA-2024-001", name: "Aye Chan Moe", college: "University of Yangon", phone: "09-250-111-001", email: "aye.chan@example.com", appliedOn: "2026-09-13", status: "pending" },
+        { id: "VAPP-2003", volunteerId: "VOL-002", studentId: "SA-2024-042", name: "Min Thu Aung", college: "University of Computer Studies, Yangon", phone: "09-250-111-042", email: "min.thu@example.com", appliedOn: "2026-09-11", status: "approved" },
+        { id: "VAPP-3001", volunteerId: "VOL-003", studentId: "SA-2023-055", name: "Hnin Wai Lwin", college: "Pathein University", phone: "09-250-111-055", email: "hnin.wai@example.com", appliedOn: "2026-06-12", status: "pending" },
       ];
 
       const JOBS = [
@@ -1249,7 +1338,7 @@
         if (eventStats[1]) eventStats[1].textContent = String(EVENTS.filter((e) => e.status === "Active").length);
         const volStats = document.querySelectorAll('[data-panel="volunteers"] .stat-value');
         if (volStats[0]) volStats[0].textContent = String(VOLUNTEERS.length);
-        if (volStats[1]) volStats[1].textContent = String(VOLUNTEERS.filter((v) => v[2] === "Active").length);
+        if (volStats[1]) volStats[1].textContent = String(VOLUNTEERS.filter((v) => v.status === "Active").length);
         const jobStats = document.querySelectorAll('[data-panel="jobs"] .stat-value');
         if (jobStats[0]) jobStats[0].textContent = String(JOBS.length);
         const hofStats = document.querySelectorAll('[data-panel="hof"] .stat-value');
@@ -1385,8 +1474,125 @@
         alert(status === "approved" ? "Application approved" : "Application rejected");
       }
 
+      function pendingVolCountFor(volunteerId) {
+        return VOLUNTEER_APPLICATIONS.filter((a) => a.volunteerId === volunteerId && a.status === "pending").length;
+      }
+
       function renderVolunteers() {
-        fillTable("volRows", VOLUNTEERS, [2]);
+        const body = document.getElementById("volRows");
+        body.innerHTML = VOLUNTEERS.map((v) => {
+          const pending = pendingVolCountFor(v.id);
+          return `<tr>
+            <td>${v.title}</td>
+            <td>${v.region}</td>
+            <td>${statusHtml(v.status)}</td>
+            <td>${v.venue}</td>
+            <td>${v.datetime}</td>
+            <td>${v.regStart}</td>
+            <td>${v.regEnd}</td>
+            <td>${v.duration}</td>
+            <td>${v.max}</td>
+            <td>${v.summary}</td>
+            <td>${pending}</td>
+            <td class="action-cell"><button type="button" class="btn btn-link btn-sm" data-vol-details="${v.id}">Details</button></td>
+          </tr>`;
+        }).join("");
+      }
+
+      function getSelectedVolunteer() {
+        return VOLUNTEERS.find((v) => v.id === selectedVolunteerId) || null;
+      }
+
+      function showVolunteerList() {
+        selectedVolunteerId = null;
+        document.getElementById("volListView").classList.remove("hidden");
+        document.getElementById("volDetailView").classList.add("hidden");
+        renderVolunteers();
+      }
+
+      function showVolunteerDetails(volunteerId) {
+        selectedVolunteerId = volunteerId;
+        volAppTab = "pending";
+        document.getElementById("volListView").classList.add("hidden");
+        document.getElementById("volDetailView").classList.remove("hidden");
+        document.querySelectorAll("#volAppTabs .tab-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.volTab === "pending");
+        });
+        renderVolunteerDetail();
+      }
+
+      function renderVolunteerDetail() {
+        const item = getSelectedVolunteer();
+        if (!item) {
+          showVolunteerList();
+          return;
+        }
+        document.getElementById("volDetailBanner").innerHTML = `
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div>
+              <h1 style="margin:0;font-size:22px;color:var(--brand)">${item.title}</h1>
+              <p style="margin:6px 0 0;color:var(--muted);font-size:13px;max-width:720px">${item.summary}</p>
+            </div>
+            ${statusHtml(item.status)}
+          </div>
+          <div class="detail-grid">
+            <div><div class="detail-item-label">Region</div><div class="detail-item-value">${item.region}</div></div>
+            <div><div class="detail-item-label">Venue</div><div class="detail-item-value">${item.venue}</div></div>
+            <div><div class="detail-item-label">Volunteer Date and Time</div><div class="detail-item-value">${item.datetime}</div></div>
+            <div><div class="detail-item-label">Registration Window</div><div class="detail-item-value">${item.regStart} → ${item.regEnd}</div></div>
+            <div><div class="detail-item-label">Duration</div><div class="detail-item-value">${item.duration}</div></div>
+            <div><div class="detail-item-label">Maximum Participants</div><div class="detail-item-value">${item.max}</div></div>
+          </div>`;
+
+        const apps = VOLUNTEER_APPLICATIONS.filter((a) => a.volunteerId === item.id);
+        const pending = apps.filter((a) => a.status === "pending");
+        const approved = apps.filter((a) => a.status === "approved");
+        const rejected = apps.filter((a) => a.status === "rejected");
+        document.getElementById("volPendingCount").textContent = String(pending.length);
+        document.getElementById("volApprovedCount").textContent = String(approved.length);
+        document.getElementById("volRejectedCount").textContent = String(rejected.length);
+
+        const rows =
+          volAppTab === "pending" ? pending :
+          volAppTab === "approved" ? approved : rejected;
+
+        const body = document.getElementById("volAppRows");
+        if (!rows.length) {
+          body.innerHTML = `<tr><td colspan="9" style="white-space:normal;color:var(--muted)">No ${volAppTab} applications for this volunteer opportunity.</td></tr>`;
+          return;
+        }
+
+        body.innerHTML = rows.map((a) => {
+          const actions =
+            a.status === "pending"
+              ? `<button type="button" class="btn btn-sm btn-approve" data-vol-app-action="approved" data-vol-app-id="${a.id}">Approve</button>
+                 <button type="button" class="btn btn-sm btn-reject" data-vol-app-action="rejected" data-vol-app-id="${a.id}">Reject</button>`
+              : `<span style="color:var(--muted);font-size:12px">Moved to ${a.status}</span>`;
+          return `<tr>
+            <td>${a.id}</td>
+            <td>${a.studentId}</td>
+            <td>${a.name}</td>
+            <td>${a.college}</td>
+            <td>${a.phone}</td>
+            <td>${a.email}</td>
+            <td>${a.appliedOn}</td>
+            <td>${statusHtml(a.status)}</td>
+            <td class="action-cell">${actions}</td>
+          </tr>`;
+        }).join("");
+      }
+
+      function setVolunteerApplicationStatus(appId, status) {
+        const app = VOLUNTEER_APPLICATIONS.find((a) => a.id === appId);
+        if (!app || app.status !== "pending") return;
+        app.status = status;
+        volAppTab = status;
+        document.querySelectorAll("#volAppTabs .tab-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.volTab === status);
+        });
+        renderVolunteerDetail();
+        renderVolunteers();
+        alert(status === "approved" ? "Application approved" : "Application rejected");
       }
 
       function renderCerts() {
@@ -1466,20 +1672,21 @@
           });
           renderEvents();
         } else if (type === "vol-add") {
-          VOLUNTEERS.unshift([
-            val(form, "title", "New Volunteer Opportunity"),
-            val(form, "region", "Yangon"),
-            val(form, "status", "Active"),
-            val(form, "venue", "—"),
-            val(form, "datetime", "—"),
-            val(form, "regStart", "—"),
-            val(form, "regEnd", "—"),
-            val(form, "duration", "—"),
-            val(form, "max", "0"),
-            val(form, "summary", "—"),
-            "volunteer-brief.pdf",
-            "cover.jpg",
-          ]);
+          VOLUNTEERS.unshift({
+            id: `VOL-${Date.now().toString().slice(-4)}`,
+            title: val(form, "title", "New Volunteer Opportunity"),
+            region: val(form, "region", "Yangon"),
+            status: val(form, "status", "Active"),
+            venue: val(form, "venue", "—"),
+            datetime: val(form, "datetime", "—"),
+            regStart: val(form, "regStart", "—"),
+            regEnd: val(form, "regEnd", "—"),
+            duration: val(form, "duration", "—"),
+            max: val(form, "max", "0"),
+            summary: val(form, "summary", "—"),
+            detailsPdf: "volunteer-brief.pdf",
+            cover: "cover.jpg",
+          });
           renderVolunteers();
         } else if (type === "job-add") {
           JOBS.unshift([
@@ -1549,6 +1756,9 @@
         history.replaceState(null, "", `#${item.id}`);
         if (item.id === "events") {
           showEventList();
+        }
+        if (item.id === "volunteers") {
+          showVolunteerList();
         }
       }
 
@@ -1624,6 +1834,29 @@
           const actionBtn = e.target.closest("[data-app-action]");
           if (!actionBtn) return;
           setApplicationStatus(actionBtn.dataset.appId, actionBtn.dataset.appAction);
+        });
+
+        document.getElementById("backToVolunteers").addEventListener("click", showVolunteerList);
+
+        document.getElementById("volAppTabs").addEventListener("click", (e) => {
+          const tab = e.target.closest("[data-vol-tab]");
+          if (!tab) return;
+          volAppTab = tab.dataset.volTab;
+          document.querySelectorAll("#volAppTabs .tab-btn").forEach((btn) => {
+            btn.classList.toggle("active", btn.dataset.volTab === volAppTab);
+          });
+          renderVolunteerDetail();
+        });
+
+        document.getElementById("volRows").addEventListener("click", (e) => {
+          const details = e.target.closest("[data-vol-details]");
+          if (details) showVolunteerDetails(details.dataset.volDetails);
+        });
+
+        document.getElementById("volAppRows").addEventListener("click", (e) => {
+          const actionBtn = e.target.closest("[data-vol-app-action]");
+          if (!actionBtn) return;
+          setVolunteerApplicationStatus(actionBtn.dataset.volAppId, actionBtn.dataset.volAppAction);
         });
       }
 
