@@ -63,6 +63,11 @@
         display: flex;
         flex-direction: column;
         gap: 14px;
+        position: sticky;
+        top: 0;
+        align-self: start;
+        height: 100vh;
+        overflow: auto;
       }
 
       .brand-block {
@@ -639,7 +644,16 @@
           <p class="brand-name">KBZPay</p>
           <p class="brand-sub">Student Management Portal</p>
         </div>
-        <nav class="nav" id="nav"></nav>
+        <nav class="nav" id="nav" aria-label="Main modules">
+          <button class="nav-btn active" type="button" data-tab="students">Student Record</button>
+          <button class="nav-btn" type="button" data-tab="schools">Partner School</button>
+          <button class="nav-btn" type="button" data-tab="events">Event Management</button>
+          <button class="nav-btn" type="button" data-tab="volunteers">Volunteer Management</button>
+          <button class="nav-btn" type="button" data-tab="jobs">Job Management</button>
+          <button class="nav-btn" type="button" data-tab="kpi">KPI Management</button>
+          <button class="nav-btn" type="button" data-tab="hof">Hall of Fame</button>
+          <button class="nav-btn" type="button" data-tab="certificates">Certificate Management</button>
+        </nav>
         <div class="sidebar-foot">
           Administrator<br />
           SA Program console
@@ -1350,10 +1364,6 @@
 
       function initNav() {
         const nav = document.getElementById("nav");
-        nav.innerHTML = NAV.map(
-          (item) =>
-            `<button class="nav-btn" type="button" data-tab="${item.id}">${item.label}</button>`,
-        ).join("");
         nav.addEventListener("click", (e) => {
           const btn = e.target.closest("[data-tab]");
           if (btn) setTab(btn.dataset.tab);
