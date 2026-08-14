@@ -553,6 +553,70 @@
         }
       }
 
+
+      .nav-section {
+        margin-top: 12px;
+        padding: 10px 12px 4px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.55);
+      }
+
+      .banner-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .banner-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .banner-thumb {
+        width: 100%;
+        aspect-ratio: 16 / 7;
+        object-fit: cover;
+        background: #d9e1ef;
+        display: block;
+      }
+
+      .banner-thumb-fallback {
+        width: 100%;
+        aspect-ratio: 16 / 7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #002c76, #0b4aa2);
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .banner-card-body {
+        padding: 12px;
+      }
+
+      .thumb-preview {
+        width: 120px;
+        height: 52px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid var(--line);
+        background: #eef1f7;
+      }
+
+      @media (max-width: 980px) {
+        .banner-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
       .table-wrap {
         overflow: auto;
         border: 1px solid var(--line);
@@ -1074,6 +1138,206 @@
             </table>
           </div>
         </section>
+
+        <!-- Banner Management -->
+        <section class="panel" data-panel="banners">
+          <div id="bannerListView">
+            <div class="intro">
+              <h1>Banner Management</h1>
+              <p>Create and manage banner thumbnails for Student Ambassador program promotions and announcements.</p>
+            </div>
+            <div class="stats cols-3">
+              <div class="stat"><div class="stat-value" id="bannerTotalStat">0</div><div class="stat-label">Total banners</div></div>
+              <div class="stat"><div class="stat-value" id="bannerActiveStat">0</div><div class="stat-label">Active banners</div></div>
+              <div class="stat"><div class="stat-value" id="bannerInactiveStat">0</div><div class="stat-label">Inactive banners</div></div>
+            </div>
+            <div class="toolbar">
+              <div class="spacer"></div>
+              <button class="btn btn-primary" data-open-modal="banner-add">Add Banner</button>
+            </div>
+            <div class="banner-grid" id="bannerCards"></div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Thumbnail</th>
+                    <th>Banner Title</th>
+                    <th>Placement</th>
+                    <th>Link URL</th>
+                    <th>Sort Order</th>
+                    <th>Status</th>
+                    <th>Updated On</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="bannerRows"></tbody>
+              </table>
+            </div>
+          </div>
+          <div id="bannerDetailView" class="hidden">
+            <div class="toolbar" style="margin-bottom:10px">
+              <button class="btn" id="backToBanners" type="button">Back to Banners</button>
+              <div class="spacer"></div>
+              <button class="btn" id="editBannerBtn" type="button">Edit</button>
+              <button class="btn btn-reject" id="deleteBannerBtn" type="button">Delete</button>
+            </div>
+            <div class="detail-banner" id="bannerDetailBanner"></div>
+          </div>
+        </section>
+
+        <!-- Award Category -->
+        <section class="panel" data-panel="award-categories">
+          <div id="awardCatListView">
+            <div class="intro">
+              <h1>Award Category</h1>
+              <p>Manage master award categories used in Hall of Fame recognition.</p>
+            </div>
+            <div class="toolbar">
+              <input class="field search" id="awardCatQuery" type="search" placeholder="Search award category…" />
+              <div class="spacer"></div>
+              <button class="btn btn-primary" data-open-modal="award-cat-add">Add Award Category</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Category Code</th>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="awardCatRows"></tbody>
+              </table>
+            </div>
+          </div>
+          <div id="awardCatDetailView" class="hidden">
+            <div class="toolbar" style="margin-bottom:10px">
+              <button class="btn" id="backToAwardCats" type="button">Back to Award Categories</button>
+              <div class="spacer"></div>
+              <button class="btn" id="editAwardCatBtn" type="button">Edit</button>
+              <button class="btn btn-reject" id="deleteAwardCatBtn" type="button">Delete</button>
+            </div>
+            <div class="detail-banner" id="awardCatDetailBanner"></div>
+          </div>
+        </section>
+
+        <!-- SA Batch -->
+        <section class="panel" data-panel="sa-batches">
+          <div id="saBatchListView">
+            <div class="intro">
+              <h1>SA Batch</h1>
+              <p>Manage Student Ambassador batches used across student records, certificates, and reporting.</p>
+            </div>
+            <div class="toolbar">
+              <input class="field search" id="saBatchQuery" type="search" placeholder="Search SA batch…" />
+              <div class="spacer"></div>
+              <button class="btn btn-primary" data-open-modal="sa-batch-add">Add SA Batch</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Batch Code</th>
+                    <th>Batch Name</th>
+                    <th>Start Year</th>
+                    <th>End Year</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="saBatchRows"></tbody>
+              </table>
+            </div>
+          </div>
+          <div id="saBatchDetailView" class="hidden">
+            <div class="toolbar" style="margin-bottom:10px">
+              <button class="btn" id="backToSaBatches" type="button">Back to SA Batches</button>
+              <div class="spacer"></div>
+              <button class="btn" id="editSaBatchBtn" type="button">Edit</button>
+              <button class="btn btn-reject" id="deleteSaBatchBtn" type="button">Delete</button>
+            </div>
+            <div class="detail-banner" id="saBatchDetailBanner"></div>
+          </div>
+        </section>
+
+        <!-- Training Region -->
+        <section class="panel" data-panel="training-regions">
+          <div id="regionListView">
+            <div class="intro">
+              <h1>Training Region</h1>
+              <p>Manage training regions used for students, events, volunteers, and partner schools.</p>
+            </div>
+            <div class="toolbar">
+              <input class="field search" id="regionQuery" type="search" placeholder="Search training region…" />
+              <div class="spacer"></div>
+              <button class="btn btn-primary" data-open-modal="region-add">Add Training Region</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Region Code</th>
+                    <th>Region Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="regionRows"></tbody>
+              </table>
+            </div>
+          </div>
+          <div id="regionDetailView" class="hidden">
+            <div class="toolbar" style="margin-bottom:10px">
+              <button class="btn" id="backToRegions" type="button">Back to Training Regions</button>
+              <div class="spacer"></div>
+              <button class="btn" id="editRegionBtn" type="button">Edit</button>
+              <button class="btn btn-reject" id="deleteRegionBtn" type="button">Delete</button>
+            </div>
+            <div class="detail-banner" id="regionDetailBanner"></div>
+          </div>
+        </section>
+
+        <!-- Certificate Category -->
+        <section class="panel" data-panel="certificate-categories">
+          <div id="certCatListView">
+            <div class="intro">
+              <h1>Certificate Category</h1>
+              <p>Manage certificate categories used for certificate upload and distribution.</p>
+            </div>
+            <div class="toolbar">
+              <input class="field search" id="certCatQuery" type="search" placeholder="Search certificate category…" />
+              <div class="spacer"></div>
+              <button class="btn btn-primary" data-open-modal="cert-cat-add">Add Certificate Category</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Category Code</th>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="certCatRows"></tbody>
+              </table>
+            </div>
+          </div>
+          <div id="certCatDetailView" class="hidden">
+            <div class="toolbar" style="margin-bottom:10px">
+              <button class="btn" id="backToCertCats" type="button">Back to Certificate Categories</button>
+              <div class="spacer"></div>
+              <button class="btn" id="editCertCatBtn" type="button">Edit</button>
+              <button class="btn btn-reject" id="deleteCertCatBtn" type="button">Delete</button>
+            </div>
+            <div class="detail-banner" id="certCatDetailBanner"></div>
+          </div>
+        </section>
+
       </main>
     </div>
 
@@ -1090,6 +1354,12 @@
         { id: "kpi", label: "KPI Management" },
         { id: "hof", label: "Hall of Fame" },
         { id: "certificates", label: "Certificate Management" },
+        { id: "banners", label: "Banner Management" },
+        { section: "Master Setup" },
+        { id: "award-categories", label: "Award Category" },
+        { id: "sa-batches", label: "SA Batch" },
+        { id: "training-regions", label: "Training Region" },
+        { id: "certificate-categories", label: "Certificate Category" },
       ];
 
       const STUDENTS = [
@@ -1301,6 +1571,42 @@
         ["SA Batch 6", "sa-batch-6-certificates.zip", "132", "2025-12-02", "Distributed"],
         ["SA Batch 5", "sa-batch-5-certificates.zip", "120", "2025-06-14", "Distributed"],
       ];
+
+
+      const BANNERS = [
+        { id: "BNR-001", title: "SA Batch 7 Recruitment", placement: "Home Hero", linkUrl: "https://kbzpay.com/sa", sortOrder: "1", status: "Active", updatedOn: "2026-08-01", imageName: "sa-batch7-hero.jpg", imageData: "" },
+        { id: "BNR-002", title: "Campus Activation Week", placement: "Event Page", linkUrl: "https://kbzpay.com/events", sortOrder: "2", status: "Active", updatedOn: "2026-08-10", imageName: "campus-activation.jpg", imageData: "" },
+        { id: "BNR-003", title: "Hall of Fame Spotlight", placement: "Hall of Fame", linkUrl: "https://kbzpay.com/hof", sortOrder: "3", status: "Inactive", updatedOn: "2026-07-20", imageName: "hof-spotlight.jpg", imageData: "" },
+      ];
+      let selectedBannerId = null;
+
+      const AWARD_CATEGORIES = [
+        { id: "AC-001", code: "TOP", name: "Top Performer", description: "Highest overall KPI and leadership.", status: "Active" },
+        { id: "AC-002", code: "IMPACT", name: "Community Impact", description: "Outstanding merchant and community outreach.", status: "Active" },
+        { id: "AC-003", code: "LEAD", name: "Leadership", description: "Mentorship and regional leadership awards.", status: "Active" },
+      ];
+      let selectedAwardCatId = null;
+
+      const SA_BATCHES = [
+        { id: "BAT-005", code: "SA5", name: "SA Batch 5", startYear: "2024", endYear: "2025", status: "Inactive" },
+        { id: "BAT-006", code: "SA6", name: "SA Batch 6", startYear: "2025", endYear: "2026", status: "Active" },
+        { id: "BAT-007", code: "SA7", name: "SA Batch 7", startYear: "2026", endYear: "2027", status: "Active" },
+      ];
+      let selectedSaBatchId = null;
+
+      const TRAINING_REGIONS = [
+        { id: "REG-001", code: "YGN", name: "Yangon", description: "Lower Myanmar training region.", status: "Active" },
+        { id: "REG-002", code: "MDY", name: "Mandalay", description: "Upper Myanmar training region.", status: "Active" },
+        { id: "REG-003", code: "AYY", name: "Ayeyarwady", description: "Delta region training coverage.", status: "Active" },
+      ];
+      let selectedRegionId = null;
+
+      const CERTIFICATE_CATEGORIES = [
+        { id: "CC-001", code: "COMP", name: "Completion", description: "Program completion certificates.", status: "Active" },
+        { id: "CC-002", code: "EXCEL", name: "Excellence", description: "Outstanding performance certificates.", status: "Active" },
+        { id: "CC-003", code: "PART", name: "Participation", description: "Event and volunteer participation certificates.", status: "Active" },
+      ];
+      let selectedCertCatId = null;
 
       function statusHtml(value) {
         const key = String(value).toLowerCase();
@@ -2002,12 +2308,100 @@
             "Ready to distribute",
           ]);
           renderCerts();
+        } else if (type === "banner-add" || type === "banner-edit") {
+          const imageInput = form.querySelector('input[name="image"]');
+          const existing = type === "banner-edit" ? getSelectedBanner() : null;
+          const base = {
+            id: type === "banner-edit" && selectedBannerId ? selectedBannerId : `BNR-${Date.now().toString().slice(-4)}`,
+            title: val(form, "title", "New Banner"),
+            placement: val(form, "placement", "Home Hero"),
+            linkUrl: val(form, "linkUrl", "—"),
+            sortOrder: val(form, "sortOrder", String(BANNERS.length + 1)),
+            status: val(form, "status", "Active"),
+            updatedOn: todayStr(),
+          };
+          const finish = (imageName, imageData) => {
+            const payload = {
+              ...base,
+              imageName: imageName || existing?.imageName || "",
+              imageData: imageData || existing?.imageData || "",
+            };
+            if (type === "banner-edit") {
+              const idx = BANNERS.findIndex((b) => b.id === selectedBannerId);
+              if (idx >= 0) BANNERS[idx] = payload;
+              renderBannerDetail();
+            } else {
+              BANNERS.unshift(payload);
+            }
+            renderBanners();
+            updateCounts();
+          };
+          if (imageInput?.files?.length) readImageFile(imageInput, finish);
+          else finish("", "");
+          return;
+        } else if (type === "award-cat-add" || type === "award-cat-edit") {
+          const payload = {
+            id: type === "award-cat-edit" && selectedAwardCatId ? selectedAwardCatId : `AC-${Date.now().toString().slice(-4)}`,
+            code: val(form, "code", "NEW"),
+            name: val(form, "name", "New Award Category"),
+            description: val(form, "description", "—"),
+            status: val(form, "status", "Active"),
+          };
+          if (type === "award-cat-edit") {
+            const idx = AWARD_CATEGORIES.findIndex((c) => c.id === selectedAwardCatId);
+            if (idx >= 0) AWARD_CATEGORIES[idx] = payload;
+            showAwardCatDetails(payload.id);
+          } else AWARD_CATEGORIES.unshift(payload);
+          renderAwardCats();
+        } else if (type === "sa-batch-add" || type === "sa-batch-edit") {
+          const payload = {
+            id: type === "sa-batch-edit" && selectedSaBatchId ? selectedSaBatchId : `BAT-${Date.now().toString().slice(-4)}`,
+            code: val(form, "code", "SA"),
+            name: val(form, "name", "SA Batch"),
+            startYear: val(form, "startYear", "2026"),
+            endYear: val(form, "endYear", "2027"),
+            status: val(form, "status", "Active"),
+          };
+          if (type === "sa-batch-edit") {
+            const idx = SA_BATCHES.findIndex((b) => b.id === selectedSaBatchId);
+            if (idx >= 0) SA_BATCHES[idx] = payload;
+            showSaBatchDetails(payload.id);
+          } else SA_BATCHES.unshift(payload);
+          renderSaBatches();
+        } else if (type === "region-add" || type === "region-edit") {
+          const payload = {
+            id: type === "region-edit" && selectedRegionId ? selectedRegionId : `REG-${Date.now().toString().slice(-4)}`,
+            code: val(form, "code", "REG"),
+            name: val(form, "name", "New Region"),
+            description: val(form, "description", "—"),
+            status: val(form, "status", "Active"),
+          };
+          if (type === "region-edit") {
+            const idx = TRAINING_REGIONS.findIndex((r) => r.id === selectedRegionId);
+            if (idx >= 0) TRAINING_REGIONS[idx] = payload;
+            showRegionDetails(payload.id);
+          } else TRAINING_REGIONS.unshift(payload);
+          renderRegions();
+        } else if (type === "cert-cat-add" || type === "cert-cat-edit") {
+          const payload = {
+            id: type === "cert-cat-edit" && selectedCertCatId ? selectedCertCatId : `CC-${Date.now().toString().slice(-4)}`,
+            code: val(form, "code", "CERT"),
+            name: val(form, "name", "New Certificate Category"),
+            description: val(form, "description", "—"),
+            status: val(form, "status", "Active"),
+          };
+          if (type === "cert-cat-edit") {
+            const idx = CERTIFICATE_CATEGORIES.findIndex((c) => c.id === selectedCertCatId);
+            if (idx >= 0) CERTIFICATE_CATEGORIES[idx] = payload;
+            showCertCatDetails(payload.id);
+          } else CERTIFICATE_CATEGORIES.unshift(payload);
+          renderCertCats();
         }
         updateCounts();
       }
 
       function setTab(id) {
-        const item = NAV.find((n) => n.id === id) || NAV[0];
+        const item = NAV.find((n) => n.id === id) || NAV.find((n) => n.id) || NAV[0];
         document.querySelectorAll(".nav-btn").forEach((btn) => {
           btn.classList.toggle("active", btn.dataset.tab === item.id);
         });
@@ -2021,14 +2415,21 @@
         if (item.id === "jobs") showJobList();
         if (item.id === "events") showEventList();
         if (item.id === "volunteers") showVolunteerList();
+        if (item.id === "banners") showBannerList();
+        if (item.id === "award-categories") showAwardCatList();
+        if (item.id === "sa-batches") showSaBatchList();
+        if (item.id === "training-regions") showRegionList();
+        if (item.id === "certificate-categories") showCertCatList();
       }
 
       function initNav() {
         const nav = document.getElementById("nav");
-        nav.innerHTML = NAV.map(
-          (item) =>
-            `<button class="nav-btn" type="button" data-tab="${item.id}">${item.label}</button>`,
-        ).join("");
+        nav.innerHTML = NAV.map((item) => {
+          if (item.section) {
+            return `<div class="nav-section">${item.section}</div>`;
+          }
+          return `<button class="nav-btn" type="button" data-tab="${item.id}">${item.label}</button>`;
+        }).join("");
         nav.addEventListener("click", (e) => {
           const btn = e.target.closest("[data-tab]");
           if (btn) setTab(btn.dataset.tab);
@@ -2163,7 +2564,297 @@
           alert("Successfully deleted");
           showVolunteerList();
           updateCounts();
+        } else if (kind === "banner") {
+          if (!selectedBannerId || !confirm("Delete this banner?")) return;
+          const idx = BANNERS.findIndex((b) => b.id === selectedBannerId);
+          if (idx >= 0) BANNERS.splice(idx, 1);
+          alert("Successfully deleted");
+          showBannerList();
+        } else if (kind === "award-cat") {
+          if (!selectedAwardCatId || !confirm("Delete this award category?")) return;
+          const idx = AWARD_CATEGORIES.findIndex((c) => c.id === selectedAwardCatId);
+          if (idx >= 0) AWARD_CATEGORIES.splice(idx, 1);
+          alert("Successfully deleted");
+          showAwardCatList();
+        } else if (kind === "sa-batch") {
+          if (!selectedSaBatchId || !confirm("Delete this SA batch?")) return;
+          const idx = SA_BATCHES.findIndex((b) => b.id === selectedSaBatchId);
+          if (idx >= 0) SA_BATCHES.splice(idx, 1);
+          alert("Successfully deleted");
+          showSaBatchList();
+        } else if (kind === "region") {
+          if (!selectedRegionId || !confirm("Delete this training region?")) return;
+          const idx = TRAINING_REGIONS.findIndex((r) => r.id === selectedRegionId);
+          if (idx >= 0) TRAINING_REGIONS.splice(idx, 1);
+          alert("Successfully deleted");
+          showRegionList();
+        } else if (kind === "cert-cat") {
+          if (!selectedCertCatId || !confirm("Delete this certificate category?")) return;
+          const idx = CERTIFICATE_CATEGORIES.findIndex((c) => c.id === selectedCertCatId);
+          if (idx >= 0) CERTIFICATE_CATEGORIES.splice(idx, 1);
+          alert("Successfully deleted");
+          showCertCatList();
         }
+      }
+
+
+      function todayStr() {
+        return new Date().toISOString().slice(0, 10);
+      }
+
+      function bannerThumbHtml(b, className = "banner-thumb") {
+        if (b.imageData) {
+          return `<img class="${className}" src="${b.imageData}" alt="${b.title}" />`;
+        }
+        return `<div class="banner-thumb-fallback">${b.title}</div>`;
+      }
+
+      function renderBanners() {
+        document.getElementById("bannerTotalStat").textContent = String(BANNERS.length);
+        document.getElementById("bannerActiveStat").textContent = String(BANNERS.filter((b) => b.status === "Active").length);
+        document.getElementById("bannerInactiveStat").textContent = String(BANNERS.filter((b) => b.status !== "Active").length);
+        const sorted = [...BANNERS].sort((a, b) => Number(a.sortOrder) - Number(b.sortOrder));
+        document.getElementById("bannerCards").innerHTML = sorted.map((b) => `
+          <div class="banner-card">
+            ${bannerThumbHtml(b)}
+            <div class="banner-card-body">
+              <div style="font-weight:600;color:var(--brand)">${b.title}</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">${b.placement} · ${statusHtml(b.status)}</div>
+              <div class="row-actions">
+                <button type="button" class="btn btn-link btn-sm" data-banner-details="${b.id}">Details</button>
+              </div>
+            </div>
+          </div>`).join("");
+        document.getElementById("bannerRows").innerHTML = sorted.map((b) => `<tr>
+          <td>${b.imageData ? `<img class="thumb-preview" src="${b.imageData}" alt="" />` : `<div class="thumb-preview" style="display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted)">No image</div>`}</td>
+          <td>${b.title}</td><td>${b.placement}</td><td>${b.linkUrl}</td><td>${b.sortOrder}</td><td>${statusHtml(b.status)}</td><td>${b.updatedOn}</td>
+          <td class="action-cell"><button type="button" class="btn btn-link btn-sm" data-banner-details="${b.id}">Details</button></td>
+        </tr>`).join("");
+      }
+
+      function getSelectedBanner() { return BANNERS.find((b) => b.id === selectedBannerId) || null; }
+      function showBannerList() {
+        selectedBannerId = null;
+        document.getElementById("bannerListView").classList.remove("hidden");
+        document.getElementById("bannerDetailView").classList.add("hidden");
+        renderBanners();
+      }
+      function showBannerDetails(id) {
+        selectedBannerId = id;
+        document.getElementById("bannerListView").classList.add("hidden");
+        document.getElementById("bannerDetailView").classList.remove("hidden");
+        renderBannerDetail();
+      }
+      function renderBannerDetail() {
+        const b = getSelectedBanner();
+        if (!b) return showBannerList();
+        document.getElementById("bannerDetailBanner").innerHTML = `
+          <div style="margin-bottom:12px">${bannerThumbHtml(b)}</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div>
+              <h1 style="margin:0;font-size:22px;color:var(--brand)">${b.title}</h1>
+              <p style="margin:6px 0 0;color:var(--muted);font-size:13px">${b.id} · ${b.imageName || "No file"}</p>
+            </div>
+            ${statusHtml(b.status)}
+          </div>
+          <div class="detail-grid">
+            <div><div class="detail-item-label">Placement</div><div class="detail-item-value">${b.placement}</div></div>
+            <div><div class="detail-item-label">Link URL</div><div class="detail-item-value">${b.linkUrl}</div></div>
+            <div><div class="detail-item-label">Sort Order</div><div class="detail-item-value">${b.sortOrder}</div></div>
+            <div><div class="detail-item-label">Updated On</div><div class="detail-item-value">${b.updatedOn}</div></div>
+          </div>`;
+      }
+
+      function renderMasterTable(rowsId, items, queryId, mapRow) {
+        const q = (document.getElementById(queryId)?.value || "").trim().toLowerCase();
+        const filtered = items.filter((item) => !q || Object.values(item).join(" ").toLowerCase().includes(q));
+        document.getElementById(rowsId).innerHTML = filtered.map(mapRow).join("");
+      }
+
+      function renderAwardCats() {
+        renderMasterTable("awardCatRows", AWARD_CATEGORIES, "awardCatQuery", (c) => `<tr>
+          <td>${c.code}</td><td>${c.name}</td><td>${c.description}</td><td>${statusHtml(c.status)}</td>
+          <td class="action-cell"><button type="button" class="btn btn-link btn-sm" data-award-cat-details="${c.id}">Details</button></td>
+        </tr>`);
+      }
+      function getSelectedAwardCat() { return AWARD_CATEGORIES.find((c) => c.id === selectedAwardCatId) || null; }
+      function showAwardCatList() {
+        selectedAwardCatId = null;
+        document.getElementById("awardCatListView").classList.remove("hidden");
+        document.getElementById("awardCatDetailView").classList.add("hidden");
+        renderAwardCats();
+      }
+      function showAwardCatDetails(id) {
+        selectedAwardCatId = id;
+        document.getElementById("awardCatListView").classList.add("hidden");
+        document.getElementById("awardCatDetailView").classList.remove("hidden");
+        const c = getSelectedAwardCat();
+        if (!c) return showAwardCatList();
+        document.getElementById("awardCatDetailBanner").innerHTML = `
+          <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div><h1 style="margin:0;font-size:22px;color:var(--brand)">${c.name}</h1>
+            <p style="margin:6px 0 0;color:var(--muted);font-size:13px">${c.code}</p></div>
+            ${statusHtml(c.status)}
+          </div>
+          <div class="detail-grid">
+            <div><div class="detail-item-label">Description</div><div class="detail-item-value">${c.description}</div></div>
+          </div>`;
+      }
+
+      function renderSaBatches() {
+        renderMasterTable("saBatchRows", SA_BATCHES, "saBatchQuery", (b) => `<tr>
+          <td>${b.code}</td><td>${b.name}</td><td>${b.startYear}</td><td>${b.endYear}</td><td>${statusHtml(b.status)}</td>
+          <td class="action-cell"><button type="button" class="btn btn-link btn-sm" data-sa-batch-details="${b.id}">Details</button></td>
+        </tr>`);
+      }
+      function getSelectedSaBatch() { return SA_BATCHES.find((b) => b.id === selectedSaBatchId) || null; }
+      function showSaBatchList() {
+        selectedSaBatchId = null;
+        document.getElementById("saBatchListView").classList.remove("hidden");
+        document.getElementById("saBatchDetailView").classList.add("hidden");
+        renderSaBatches();
+      }
+      function showSaBatchDetails(id) {
+        selectedSaBatchId = id;
+        document.getElementById("saBatchListView").classList.add("hidden");
+        document.getElementById("saBatchDetailView").classList.remove("hidden");
+        const b = getSelectedSaBatch();
+        if (!b) return showSaBatchList();
+        document.getElementById("saBatchDetailBanner").innerHTML = `
+          <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div><h1 style="margin:0;font-size:22px;color:var(--brand)">${b.name}</h1>
+            <p style="margin:6px 0 0;color:var(--muted);font-size:13px">${b.code}</p></div>
+            ${statusHtml(b.status)}
+          </div>
+          <div class="detail-grid">
+            <div><div class="detail-item-label">Start Year</div><div class="detail-item-value">${b.startYear}</div></div>
+            <div><div class="detail-item-label">End Year</div><div class="detail-item-value">${b.endYear}</div></div>
+          </div>`;
+      }
+
+      function renderRegions() {
+        renderMasterTable("regionRows", TRAINING_REGIONS, "regionQuery", (r) => `<tr>
+          <td>${r.code}</td><td>${r.name}</td><td>${r.description}</td><td>${statusHtml(r.status)}</td>
+          <td class="action-cell"><button type="button" class="btn btn-link btn-sm" data-region-details="${r.id}">Details</button></td>
+        </tr>`);
+      }
+      function getSelectedRegion() { return TRAINING_REGIONS.find((r) => r.id === selectedRegionId) || null; }
+      function showRegionList() {
+        selectedRegionId = null;
+        document.getElementById("regionListView").classList.remove("hidden");
+        document.getElementById("regionDetailView").classList.add("hidden");
+        renderRegions();
+      }
+      function showRegionDetails(id) {
+        selectedRegionId = id;
+        document.getElementById("regionListView").classList.add("hidden");
+        document.getElementById("regionDetailView").classList.remove("hidden");
+        const r = getSelectedRegion();
+        if (!r) return showRegionList();
+        document.getElementById("regionDetailBanner").innerHTML = `
+          <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div><h1 style="margin:0;font-size:22px;color:var(--brand)">${r.name}</h1>
+            <p style="margin:6px 0 0;color:var(--muted);font-size:13px">${r.code}</p></div>
+            ${statusHtml(r.status)}
+          </div>
+          <div class="detail-grid">
+            <div><div class="detail-item-label">Description</div><div class="detail-item-value">${r.description}</div></div>
+          </div>`;
+      }
+
+      function renderCertCats() {
+        renderMasterTable("certCatRows", CERTIFICATE_CATEGORIES, "certCatQuery", (c) => `<tr>
+          <td>${c.code}</td><td>${c.name}</td><td>${c.description}</td><td>${statusHtml(c.status)}</td>
+          <td class="action-cell"><button type="button" class="btn btn-link btn-sm" data-cert-cat-details="${c.id}">Details</button></td>
+        </tr>`);
+      }
+      function getSelectedCertCat() { return CERTIFICATE_CATEGORIES.find((c) => c.id === selectedCertCatId) || null; }
+      function showCertCatList() {
+        selectedCertCatId = null;
+        document.getElementById("certCatListView").classList.remove("hidden");
+        document.getElementById("certCatDetailView").classList.add("hidden");
+        renderCertCats();
+      }
+      function showCertCatDetails(id) {
+        selectedCertCatId = id;
+        document.getElementById("certCatListView").classList.add("hidden");
+        document.getElementById("certCatDetailView").classList.remove("hidden");
+        const c = getSelectedCertCat();
+        if (!c) return showCertCatList();
+        document.getElementById("certCatDetailBanner").innerHTML = `
+          <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div><h1 style="margin:0;font-size:22px;color:var(--brand)">${c.name}</h1>
+            <p style="margin:6px 0 0;color:var(--muted);font-size:13px">${c.code}</p></div>
+            ${statusHtml(c.status)}
+          </div>
+          <div class="detail-grid">
+            <div><div class="detail-item-label">Description</div><div class="detail-item-value">${c.description}</div></div>
+          </div>`;
+      }
+
+      function readImageFile(input, cb) {
+        const file = input?.files?.[0];
+        if (!file) { cb("", ""); return; }
+        const reader = new FileReader();
+        reader.onload = () => cb(file.name, String(reader.result || ""));
+        reader.readAsDataURL(file);
+      }
+
+
+      function openEditBanner() {
+        const b = getSelectedBanner();
+        if (!b) return;
+        openModal("banner-add");
+        const form = document.querySelector("#modalRoot form");
+        const title = document.querySelector("#modalRoot .modal-title");
+        const submit = document.querySelector("#modalRoot [data-submit-add]");
+        if (title) title.textContent = "Edit Banner";
+        if (submit) { submit.dataset.submitAdd = "banner-edit"; submit.textContent = "Save Changes"; }
+        fillForm(form, b);
+      }
+      function openEditAwardCat() {
+        const c = getSelectedAwardCat();
+        if (!c) return;
+        openModal("award-cat-add");
+        const form = document.querySelector("#modalRoot form");
+        const title = document.querySelector("#modalRoot .modal-title");
+        const submit = document.querySelector("#modalRoot [data-submit-add]");
+        if (title) title.textContent = "Edit Award Category";
+        if (submit) { submit.dataset.submitAdd = "award-cat-edit"; submit.textContent = "Save Changes"; }
+        fillForm(form, c);
+      }
+      function openEditSaBatch() {
+        const b = getSelectedSaBatch();
+        if (!b) return;
+        openModal("sa-batch-add");
+        const form = document.querySelector("#modalRoot form");
+        const title = document.querySelector("#modalRoot .modal-title");
+        const submit = document.querySelector("#modalRoot [data-submit-add]");
+        if (title) title.textContent = "Edit SA Batch";
+        if (submit) { submit.dataset.submitAdd = "sa-batch-edit"; submit.textContent = "Save Changes"; }
+        fillForm(form, b);
+      }
+      function openEditRegion() {
+        const r = getSelectedRegion();
+        if (!r) return;
+        openModal("region-add");
+        const form = document.querySelector("#modalRoot form");
+        const title = document.querySelector("#modalRoot .modal-title");
+        const submit = document.querySelector("#modalRoot [data-submit-add]");
+        if (title) title.textContent = "Edit Training Region";
+        if (submit) { submit.dataset.submitAdd = "region-edit"; submit.textContent = "Save Changes"; }
+        fillForm(form, r);
+      }
+      function openEditCertCat() {
+        const c = getSelectedCertCat();
+        if (!c) return;
+        openModal("cert-cat-add");
+        const form = document.querySelector("#modalRoot form");
+        const title = document.querySelector("#modalRoot .modal-title");
+        const submit = document.querySelector("#modalRoot [data-submit-add]");
+        if (title) title.textContent = "Edit Certificate Category";
+        if (submit) { submit.dataset.submitAdd = "cert-cat-edit"; submit.textContent = "Save Changes"; }
+        fillForm(form, c);
       }
 
       function initActions() {
@@ -2279,6 +2970,54 @@
         document.getElementById("deleteEventBtn").addEventListener("click", () => deleteSelected("event"));
         document.getElementById("editVolBtn").addEventListener("click", openEditVolunteer);
         document.getElementById("deleteVolBtn").addEventListener("click", () => deleteSelected("volunteer"));
+
+        document.getElementById("bannerCards").addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-banner-details]");
+          if (btn) showBannerDetails(btn.dataset.bannerDetails);
+        });
+        document.getElementById("bannerRows").addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-banner-details]");
+          if (btn) showBannerDetails(btn.dataset.bannerDetails);
+        });
+        document.getElementById("backToBanners").addEventListener("click", showBannerList);
+        document.getElementById("editBannerBtn").addEventListener("click", openEditBanner);
+        document.getElementById("deleteBannerBtn").addEventListener("click", () => deleteSelected("banner"));
+
+        document.getElementById("awardCatRows").addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-award-cat-details]");
+          if (btn) showAwardCatDetails(btn.dataset.awardCatDetails);
+        });
+        document.getElementById("backToAwardCats").addEventListener("click", showAwardCatList);
+        document.getElementById("editAwardCatBtn").addEventListener("click", openEditAwardCat);
+        document.getElementById("deleteAwardCatBtn").addEventListener("click", () => deleteSelected("award-cat"));
+        document.getElementById("awardCatQuery").addEventListener("input", renderAwardCats);
+
+        document.getElementById("saBatchRows").addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-sa-batch-details]");
+          if (btn) showSaBatchDetails(btn.dataset.saBatchDetails);
+        });
+        document.getElementById("backToSaBatches").addEventListener("click", showSaBatchList);
+        document.getElementById("editSaBatchBtn").addEventListener("click", openEditSaBatch);
+        document.getElementById("deleteSaBatchBtn").addEventListener("click", () => deleteSelected("sa-batch"));
+        document.getElementById("saBatchQuery").addEventListener("input", renderSaBatches);
+
+        document.getElementById("regionRows").addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-region-details]");
+          if (btn) showRegionDetails(btn.dataset.regionDetails);
+        });
+        document.getElementById("backToRegions").addEventListener("click", showRegionList);
+        document.getElementById("editRegionBtn").addEventListener("click", openEditRegion);
+        document.getElementById("deleteRegionBtn").addEventListener("click", () => deleteSelected("region"));
+        document.getElementById("regionQuery").addEventListener("input", renderRegions);
+
+        document.getElementById("certCatRows").addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-cert-cat-details]");
+          if (btn) showCertCatDetails(btn.dataset.certCatDetails);
+        });
+        document.getElementById("backToCertCats").addEventListener("click", showCertCatList);
+        document.getElementById("editCertCatBtn").addEventListener("click", openEditCertCat);
+        document.getElementById("deleteCertCatBtn").addEventListener("click", () => deleteSelected("cert-cat"));
+        document.getElementById("certCatQuery").addEventListener("input", renderCertCats);
       }
 
       initNav();
@@ -2291,6 +3030,11 @@
       renderJobs();
       renderKpi();
       renderHof();
+      renderBanners();
+      renderAwardCats();
+      renderSaBatches();
+      renderRegions();
+      renderCertCats();
       updateCounts();
 
       const initial = location.hash.replace("#", "") || "students";
@@ -2509,6 +3253,114 @@
           <div class="modal-foot">
             <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
             <button type="button" class="btn btn-primary" data-submit-add="cert-upload">Upload ZIP</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-banner-add">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Add Banner</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="form-grid cols-2">
+              <div class="field-wrap"><label class="field-label">Banner Title</label><input class="field" name="title" placeholder="Banner title" /></div>
+              <div class="field-wrap"><label class="field-label">Placement</label>
+                <select class="select" name="placement"><option>Home Hero</option><option>Event Page</option><option>Job Page</option><option>Hall of Fame</option></select>
+              </div>
+              <div class="field-wrap"><label class="field-label">Link URL</label><input class="field" name="linkUrl" placeholder="https://" /></div>
+              <div class="field-wrap"><label class="field-label">Sort Order</label><input class="field" name="sortOrder" type="number" value="1" /></div>
+              <div class="field-wrap"><label class="field-label">Status</label>
+                <select class="select" name="status"><option>Active</option><option>Inactive</option></select>
+              </div>
+              <div class="field-wrap"><label class="field-label">Banner Thumbnail</label><input class="field" name="image" type="file" accept="image/*" /></div>
+            </div>
+            <div class="upload-note" style="margin-top:10px">Upload an image thumbnail (JPG/PNG). Preview appears in the banner list after saving.</div>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="banner-add">Save Banner</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-award-cat-add">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal modal-sm" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Add Award Category</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="form-grid cols-2">
+              <div class="field-wrap"><label class="field-label">Category Code</label><input class="field" name="code" /></div>
+              <div class="field-wrap"><label class="field-label">Category Name</label><input class="field" name="name" /></div>
+              <div class="field-wrap"><label class="field-label">Status</label><select class="select" name="status"><option>Active</option><option>Inactive</option></select></div>
+            </div>
+            <textarea class="textarea" name="description" rows="3" placeholder="Description"></textarea>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="award-cat-add">Save</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-sa-batch-add">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal modal-sm" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Add SA Batch</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="form-grid cols-2">
+              <div class="field-wrap"><label class="field-label">Batch Code</label><input class="field" name="code" /></div>
+              <div class="field-wrap"><label class="field-label">Batch Name</label><input class="field" name="name" /></div>
+              <div class="field-wrap"><label class="field-label">Start Year</label><input class="field" name="startYear" /></div>
+              <div class="field-wrap"><label class="field-label">End Year</label><input class="field" name="endYear" /></div>
+              <div class="field-wrap"><label class="field-label">Status</label><select class="select" name="status"><option>Active</option><option>Inactive</option></select></div>
+            </div>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="sa-batch-add">Save</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-region-add">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal modal-sm" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Add Training Region</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="form-grid cols-2">
+              <div class="field-wrap"><label class="field-label">Region Code</label><input class="field" name="code" /></div>
+              <div class="field-wrap"><label class="field-label">Region Name</label><input class="field" name="name" /></div>
+              <div class="field-wrap"><label class="field-label">Status</label><select class="select" name="status"><option>Active</option><option>Inactive</option></select></div>
+            </div>
+            <textarea class="textarea" name="description" rows="3" placeholder="Description"></textarea>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="region-add">Save</button>
+          </div>
+        </form>
+      </div>
+    </template>
+
+    <template id="tpl-cert-cat-add">
+      <div class="modal-backdrop" role="dialog" aria-modal="true">
+        <form class="modal modal-sm" onsubmit="return false">
+          <div class="modal-head"><h2 class="modal-title">Add Certificate Category</h2><button type="button" class="modal-close" data-close-modal>&times;</button></div>
+          <div class="modal-body">
+            <div class="form-grid cols-2">
+              <div class="field-wrap"><label class="field-label">Category Code</label><input class="field" name="code" /></div>
+              <div class="field-wrap"><label class="field-label">Category Name</label><input class="field" name="name" /></div>
+              <div class="field-wrap"><label class="field-label">Status</label><select class="select" name="status"><option>Active</option><option>Inactive</option></select></div>
+            </div>
+            <textarea class="textarea" name="description" rows="3" placeholder="Description"></textarea>
+          </div>
+          <div class="modal-foot">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+            <button type="button" class="btn btn-primary" data-submit-add="cert-cat-add">Save</button>
           </div>
         </form>
       </div>
